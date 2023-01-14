@@ -3,5 +3,7 @@ import { WASI } from "wasi";
 
 export const wasi = new WASI();
 
-const { exports, instance } = await instantiate({ wasi_snapshot_preview1 : wasi.wasiImport });
+const { exports, instance } = await instantiate({ wasi_snapshot_preview1 : wasi.wasiImport }, false);
 wasi.initialize(instance);
+
+exports.__init()

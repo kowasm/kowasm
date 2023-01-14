@@ -19,7 +19,7 @@ To build and test the WASI library:
 wasi/test.sh 
 ```
 
-To run the WASI sample (current broken with a `wasi.start() has not been called` error):
+To run the WASI sample:
 ```bash
 samples/wasi-sample/run.sh
 ```
