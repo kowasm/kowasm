@@ -4,6 +4,16 @@ import org.kowasm.wasi.*
 import kotlin.wasm.unsafe.*
 import kotlin.wasm.WasmImport
 
+/**
+ * Standard output file descriptor.
+ */
+internal val STDOUT: Fd = 1
+
+/**
+ * Standard error file descriptor.
+ */
+internal val STDERR: Fd = 2
+
 internal fun fdWrite(fd: Fd, ivos: List<ByteArray>): Size {
     withScopedMemoryAllocator { allocator ->
         val iovs = ivos.map { UnsafeCiovec(allocator.writeToLinearMemory(it), it.size) }

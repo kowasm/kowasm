@@ -5,10 +5,18 @@ import kotlin.time.*
 
 object Wasi {
 
-    val STDOUT: Fd = 1
+    /**
+     * Prints the given [message] to the standard output.
+     */
+    fun print(message: String) {
+        fdWrite(STDOUT, listOf(message.toString().encodeToByteArray()))
+    }
 
+    /**
+     * Prints the given [message] and the line separator to the standard output.
+     */
     fun println(message: String) {
-        fdWrite(STDOUT, listOf(message.toString().encodeToByteArray(), "\n".encodeToByteArray()))
+        print(message + "\n")
     }
 
     /**
