@@ -1,17 +1,17 @@
 # KoWasm
 
-KoWasm is an experimental project intended to provide [WASI](https://wasi.dev/) and [WebAssembly Component Model](https://github.com/WebAssembly/component-model) support to [Kotlin](https://kotlinlang.org/)/Wasm.
+KoWasm is an experimental project intended to provide [WASI](https://wasi.dev/) and [WebAssembly Component Model](https://github.com/WebAssembly/component-model) support for [Kotlin](https://kotlinlang.org/)/Wasm to develop server-side and full stack applications.
 
-WASI support is taking inspiration from [Slava Kuzmich initial prototype](https://github.com/skuzmich/kotlin-wasi-bindings-experiments).
+WASI support is developed on my spare time in collaboration with the Kotlin/Wasm team, taking inspiration from [Slava Kuzmich initial prototype](https://github.com/skuzmich/kotlin-wasi-bindings-experiments) and with the goal that at some point, WASI support would be provided out of the box by Kotlin/Wasm. See [KT-36172](https://youtrack.jetbrains.com/issue/KT-36172) related issue.
 
-This project and Kotlin/Wasm in general is in very early stage of development:
+**This project and Kotlin/Wasm in general are in very early stage of development:**
  - It leverages Kotlin 1.8.20 snapshot APIs and [Node experimental WASI API](https://nodejs.org/api/wasi.html).
  - Autocompletion is not working yet.
  - Artifacts are not published to any repository yet.
 
 ## Requirements
 
-Node 20 should be used to run the project. You can install it using [nvm](https://github.com/nvm-sh/nvm):
+Node 20 should be used to run the project due to constraints related to [Wasm GC](https://github.com/WebAssembly/gc). You can install it using [nvm](https://github.com/nvm-sh/nvm):
 
 ```bash
 NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/v8-canary nvm install v20.0.0-v8-canary202212266b2b946a63
