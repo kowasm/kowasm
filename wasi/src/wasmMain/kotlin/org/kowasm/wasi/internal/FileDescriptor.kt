@@ -5,19 +5,18 @@ import kotlin.wasm.unsafe.*
 import kotlin.wasm.WasmImport
 
 /**
- * Standard output file descriptor.
+ * Standard file descriptors.
  */
-internal val STDOUT: Fd = 1
-
-/**
- * Standard error file descriptor.
- */
-internal val STDERR: Fd = 2
-
-/**
- * First preopen file descriptor.
- */
-internal val PREOPEN: Fd = 3
+internal enum class StandardFileDescriptor {
+    /** Standard input file descriptor. */
+    STDIN,
+    /** Standard output file descriptor. */
+    STDOUT,
+    /** Standard error file descriptor. */
+    STDERR,
+    /** First preopen file descriptor. */
+    FIRST_PREOPEN,
+}
 
 internal fun fdWrite(fd: Fd, ivos: List<ByteArray>): Size {
     withScopedMemoryAllocator { allocator ->

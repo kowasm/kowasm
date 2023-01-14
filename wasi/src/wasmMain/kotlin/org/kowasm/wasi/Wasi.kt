@@ -9,7 +9,7 @@ object Wasi {
      * Prints the given [message] to the standard output.
      */
     fun print(message: String) {
-        fdWrite(STDOUT, listOf(message.toString().encodeToByteArray()))
+        fdWrite(StandardFileDescriptor.STDOUT.ordinal, listOf(message.toString().encodeToByteArray()))
     }
 
     /**
@@ -35,7 +35,7 @@ object Wasi {
      * Create a new directory with the given [path].
      */
     fun createDirectory(path: String) {
-        pathCreateDirectory(PREOPEN, path)
+        pathCreateDirectory(StandardFileDescriptor.FIRST_PREOPEN.ordinal, path)
     }
 
 }
