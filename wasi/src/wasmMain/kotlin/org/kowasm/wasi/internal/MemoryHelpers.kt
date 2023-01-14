@@ -3,24 +3,24 @@ package org.kowasm.wasi.internal
 import kotlin.wasm.unsafe.*
 
 internal fun MemoryAllocator.writeToLinearMemory(array: ByteArray): Pointer {
-    val ptr = allocate(array.size)
-    var currentPtr = ptr
-    for (el in array) {
-        currentPtr.storeByte(el)
-        currentPtr += 1
+    val pointer = allocate(array.size)
+    var currentPointer = pointer
+    array.forEach {
+        currentPointer.storeByte(it)
+        currentPointer += 1
     }
-    return ptr
+    return pointer
 }
 
 internal fun MemoryAllocator.writeToLinearMemory(array: UnsafeCiovecArray): Pointer {
-    val ptr = allocate(array.size * 8)
-    var currentPtr = ptr
-    for (el in array) {
-        storeUnsafeCiovec(el, currentPtr)
-        currentPtr += 8
+    val pointer = allocate(array.size * 8)
+    var currentPointer = pointer
+    array.forEach {
+        storeUnsafeCiovec(it, currentPointer)
+        currentPointer += 8
     }
-    return ptr
+    return pointer
 }
 
-internal fun MemoryAllocator.writeToLinearMemory(string: String): Pointer =
-    writeToLinearMemory(string.encodeToByteArray())
+internal fun MemoryAllocator.writeToLinearMemory(value: String): Pointer =
+    writeToLinearMemory(value.encodeToByteArray())
