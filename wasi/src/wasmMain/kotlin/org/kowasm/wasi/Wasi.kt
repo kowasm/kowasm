@@ -48,7 +48,7 @@ object Wasi {
     }
 
     /**
-     * Create a new directory with the given [path].
+     * Create a new directory with the given [path] from the root of the first preopen path of the WASI sandbox.
      */
     fun createDirectory(path: String) {
         pathCreateDirectory(StandardFileDescriptor.FIRST_PREOPEN.ordinal, path)
