@@ -1,6 +1,13 @@
+# KoWasm
+
 KoWasm is an experimental project intended to provide [WASI](https://wasi.dev/) and [WebAssembly Component Model](https://github.com/WebAssembly/component-model) support to [Kotlin](https://kotlinlang.org/)/Wasm.
 
-WASI support is taking inspiration from [Slava Kuzmich initial prototype](https://github.com/skuzmich/kotlin-wasi-bindings-experiments) and leverages [Node WASI API](https://nodejs.org/api/wasi.html).
+WASI support is taking inspiration from [Slava Kuzmich initial prototype](https://github.com/skuzmich/kotlin-wasi-bindings-experiments).
+
+This project and Kotlin/Wasm in general is in very early stage of development:
+ - It leverages Kotlin 1.8.20 snapshot APIs and [Node experimental WASI API](https://nodejs.org/api/wasi.html).
+ - Autocompletion is not working yet.
+ - Artifacts are not published to any repository yet.
 
 ## Requirements
 
