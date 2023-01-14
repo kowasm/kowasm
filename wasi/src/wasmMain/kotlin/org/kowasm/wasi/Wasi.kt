@@ -31,4 +31,11 @@ object Wasi {
         return timestamp.toDuration(DurationUnit.NANOSECONDS)
     }
 
+    /**
+     * Create a new directory with the given [path].
+     */
+    fun createDirectory(path: String) {
+        pathCreateDirectory(PREOPEN, path)
+    }
+
 }

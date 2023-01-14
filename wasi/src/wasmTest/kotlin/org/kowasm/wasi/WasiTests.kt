@@ -18,4 +18,9 @@ class WasiTests {
     fun testNow() {
         Wasi.println(Wasi.now().toString())
     }
+
+    @Test
+    fun testCreateDirectory() {
+        Wasi.createDirectory("testDir")
+    }
 }
