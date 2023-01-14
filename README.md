@@ -24,6 +24,11 @@ To run the WASI sample:
 samples/wasi-sample/run.sh
 ```
 
+Artifacts are not yet published to any repository, so you need to build them locally:
+```bash
+./gradlew wasi:publishToMavenLocal
+```
+
 ## Documentation
 
 [Dokka does not support yet Kotlin/Wasm](https://github.com/Kotlin/dokka/issues/2814) but you can see the WASI Kotlin public API [here](https://github.com/sdeleuze/kowasm/blob/main/wasi/src/wasmMain/kotlin/org/kowasm/wasi/Wasi.kt).
