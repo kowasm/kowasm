@@ -11,6 +11,10 @@ NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/v8-canary nvm install v20.0.0-
 nvm use v20.0.0-v8-canary202212266b2b946a63
 ```
 
+## Documentation
+
+[Dokka does not support yet Kotlin/Wasm](https://github.com/Kotlin/dokka/issues/2814) but you can see the WASI Kotlin public API [here](https://github.com/sdeleuze/kowasm/blob/main/wasi/src/wasmMain/kotlin/org/kowasm/wasi/Wasi.kt).
+
 ## Getting started
 
 To build and test the WASI library:
