@@ -24,4 +24,9 @@ kotlin {
         }
     }
 
+    // Disabled for now since require custom WASI module configuration, run wasi/test.sh instead.
+    tasks.named("wasmNodeTest") {
+        enabled = false
+    }
+
 }
