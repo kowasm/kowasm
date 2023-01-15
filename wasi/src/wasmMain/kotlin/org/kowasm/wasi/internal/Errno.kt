@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.kowasm.wasi
+package org.kowasm.wasi.internal
 
-enum class Errno {
+internal enum class Errno {
     /** No error occurred. System call completed successfully. */
     SUCCESS,
     /** Argument list too long. */
