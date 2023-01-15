@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import org.kowasm.wasi.Wasi
+import org.kowasm.wasi.*
 
 fun main() {
-    Wasi.println("Hello, world!")
-    Wasi.println(Wasi.now().toString())
-    Wasi.createDirectory("testDir")
-    Wasi.createFile("testFile")
-    Wasi.listDirectoryEntries(".").forEach(Wasi::println)
+    val wasi: Wasi = DefaultWasi
+    wasi.println("Hello, world!")
+    wasi.println(wasi.now().toString())
+    wasi.createDirectory("testDir")
+    wasi.createFile("testFile")
+    wasi.listDirectoryEntries(".").forEach(wasi::println)
 }

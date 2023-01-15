@@ -18,35 +18,13 @@ package org.kowasm.wasi
 
 import kotlin.test.Test
 
-class WasiTests {
+class WasiClockTests {
 
-    @Test
-    fun testPrint() {
-        Wasi.print("Hello, world!")
-    }
-
-    @Test
-    fun testPrintln() {
-        Wasi.println("Hello, world!")
-    }
+    val wasi: WasiClock = DefaultWasiClock
 
     @Test
     fun testNow() {
-        Wasi.println(Wasi.now().toString())
+        println(wasi.now())
     }
 
-    @Test
-    fun testCreateDirectory() {
-        Wasi.createDirectory("testDir")
-    }
-
-    @Test
-    fun testCreateFile() {
-        Wasi.createFile("testFile")
-    }
-
-    @Test
-    fun testListDirectoryEntries() {
-        Wasi.listDirectoryEntries(".").forEach(Wasi::println)
-    }
 }

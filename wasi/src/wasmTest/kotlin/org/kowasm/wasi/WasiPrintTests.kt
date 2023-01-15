@@ -16,6 +16,20 @@
 
 package org.kowasm.wasi
 
-interface Wasi : WasiPrint, WasiClock, WasiFileSystem
+import kotlin.test.Test
 
-object DefaultWasi : Wasi, WasiPrint by DefaultWasiPrint, WasiClock by DefaultWasiClock, WasiFileSystem by DefaultWasiFilesystem
+class WasiPrintTests {
+
+    val wasi: WasiPrint = DefaultWasiPrint
+
+    @Test
+    fun testPrint() {
+        wasi.print("Hello, world!")
+    }
+
+    @Test
+    fun testPrintln() {
+        wasi.println("Hello, world!")
+    }
+
+}

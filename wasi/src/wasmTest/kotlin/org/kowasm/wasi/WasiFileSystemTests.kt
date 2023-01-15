@@ -16,6 +16,24 @@
 
 package org.kowasm.wasi
 
-interface Wasi : WasiPrint, WasiClock, WasiFileSystem
+import kotlin.test.Test
 
-object DefaultWasi : Wasi, WasiPrint by DefaultWasiPrint, WasiClock by DefaultWasiClock, WasiFileSystem by DefaultWasiFilesystem
+class WasiFileSystemTests {
+
+    val wasi: WasiFileSystem = DefaultWasiFilesystem
+
+    @Test
+    fun testCreateDirectory() {
+        wasi.createDirectory("testDir")
+    }
+
+    @Test
+    fun testCreateFile() {
+        wasi.createFile("testFile")
+    }
+
+    @Test
+    fun testListDirectoryEntries() {
+        wasi.listDirectoryEntries(".").forEach(::println)
+    }
+}

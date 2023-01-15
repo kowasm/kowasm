@@ -16,6 +16,28 @@
 
 package org.kowasm.wasi
 
-interface Wasi : WasiPrint, WasiClock, WasiFileSystem
+import org.kowasm.wasi.internal.StandardFileDescriptor
+import org.kowasm.wasi.internal.fdWrite
 
-object DefaultWasi : Wasi, WasiPrint by DefaultWasiPrint, WasiClock by DefaultWasiClock, WasiFileSystem by DefaultWasiFilesystem
+interface WasiPrint {
+    /**
+     * Prints the given [message] to the standard output.
+     */
+    fun print(message: String)
+
+    /**
+     * Prints the given [message] and the line separator to the standard output.
+     */
+    fun println(message: String)
+}
+
+object DefaultWasiPrint: WasiPrint {
+
+    override fun print(message: String) {
+        fdWrite(StandardFileDescriptor.STDOUT.ordinal, listOf(message.encodeToByteArray()))
+    }
+
+    override fun println(message: String) {
+        print(message + "\n")
+    }
+}
