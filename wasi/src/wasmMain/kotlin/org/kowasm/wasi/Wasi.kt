@@ -61,4 +61,18 @@ object Wasi {
         pathOpen(StandardFileDescriptor.FIRST_PREOPEN.ordinal, 0, path, OFlag.CREAT, 0, 0, 0)
     }
 
+    /**
+     * Return the list of the directory entry (file and directory) names contained in the directory with the given
+     * [path] from the root of the first preopen path of the WASI sandbox.
+     */
+    fun listDirectoryEntries(path: String): List<String> {
+        val fd = pathOpen(fd = StandardFileDescriptor.FIRST_PREOPEN.ordinal, dirflags = 0, path = path,
+            oflags = OFlag.DIRECTORY,
+            fsRightsBase = Right.FD_READDIR,
+            fsRightsInheriting = 0,
+            fdflags = 0,
+        )
+        return fdReadDir(fd)
+    }
+
 }

@@ -20,6 +20,8 @@ import org.kowasm.wasi.*
 import kotlin.wasm.unsafe.*
 import kotlin.wasm.WasmImport
 
+internal typealias Fd = Int
+
 /**
  * Standard file descriptors.
  */
@@ -36,14 +38,14 @@ internal enum class StandardFileDescriptor {
 
 internal typealias LookupFlags = Int
 
-object LookupFlag {
+internal object LookupFlag {
     /** As long as the resolved path corresponds to a symbolic link, it is expanded. */
     const val SYMLINK_FOLLOW: LookupFlags = 1 shl 0
 }
 
 internal typealias OFlags = Short
 
-object OFlag {
+internal object OFlag {
     /** Create file if it does not exist. */
     const val CREAT: OFlags = (1 shl 0).toShort()
     /** Fail if not a directory. */
@@ -56,7 +58,7 @@ object OFlag {
 
 internal typealias Rights = Long
 
-object Right {
+internal object Right {
     /**
      * The right to invoke `fd_datasync`. If `path_open` is set, includes the right to invoke
      * `path_open` with `fdflags::dsync`.
@@ -143,7 +145,7 @@ object Right {
 
 internal typealias Fdflags = Short
 
-object FdFlag {
+internal object FdFlag {
     /** Append mode: Data written to the file is always appended to the file's end. */
     const val APPEND: Fdflags = (1 shl 0).toShort()
     /**
@@ -160,6 +162,45 @@ object FdFlag {
      * data stored in the file, the implementation may also synchronously update the file's metadata.
      */
     const val SYNC: Fdflags = (1 shl 4).toShort()
+}
+
+internal typealias DirectoryCookie = Long
+
+internal typealias Inode = Long
+
+typealias DirectoryNameLength = Int
+
+internal data class DirectoryEntry(
+    /** The offset of the next directory entry stored in this directory. */
+    var next: DirectoryCookie,
+    /** The serial number of the file referred to by this directory entry. */
+    var inode: Inode,
+    /** The length of the name of the directory entry. */
+    var nameLength: DirectoryNameLength,
+    /** The type of the file referred to by this directory entry. */
+    var type: Filetype,
+)
+
+internal enum class Filetype {
+    /**
+     * The type of the file descriptor or file is unknown or is different from any of the other types
+     * specified.
+     */
+    UNKNOWN,
+    /** The file descriptor or file refers to a block device inode. */
+    BLOCK_DEVICE,
+    /** The file descriptor or file refers to a character device inode. */
+    CHARACTER_DEVICE,
+    /** The file descriptor or file refers to a directory inode. */
+    DIRECTORY,
+    /** The file descriptor or file refers to a regular file inode. */
+    REGULAR_FILE,
+    /** The file descriptor or file refers to a datagram socket. */
+    SOCKET_DGRAM,
+    /** The file descriptor or file refers to a byte-stream socket. */
+    SOCKET_STREAM,
+    /** The file refers to a symbolic link inode. */
+    SYMBOLIC_LINK,
 }
 
 internal fun fdWrite(fd: Fd, ivos: List<ByteArray>): Size {
@@ -223,6 +264,51 @@ internal fun pathOpen(
     }
 }
 
+fun fdReadDir(fd: Fd): List<String> {
+    val bufferSize = 1024
+    val byteArrayBuf = ByteArray(bufferSize)
+    val names = mutableListOf<String>()
+    var cookie: DirectoryCookie = 0
+    withScopedMemoryAllocator { allocator ->
+        val ptr = allocator.writeToLinearMemory(byteArrayBuf);
+        do {
+            var offset = 0
+            val rp0 = allocator.allocate(4)
+            val returnCode = rawFdReadDir(fd, ptr.address.toInt(), byteArrayBuf.size, cookie, rp0.address.toInt())
+            val size = if (returnCode == 0) {
+                (Pointer(rp0.address.toInt().toUInt())).loadInt()
+            } else {
+                throw WasiError(Errno.values()[returnCode])
+            }
+            while(true) {
+                if (offset + 24 >  size) {
+                    break
+                }
+                val dirent = loadDirent(ptr + offset)
+                cookie = dirent.next
+                offset += 24;
+                if (offset + dirent.nameLength <  size) {
+                    names.add(loadString(ptr + offset, dirent.nameLength))
+                    offset += dirent.nameLength;
+                }
+                else {
+                    break
+                }
+            }
+        } while (size == bufferSize)
+    }
+    return names
+}
+
+private fun loadDirent(ptr: Pointer): DirectoryEntry {
+    return DirectoryEntry(
+        (ptr + 0).loadLong(),
+        (ptr + 8).loadLong(),
+        (ptr + 16).loadInt(),
+        Filetype.values()[(ptr + 20).loadByte().toInt()],
+    )
+}
+
 /** Write to a file descriptor. Note: This is similar to `writev` in POSIX. */
 @WasmImport("wasi_snapshot_preview1", "fd_write")
 private external fun rawFdWrite(
@@ -258,4 +344,21 @@ private external fun rawPathOpen(
     arg6: Long,
     arg7: Int,
     arg8: Int,
+): Int
+
+/**
+ * Read directory entries from a directory. When successful, the contents of the output buffer
+ * consist of a sequence of directory entries. Each directory entry consists of a `dirent` object,
+ * followed by `dirent::d_namlen` bytes holding the name of the directory entry. This function fills
+ * the output buffer as much as possible, potentially truncating the last directory entry. This
+ * allows the caller to grow its read buffer size in case it's too small to fit a single large
+ * directory entry, or skip the oversized directory entry.
+ */
+@WasmImport("wasi_snapshot_preview1", "fd_readdir")
+private external fun rawFdReadDir(
+    arg0: Int,
+    arg1: Int,
+    arg2: Int,
+    arg3: Long,
+    arg4: Int,
 ): Int

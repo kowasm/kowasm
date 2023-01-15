@@ -44,4 +44,9 @@ class WasiTests {
     fun testCreateFile() {
         Wasi.createFile("testFile")
     }
+
+    @Test
+    fun testListDirectoryEntries() {
+        Wasi.listDirectoryEntries(".").forEach(Wasi::println)
+    }
 }

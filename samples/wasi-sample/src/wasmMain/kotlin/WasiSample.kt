@@ -21,4 +21,5 @@ fun main() {
     Wasi.println(Wasi.now().toString())
     Wasi.createDirectory("testDir")
     Wasi.createFile("testFile")
+    Wasi.listDirectoryEntries(".").forEach(Wasi::println)
 }

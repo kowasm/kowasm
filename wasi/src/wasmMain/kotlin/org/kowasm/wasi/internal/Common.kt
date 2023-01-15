@@ -16,9 +16,7 @@
 
 package org.kowasm.wasi.internal
 
-typealias Size = Int
-
-typealias Fd = Int
+internal typealias Size = Int
 
 /** Timestamp in nanoseconds */
-typealias Timestamp = Long
+internal typealias Timestamp = Long
