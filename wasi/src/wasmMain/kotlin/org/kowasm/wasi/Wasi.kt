@@ -54,4 +54,8 @@ object Wasi {
         pathCreateDirectory(StandardFileDescriptor.FIRST_PREOPEN.ordinal, path)
     }
 
+    fun createFile(path: String) {
+        pathOpen(StandardFileDescriptor.FIRST_PREOPEN.ordinal, 0, path, OFlag.CREAT, 0, 0, 0)
+    }
+
 }

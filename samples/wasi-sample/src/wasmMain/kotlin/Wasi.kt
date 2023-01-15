@@ -20,4 +20,5 @@ fun main() {
     Wasi.println("Hello, world!")
     Wasi.println(Wasi.now().toString())
     Wasi.createDirectory("testDir")
+    Wasi.createFile("testFile")
 }

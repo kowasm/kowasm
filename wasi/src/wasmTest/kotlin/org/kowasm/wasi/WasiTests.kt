@@ -39,4 +39,9 @@ class WasiTests {
     fun testCreateDirectory() {
         Wasi.createDirectory("testDir")
     }
+
+    @Test
+    fun testCreateFile() {
+        Wasi.createFile("testFile")
+    }
 }
