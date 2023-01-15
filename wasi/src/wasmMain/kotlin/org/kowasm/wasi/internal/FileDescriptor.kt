@@ -40,7 +40,7 @@ internal fun fdWrite(fd: Fd, ivos: List<ByteArray>): Size {
         val pointer = allocator.allocate(4)
         val returnCode =
             rawFdWrite(
-                fd.toInt(),
+                fd,
                 allocator.writeToLinearMemory(iovs).address.toInt(),
                 iovs.size,
                 pointer.address.toInt())
@@ -55,7 +55,7 @@ internal fun fdWrite(fd: Fd, ivos: List<ByteArray>): Size {
 internal fun pathCreateDirectory(fd: Fd, path: String) {
     withScopedMemoryAllocator { allocator ->
         val bytes = path.encodeToByteArray()
-        val returnCode = rawPathCreateDirectory(fd.toInt(), allocator.writeToLinearMemory(bytes).address.toInt(), bytes.size)
+        val returnCode = rawPathCreateDirectory(fd, allocator.writeToLinearMemory(bytes).address.toInt(), bytes.size)
         return if (returnCode == 0) {
             Unit
         } else {

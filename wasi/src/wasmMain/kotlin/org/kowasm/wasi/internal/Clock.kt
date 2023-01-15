@@ -50,7 +50,7 @@ internal fun clockResGet(id: ClockId): Timestamp {
 internal fun clockTimeGet(id: ClockId, precision: Timestamp): Timestamp {
     withScopedMemoryAllocator { allocator ->
         val pointer = allocator.allocate(8)
-        val returnCode = rawWasmClockTimeGet(id.ordinal, precision.toLong(), pointer.address.toInt())
+        val returnCode = rawWasmClockTimeGet(id.ordinal, precision, pointer.address.toInt())
         return if (returnCode == 0) {
             (Pointer(pointer.address.toInt().toUInt())).loadLong()
         } else {

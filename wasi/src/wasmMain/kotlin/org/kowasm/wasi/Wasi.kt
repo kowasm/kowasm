@@ -25,7 +25,7 @@ object Wasi {
      * Prints the given [message] to the standard output.
      */
     fun print(message: String) {
-        fdWrite(StandardFileDescriptor.STDOUT.ordinal, listOf(message.toString().encodeToByteArray()))
+        fdWrite(StandardFileDescriptor.STDOUT.ordinal, listOf(message.encodeToByteArray()))
     }
 
     /**
