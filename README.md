@@ -8,17 +8,22 @@ WASI support is developed on my spare time in collaboration with the Kotlin/Wasm
  - It leverages Kotlin 1.8.20 snapshot APIs and [Node experimental WASI API](https://nodejs.org/api/wasi.html).
  - Autocompletion is not working yet.
  - Artifacts are not published to any repository yet.
+ - Pure WASI runtimes like [Wasmtime](https://github.com/bytecodealliance/wasmtime) do not support [Wasm garbage collection](https://github.com/WebAssembly/gc) yet, so it is required to use V8-based WASI runtime like Node (see related WASI doc).  
 
 ## Requirements
 
-Node 20 should be used to run the project due to constraints related to [Wasm GC](https://github.com/WebAssembly/gc). You can install it using [nvm](https://github.com/nvm-sh/nvm):
+### IDEA
+
+[IntelliJ IDEA 2023.1 EAP](https://www.jetbrains.com/idea/nextversion/) should be used to get Kotlin/Wasm autocompletion.
+
+### Node
+
+Node 20 should be used (see related [Node WASI documentation](https://nodejs.org/api/wasi.html)) to run the project due to constraints related to [Wasm GC](https://github.com/WebAssembly/gc). You can install it using [nvm](https://github.com/nvm-sh/nvm):
 
 ```bash
 NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/v8-canary nvm install v20.0.0-v8-canary202212266b2b946a63
 nvm use v20.0.0-v8-canary202212266b2b946a63
 ```
-
-[IntelliJ IDEA 2023.1 EAP](https://www.jetbrains.com/idea/nextversion/) should be used to get Kotlin/Wasm autocompletion.
 
 ## Getting started
 
