@@ -18,6 +18,8 @@ NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/v8-canary nvm install v20.0.0-
 nvm use v20.0.0-v8-canary202212266b2b946a63
 ```
 
+[IntelliJ IDEA 2023.1 EAP](https://www.jetbrains.com/idea/nextversion/) should be used to get Kotlin/Wasm autocompletion.
+
 ## Getting started
 
 To build and test the WASI library:

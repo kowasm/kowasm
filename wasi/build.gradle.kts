@@ -9,10 +9,6 @@ kotlin {
     wasm {
         nodejs()
     }
-    // Temporary workaround for https://youtrack.jetbrains.com/issue/KTIJ-23644/IDEA-doesnt-import-properly-wasm-sourcesets
-    js(IR) {
-        nodejs()
-    }
     sourceSets {
         val wasmMain by getting
         val wasmTest by getting {
