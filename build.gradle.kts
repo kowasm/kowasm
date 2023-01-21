@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.8.255-SNAPSHOT" apply false
+    kotlin("multiplatform") version "1.8.20-dev-6044" apply false
 }
 
 allprojects {
@@ -7,7 +7,7 @@ allprojects {
     version = "0.1.0-SNAPSHOT"
 
     repositories {
-        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
+        maven(url = "https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
         mavenCentral()
     }
 }
