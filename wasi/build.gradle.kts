@@ -10,6 +10,11 @@ kotlin {
         nodejs()
     }
     sourceSets {
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
         val wasmMain by getting
         val wasmTest by getting {
             dependencies {
