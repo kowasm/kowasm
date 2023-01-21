@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-import kotlinx.datetime.Clock
-import org.kowasm.wasi.*
+package org.kowasm.wasi
 
-fun main() {
-    val wasi: Wasi = DefaultWasi
-    wasi.println("Hello, world!")
-    wasi.println(Clock.System.now().toString())
-    wasi.createDirectory("testDir")
-    wasi.createFile("testFile")
-    wasi.listDirectoryEntries(".").forEach(wasi::println)
+import kotlinx.datetime.Clock
+import kotlin.test.Test
+
+class ClockTests {
+
+    @Test
+    fun testNow() {
+        println(Clock.System.now())
+    }
+
 }

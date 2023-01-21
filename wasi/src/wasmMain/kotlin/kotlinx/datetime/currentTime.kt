@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package org.kowasm.wasi
+package kotlinx.datetime
 
-import kotlin.test.Test
+import org.kowasm.wasi.internal.ClockId
+import org.kowasm.wasi.internal.clockResGet
+import org.kowasm.wasi.internal.clockTimeGet
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
-class WasiClockTests {
-
-    val wasi: WasiClock = DefaultWasiClock
-
-    @Test
-    fun testNow() {
-        println(wasi.now())
-    }
-
+internal actual fun currentTime(): Instant {
+    val resolution = clockResGet(ClockId.REALTIME)
+    val timestamp = clockTimeGet(ClockId.REALTIME, resolution)
+    val duration = timestamp.toDuration(DurationUnit.NANOSECONDS)
+    return duration.toComponents { seconds, nanoseconds ->  Instant(seconds, nanoseconds)}
 }

@@ -16,6 +16,6 @@
 
 package org.kowasm.wasi
 
-interface Wasi : WasiPrint, WasiClock, WasiFileSystem
+interface Wasi : WasiPrint, WasiFileSystem
 
-object DefaultWasi : Wasi, WasiPrint by DefaultWasiPrint, WasiClock by DefaultWasiClock, WasiFileSystem by DefaultWasiFilesystem
+object DefaultWasi : Wasi, WasiPrint by DefaultWasiPrint, WasiFileSystem by DefaultWasiFilesystem
