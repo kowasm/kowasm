@@ -21,20 +21,21 @@ import kotlinx.html.html
 import kotlinx.html.p
 import kotlinx.html.stream.createHTML
 import org.kowasm.wasi.*
+import org.kowasm.web.HttpHeaders
+import org.kowasm.web.server.nodejs.listen
+import org.kowasm.web.server.webServer
 import org.nodejs.RequestListener
 import org.nodejs.http.createServer
 
 fun main() {
-    val port = 8000
-    val requestListener: RequestListener = { req, res ->
-        println("Accept header: ${req.headers.accept}")
-        res.statusCode = 200
-        res.end(content)
-    }
-    val server = createServer(requestListener)
-    server.listen(port) {
-        println("Server is running on port $port")
-    }
+    webServer {
+        router {
+            GET("/") {
+                println("Accept header: ${it.headers[HttpHeaders.ACCEPT]}")
+                ok().body(content)
+            }
+        }
+    }.listen()
 }
 
 val content = createHTML().html {

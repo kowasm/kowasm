@@ -7,6 +7,7 @@ pluginManagement {
 rootProject.name = "kowasm"
 
 include("wasi")
+include("web")
 include("component-model")
 include("effekt-wasm")
 include("kotlinx-datetime-wasm")
@@ -15,3 +16,4 @@ include("kotlinx-nodejs-wasm")
 include("samples:wasi-sample")
 include("samples:effekt-sample")
 include("samples:http-server-sample")
+include("samples:kofuwa-sample")

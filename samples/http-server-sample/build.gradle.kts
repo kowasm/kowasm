@@ -10,7 +10,7 @@ kotlin {
     sourceSets {
         val wasmMain by getting {
             dependencies {
-                implementation(project(":kotlinx-nodejs-wasm"))
+                implementation(project(":web"))
                 implementation(project(":kotlinx-html-wasm"))
                 implementation(project(":kotlinx-datetime-wasm"))
                 implementation(project(":wasi"))
