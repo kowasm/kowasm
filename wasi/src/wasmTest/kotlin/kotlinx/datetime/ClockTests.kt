@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package org.kowasm.wasi
+package kotlinx.datetime
 
-import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 class ClockTests {

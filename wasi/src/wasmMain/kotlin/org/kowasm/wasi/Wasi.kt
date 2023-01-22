@@ -16,6 +16,4 @@
 
 package org.kowasm.wasi
 
-interface Wasi : WasiPrint, WasiFileSystem
-
-object DefaultWasi : Wasi, WasiPrint by DefaultWasiPrint, WasiFileSystem by DefaultWasiFilesystem
+object Wasi : WasiPrint by DefaultWasiPrint, WasiFileSystem by DefaultWasiFilesystem

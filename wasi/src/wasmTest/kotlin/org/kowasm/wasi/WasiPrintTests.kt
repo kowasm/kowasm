@@ -20,16 +20,14 @@ import kotlin.test.Test
 
 class WasiPrintTests {
 
-    val wasi: WasiPrint = DefaultWasiPrint
-
     @Test
     fun testPrint() {
-        wasi.print("Hello, world!")
+        Wasi.print("Hello, world!")
     }
 
     @Test
     fun testPrintln() {
-        wasi.println("Hello, world!")
+        Wasi.println("Hello, world!")
     }
 
 }

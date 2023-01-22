@@ -18,10 +18,9 @@ import kotlinx.datetime.Clock
 import org.kowasm.wasi.*
 
 fun main() {
-    val wasi: Wasi = DefaultWasi
-    wasi.println("Hello, world!")
-    wasi.println(Clock.System.now().toString())
-    wasi.createDirectory("testDir")
-    wasi.createFile("testFile")
-    wasi.listDirectoryEntries(".").forEach(wasi::println)
+    Wasi.println("Hello, world!")
+    Wasi.println(Clock.System.now().toString())
+    Wasi.createDirectory("testDir")
+    Wasi.createFile("testFile")
+    Wasi.listDirectoryEntries(".").forEach(Wasi::println)
 }

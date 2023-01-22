@@ -20,20 +20,18 @@ import kotlin.test.Test
 
 class WasiFileSystemTests {
 
-    val wasi: WasiFileSystem = DefaultWasiFilesystem
-
     @Test
     fun testCreateDirectory() {
-        wasi.createDirectory("testDir")
+        Wasi.createDirectory("testDir")
     }
 
     @Test
     fun testCreateFile() {
-        wasi.createFile("testFile")
+        Wasi.createFile("testFile")
     }
 
     @Test
     fun testListDirectoryEntries() {
-        wasi.listDirectoryEntries(".").forEach(::println)
+        Wasi.listDirectoryEntries(".").forEach(::println)
     }
 }
