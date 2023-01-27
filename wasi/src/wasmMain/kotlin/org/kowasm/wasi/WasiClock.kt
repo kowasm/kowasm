@@ -73,7 +73,6 @@ interface WallClock {
      */
     fun resolution(): DateTime
 
-
 }
 
 /**
