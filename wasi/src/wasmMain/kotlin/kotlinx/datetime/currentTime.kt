@@ -16,15 +16,9 @@
 
 package kotlinx.datetime
 
-import org.kowasm.wasi.internal.ClockId
-import org.kowasm.wasi.internal.clockResGet
-import org.kowasm.wasi.internal.clockTimeGet
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import org.kowasm.wasi.DefaultWallClock
 
 internal actual fun currentTime(): Instant {
-    val resolution = clockResGet(ClockId.REALTIME)
-    val timestamp = clockTimeGet(ClockId.REALTIME, resolution)
-    val duration = timestamp.toDuration(DurationUnit.NANOSECONDS)
-    return duration.toComponents { seconds, nanoseconds ->  Instant(seconds, nanoseconds)}
+    val dateTime = DefaultWallClock.now()
+    return Instant(dateTime.seconds, dateTime.nanoseconds)
 }
