@@ -23,6 +23,7 @@ Node 20 should be used (see related [Node WASI documentation](https://nodejs.org
 ```bash
 NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/v8-canary nvm install v20.0.0-v8-canary202212266b2b946a63
 nvm use v20.0.0-v8-canary202212266b2b946a63
+npm install --global mocha
 ```
 
 ## Getting started
