@@ -34,6 +34,12 @@ To build and test the WASI library:
 wasi/test.sh 
 ```
 
+To build and test the `kotlinx-datetime-wasm` library:
+
+```bash
+kotlinx-datetime-wasm/test.sh
+```
+
 To run the WASI sample:
 ```bash
 samples/wasi-sample/run.sh
