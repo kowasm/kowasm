@@ -6,7 +6,7 @@ import org.kowasm.wasi.internal.clockTimeGet
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-// Manual conversion from https://github.com/WebAssembly/wasi-clocks/tree/64b775a99a9311cc633a83d611c11ed3d3abc634
+// Manual (for now) conversion from *.wit.md files available at https://github.com/WebAssembly/wasi-clocks/tree/64b775a99a9311cc633a83d611c11ed3d3abc634
 
 /** A timestamp in nanoseconds. **/
 typealias Instant = Long
