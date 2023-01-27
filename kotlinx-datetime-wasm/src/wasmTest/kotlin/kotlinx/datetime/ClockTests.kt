@@ -16,13 +16,14 @@
 
 package kotlinx.datetime
 
-import kotlin.test.Test
+import kotlin.test.*
 
 class ClockTests {
 
     @Test
     fun testNow() {
-        println(Clock.System.now())
+        val instant = Clock.System.now();
+        assertTrue(instant.epochSeconds > (2023 - 1970) * 365 * 24 * 60 * 60)
     }
 
 }

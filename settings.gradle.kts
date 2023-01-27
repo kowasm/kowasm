@@ -8,4 +8,5 @@ pluginManagement {
 rootProject.name = "kowasm"
 
 include("wasi")
+include("kotlinx-datetime-wasm")
 include("samples:wasi-sample")

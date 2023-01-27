@@ -2,18 +2,22 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
     kotlin("multiplatform")
+    id("maven-publish")
 }
 
 kotlin {
     wasm {
-        binaries.executable()
         nodejs()
     }
     sourceSets {
         val wasmMain by getting {
             dependencies {
                 implementation(project(":wasi"))
-                implementation(project(":kotlinx-datetime-wasm"))
+            }
+        }
+        val wasmTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
             }
         }
     }
@@ -22,6 +26,11 @@ kotlin {
         kotlinOptions {
             freeCompilerArgs += "-opt-in=kotlin.wasm.unsafe.UnsafeWasmMemoryApi"
         }
+    }
+
+    // Disabled for now since require custom WASI module configuration, run wasi/test.sh instead.
+    tasks.named("wasmNodeTest") {
+        enabled = false
     }
 
 }
