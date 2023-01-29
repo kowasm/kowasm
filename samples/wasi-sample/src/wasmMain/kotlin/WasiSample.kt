@@ -16,11 +16,24 @@
 
 import kotlinx.datetime.Clock
 import org.kowasm.wasi.*
+import kotlin.random.Random
 
 fun main() {
     Wasi.println("Hello, world!")
+
     Wasi.println(Clock.System.now().toString())
+
     Wasi.createDirectory("testDir")
     Wasi.createFile("testFile")
     Wasi.listDirectoryEntries(".").forEach(Wasi::println)
+
+    val pseudoGenerator = Random.wasiPseudoGenerator()
+    Wasi.println("Pseudo random number generator")
+    Wasi.println(pseudoGenerator.nextLong().toString())
+    Wasi.println(pseudoGenerator.nextLong().toString())
+
+    val secureGenerator = Random.wasiSecureGenerator()
+    Wasi.println("Secure random number generator")
+    Wasi.println(secureGenerator.nextLong().toString())
+    Wasi.println(secureGenerator.nextLong().toString())
 }
