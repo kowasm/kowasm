@@ -2,7 +2,7 @@ package org.kowasm.wasi
 
 import kotlin.test.*
 
-class WasiClockTests {
+class WasiClocksTests {
 
     @Test
     fun testWallClockNow() {
