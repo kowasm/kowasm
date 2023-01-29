@@ -16,14 +16,14 @@
 
 package org.kowasm.wasi
 
-import kotlin.random.Random
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class WasiRandomTests {
 
     @Test
-    fun testPseudoGenerator() {
-        val generator = Random.wasiPseudoGenerator()
+    fun testSeededGenerator() {
+        val generator = SeededWasiRandom()
         assertTrue(generator.nextFloat() != generator.nextFloat())
         assertTrue(generator.nextDouble() != generator.nextDouble())
         assertTrue(generator.nextInt() != generator.nextInt())
@@ -32,7 +32,7 @@ class WasiRandomTests {
 
     @Test
     fun testSecureGenerator() {
-        val generator = Random.wasiSecureGenerator()
+        val generator = SecureWasiRandom()
         assertTrue(generator.nextFloat() != generator.nextFloat())
         assertTrue(generator.nextDouble() != generator.nextDouble())
         assertTrue(generator.nextInt() != generator.nextInt())

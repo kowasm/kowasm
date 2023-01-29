@@ -27,12 +27,12 @@ fun main() {
     Wasi.createFile("testFile")
     Wasi.listDirectoryEntries(".").forEach(Wasi::println)
 
-    val pseudoGenerator = Random.wasiPseudoGenerator()
+    val pseudoGenerator = SeededWasiRandom()
     Wasi.println("Pseudo random number generator")
     Wasi.println(pseudoGenerator.nextLong().toString())
     Wasi.println(pseudoGenerator.nextLong().toString())
 
-    val secureGenerator = Random.wasiSecureGenerator()
+    val secureGenerator = SecureWasiRandom()
     Wasi.println("Secure random number generator")
     Wasi.println(secureGenerator.nextLong().toString())
     Wasi.println(secureGenerator.nextLong().toString())

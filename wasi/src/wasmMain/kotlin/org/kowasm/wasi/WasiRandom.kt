@@ -21,15 +21,14 @@ import org.kowasm.wasi.internal.randomGetLong
 import kotlin.random.Random
 
 /**
- * Provide a pseudo random generator seeded by a [Long] value retrieved via WASI.
+ * Provide a pseudo random generator seeded by a `Long` value generated via WASI.
  */
-fun Random.wasiPseudoGenerator() =
-    Random(randomGetLong())
+fun SeededWasiRandom() = Random(randomGetLong())
 
 /**
- * Provide a secure random generator.
+ * Provide a secure random generator implemented via WASI.
  */
-fun Random.wasiSecureGenerator() = object : Random() {
+class SecureWasiRandom : Random() {
 
     override fun nextBits(bitCount: Int) =
         randomGetInt().takeUpperBits(bitCount)
@@ -39,8 +38,8 @@ fun Random.wasiSecureGenerator() = object : Random() {
 
     override fun nextLong() =
         randomGetLong()
+
+    private fun Int.takeUpperBits(bitCount: Int): Int =
+        this.ushr(32 - bitCount) and (-bitCount).shr(31)
+
 }
-
-private fun Int.takeUpperBits(bitCount: Int): Int =
-    this.ushr(32 - bitCount) and (-bitCount).shr(31)
-
