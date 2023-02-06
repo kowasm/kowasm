@@ -148,10 +148,11 @@ data class Properties(val lego: Boolean, val marvelSuperhero: Boolean, val super
  * }
  * ```
  */
-sealed interface Filter
-sealed class All : Filter
-sealed class None : Filter
-sealed class Some(list: List<String>): Filter
+sealed interface Filter {
+    object All : Filter
+    object None : Filter
+    class Some(val value: List<String>): Filter
+}
 
 /**
  * An enum statement defines a new type which is semantically equivalent to a variant where none of the cases have a
