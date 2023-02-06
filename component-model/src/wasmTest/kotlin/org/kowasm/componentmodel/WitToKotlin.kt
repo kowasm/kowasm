@@ -210,8 +210,9 @@ val float64 : Double = 0.0
 
 /**
  * 'char'
+ * WIT char is a Unicode Scalar Value, so we need 32-bit Int instead of 16-bit Char
  */
-val char: Char = 'a'
+val char: Int = 'a'.code
 
 /**
  * 'bool'
@@ -220,6 +221,8 @@ val bool: Boolean = false
 
 /**
  * 'string'
+ *
+ * Will require encoding conversion since WIT is using UTF-8 strings and Kotlin UTF-18
  */
 val string: String = ""
 
@@ -230,7 +233,11 @@ val tuple: Pair<Int, String> = Pair(0, "")
 
 /**
  * list
+ *
+ * For bytes, Kotlin array seems like a better fit (efficiency).
+ * For other use cases, let's maybe use Kotlin list for now.
  */
+val listOfBytes : Array<Byte> = arrayOf()
 val list: List<String> = listOf()
 
 /**
