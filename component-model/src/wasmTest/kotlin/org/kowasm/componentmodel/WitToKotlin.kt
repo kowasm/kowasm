@@ -183,8 +183,12 @@ enum class Color { RED, GREEN, BLUE, YELLOW, OTHER }
  * }
  * ```
  *
- * TODO How WIT union should translate to Kotlin?
+ * TODO `union` looks a bit weird in Kotlin, to be validated with the Component Model community group.
  */
+sealed interface Configuration {
+    class Case1(val value: String): Configuration
+    class Case2(val value: List<String>): Configuration
+}
 
 /**
  * 'u8' | 'u16' | 'u32' | 'u64'
