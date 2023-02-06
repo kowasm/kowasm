@@ -241,7 +241,7 @@ val tuple: Pair<Int, String> = Pair(0, "")
  * For bytes, Kotlin array seems like a better fit (efficiency).
  * For other use cases, let's maybe use Kotlin list for now.
  */
-val listOfBytes : Array<Byte> = arrayOf()
+val listOfBytes : ByteArray = byteArrayOf()
 val list: List<String> = listOf()
 
 /**
