@@ -47,7 +47,6 @@ interface FooWithReturnValue {
  * ```
  *
  * TODO Confirm this pattern requires the creation of a dedicated data class since return values are named
- * TODO How Kotlin properties mutability should be inferred from WIT?
  */
 data class MultipleReturnValue(val a: UInt, val b: Float)
 interface FooWithMultipleReturnValue {
@@ -98,7 +97,7 @@ typealias myComplicatedTuple = Triple<UInt, Int, String>
  * Instances of a record always have their fields defined.
  *
  * ```
- * record pair {
+ * record point {
  *     x: u32,
  *     y: u32,
  * }
@@ -110,12 +109,9 @@ typealias myComplicatedTuple = Triple<UInt, Int, String>
  * }
  * ```
  *
- * TODO How Kotlin properties mutability should be inferred from WIT?
  */
-data class ReadOnlyPair(val x: UInt, val y: UInt)
-data class MutablePair(var x: UInt, var y: UInt)
-data class ReadOnlyPerson(val name: String, val age: UInt, val hasLegoActionFigure: Boolean)
-data class MutablePerson(var name: String, var age: UInt, var hasLegoActionFigure: Boolean)
+data class Point(val x: UInt, val y: UInt)
+data class Person(val name: String, val age: UInt, val hasLegoActionFigure: Boolean)
 
 /**
  * A flags represents a bitset structure with a name for each bit. The flags type is represented as a bit flags
@@ -130,11 +126,9 @@ data class MutablePerson(var name: String, var age: UInt, var hasLegoActionFigur
  * ```
  *
  * TODO Fix typo on supervillain in WIT.md
- * TODO How Kotlin properties mutability should be inferred from WIT?
  * TODO Is it idiomatic to translate WIT flags as data class of Boolean properties?
  */
-data class ReadOnlyProperties(val lego: Boolean, val marvelSuperhero: Boolean, val supervillain: Boolean)
-data class MutableProperties(var lego: Boolean, var marvelSuperhero: Boolean, var supervillain: Boolean)
+data class Properties(val lego: Boolean, val marvelSuperhero: Boolean, val supervillain: Boolean)
 
 /**
  * A variant statement defines a new type where instances of the type match exactly one of the variants listed for the type.
