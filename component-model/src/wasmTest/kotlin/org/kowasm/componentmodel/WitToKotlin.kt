@@ -237,7 +237,9 @@ val bool: Boolean = false
 /**
  * 'string'
  *
- * Will require encoding conversion since WIT is using UTF-8 strings and Kotlin UTF-18
+ * May require to define `string-encoding=latin1+utf16`, see
+ * https://github.com/WebAssembly/component-model/blob/main/design/mvp/Explainer.md#canonical-definitions for more
+ * details.
  */
 val string: String = ""
 
