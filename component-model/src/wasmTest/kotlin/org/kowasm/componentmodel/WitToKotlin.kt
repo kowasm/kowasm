@@ -16,41 +16,52 @@ package org.kowasm.componentmodel
  * }
  * ```
  */
-interface Foo {
-    fun a1()
-    fun a2(x: UInt)
-    fun a3(y:ULong, z: Float)
+object Foo {
+    fun a1() {
+        TODO()
+    }
+    fun a2(x: UInt) {
+        TODO()
+    }
+    fun a3(y:ULong, z: Float) {
+        TODO()
+    }
 }
 
 /**
  * Functions can return at most one unnamed type:
  *
  * ```
- * interface foo {
+ * interface bar {
  *   a1: func() -> u32
  *   a2: func() -> string
  * }
  * ```
  */
-interface FooWithReturnValue {
-    fun a1(): UInt
-    fun a2(): String
+object Bar {
+    fun a1(): UInt {
+        TODO()
+    }
+    fun a2(): String {
+        TODO()
+    }
 }
 
 /**
  * And functions can also return multiple types by naming them:
  *
  * ```
- * interface foo {
+ * interface baz {
  *   a: func() -> (a: u32, b: float32)
  * }
  * ```
  *
- * TODO Confirm this pattern requires the creation of a dedicated data class since return values are named
  */
-data class MultipleReturnValue(val a: UInt, val b: Float)
-interface FooWithMultipleReturnValue {
-    fun a(): MultipleReturnValue
+data class Wrapper(val a: UInt, val b: Float)
+object Baz {
+    fun a(): Wrapper {
+        TODO()
+    }
 }
 
 /**
