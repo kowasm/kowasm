@@ -212,7 +212,7 @@ sealed interface Configuration {
 val u8: UByte = 0u
 val u16: UShort = 0u
 val u32: UInt = 0u
-val u64: UInt = 0u
+val u64: ULong = 0u
 
 /**
  * 's8' | 's16' | 's32' | 's64'
