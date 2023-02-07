@@ -15,6 +15,8 @@ package org.kowasm.componentmodel
  *   a3: func(y: u64, z: float32)
  * }
  * ```
+ *
+ * TODO To be refined with imports/exports
  */
 object Foo {
     fun a1() {
@@ -37,6 +39,8 @@ object Foo {
  *   a2: func() -> string
  * }
  * ```
+ *
+ * TODO To be refined with imports/exports
  */
 object Bar {
     fun a1(): UInt {
@@ -56,6 +60,7 @@ object Bar {
  * }
  * ```
  *
+ * TODO To be refined with imports/exports
  */
 data class Wrapper(val a: UInt, val b: Float)
 object Baz {
