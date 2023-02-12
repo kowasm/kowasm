@@ -264,10 +264,10 @@ internal fun pathOpen(
     }
 }
 
-fun fdReadDir(fd: Fd): List<String> {
+internal fun fdReadDir(fd: Fd): List<Pair<DirectoryEntry, String>> {
     val bufferSize = 1024
     val byteArrayBuf = ByteArray(bufferSize)
-    val names = mutableListOf<String>()
+    val entries = mutableListOf<Pair<DirectoryEntry, String>>()
     var cookie: DirectoryCookie = 0
     withScopedMemoryAllocator { allocator ->
         val ptr = allocator.writeToLinearMemory(byteArrayBuf);
@@ -288,7 +288,8 @@ fun fdReadDir(fd: Fd): List<String> {
                 cookie = dirent.next
                 offset += 24;
                 if (offset + dirent.nameLength <  size) {
-                    names.add(loadString(ptr + offset, dirent.nameLength))
+                    val name = loadString(ptr + offset, dirent.nameLength)
+                    entries.add(Pair(dirent, name))
                     offset += dirent.nameLength;
                 }
                 else {
@@ -297,7 +298,7 @@ fun fdReadDir(fd: Fd): List<String> {
             }
         } while (size == bufferSize)
     }
-    return names
+    return entries
 }
 
 private fun loadDirent(ptr: Pointer): DirectoryEntry {

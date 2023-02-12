@@ -25,7 +25,7 @@ fun main() {
 
     Wasi.createDirectory("testDir")
     Wasi.createFile("testFile")
-    Wasi.listDirectoryEntries(".").forEach(Wasi::println)
+    Wasi.listDirectoryEntries(".").forEach { Wasi.println(it.toString()) }
 
     val pseudoGenerator = SeededWasiRandom()
     Wasi.println("Pseudo random number generator")
