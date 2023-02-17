@@ -22,21 +22,21 @@ interface WasiPrint {
     /**
      * Prints the given [message] to the standard output.
      */
-    fun print(message: String)
+    fun print(message: Any)
 
     /**
      * Prints the given [message] and the line separator to the standard output.
      */
-    fun println(message: String)
+    fun println(message: Any)
 }
 
 object DefaultWasiPrint: WasiPrint {
 
-    override fun print(message: String) {
-        fdWrite(StandardDescriptor.STDOUT, listOf(message.encodeToByteArray()))
+    override fun print(message: Any) {
+        fdWrite(StandardDescriptor.STDOUT, listOf(message.toString().encodeToByteArray()))
     }
 
-    override fun println(message: String) {
-        print(message + "\n")
+    override fun println(message: Any) {
+        print(message.toString() + "\n")
     }
 }

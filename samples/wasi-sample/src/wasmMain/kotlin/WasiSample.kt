@@ -29,11 +29,11 @@ fun main() {
 
     val pseudoGenerator = SeededWasiRandom()
     Wasi.println("Pseudo random number generator")
-    Wasi.println(pseudoGenerator.nextLong().toString())
-    Wasi.println(pseudoGenerator.nextLong().toString())
+    Wasi.println(pseudoGenerator.nextLong())
+    Wasi.println(pseudoGenerator.nextLong())
 
     val secureGenerator = SecureWasiRandom()
     Wasi.println("Secure random number generator")
-    Wasi.println(secureGenerator.nextLong().toString())
-    Wasi.println(secureGenerator.nextLong().toString())
+    Wasi.println(secureGenerator.nextLong())
+    Wasi.println(secureGenerator.nextLong())
 }
