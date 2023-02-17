@@ -144,7 +144,11 @@ data class Person(val name: String, val age: UInt, val hasLegoActionFigure: Bool
  * TODO Fix typo on supervillain in WIT.md
  * TODO Is it idiomatic to translate WIT flags as data class of Boolean properties?
  */
-data class Properties(val lego: Boolean, val marvelSuperhero: Boolean, val supervillain: Boolean)
+data class Properties(
+    val lego: Boolean = false,
+    val marvelSuperhero: Boolean = false,
+    val supervillain: Boolean = false
+)
 
 /**
  * A variant statement defines a new type where instances of the type match exactly one of the variants listed for the type.
