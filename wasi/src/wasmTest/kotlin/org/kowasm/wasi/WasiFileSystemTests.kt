@@ -22,16 +22,16 @@ class WasiFileSystemTests {
 
     @Test
     fun testCreateDirectory() {
-        Wasi.createDirectory("testDir")
+        Wasi.createDirectoryAt(StandardDescriptor.FIRST_PREOPEN,"testDir")
     }
 
     @Test
     fun testCreateFile() {
-        Wasi.createFile("testFile")
+        Wasi.createDirectoryAt(StandardDescriptor.FIRST_PREOPEN,"testFile")
     }
 
     @Test
     fun testListDirectoryEntries() {
-        Wasi.listDirectoryEntries(".").forEach(::println)
+        Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach(::println)
     }
 }

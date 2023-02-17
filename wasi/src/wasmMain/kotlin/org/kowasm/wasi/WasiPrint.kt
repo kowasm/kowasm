@@ -16,7 +16,6 @@
 
 package org.kowasm.wasi
 
-import org.kowasm.wasi.internal.StandardFileDescriptor
 import org.kowasm.wasi.internal.fdWrite
 
 interface WasiPrint {
@@ -34,7 +33,7 @@ interface WasiPrint {
 object DefaultWasiPrint: WasiPrint {
 
     override fun print(message: String) {
-        fdWrite(StandardFileDescriptor.STDOUT.ordinal, listOf(message.encodeToByteArray()))
+        fdWrite(StandardDescriptor.STDOUT, listOf(message.encodeToByteArray()))
     }
 
     override fun println(message: String) {

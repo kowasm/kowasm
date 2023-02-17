@@ -22,20 +22,6 @@ import kotlin.wasm.WasmImport
 
 internal typealias Fd = Int
 
-/**
- * Standard file descriptors.
- */
-internal enum class StandardFileDescriptor {
-    /** Standard input file descriptor. */
-    STDIN,
-    /** Standard output file descriptor. */
-    STDOUT,
-    /** Standard error file descriptor. */
-    STDERR,
-    /** First preopen file descriptor. */
-    FIRST_PREOPEN,
-}
-
 internal typealias LookupFlags = Int
 
 internal object LookupFlag {

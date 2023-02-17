@@ -16,11 +16,10 @@
 
 package org.kowasm.wasi
 
-import org.kowasm.wasi.DescriptorType
+import org.kowasm.wasi.DefaultWasiFilesystem.toLookupFlags
 import org.kowasm.wasi.internal.*
 import org.kowasm.wasi.internal.OFlag
 import org.kowasm.wasi.internal.Right
-import org.kowasm.wasi.internal.StandardFileDescriptor
 import org.kowasm.wasi.internal.pathCreateDirectory
 import org.kowasm.wasi.internal.pathOpen
 
@@ -28,6 +27,58 @@ import org.kowasm.wasi.internal.pathOpen
  * Filesystem object serial number that is unique within its file system.
  */
 typealias INode = ULong
+
+/**
+ * A descriptor is a reference to a filesystem object, which may be a file,
+ * directory, named pipe, special file, or other object on which filesystem
+ * calls may be made.
+ */
+typealias Descriptor = Int
+
+/**
+ * Open flags used by `openAt`.
+ */
+data class OpenFlags(
+
+    /** Create file if it does not exist. */
+    val create: Boolean = false,
+
+    /** Fail if not a directory */
+    val directory: Boolean = false,
+
+    /** Fail if file already exists. */
+    val exclude: Boolean = false,
+
+    /** Truncate file to size 0. */
+    val truncate: Boolean = false
+)
+
+/**
+ * Flags determining the method of how paths are resolved.
+ */
+data class PathFlags(
+
+    /** As long as the resolved path corresponds to a symbolic link, it is expanded. */
+    val symlinkFollow: Boolean
+)
+
+/**
+ * Standard descriptors.
+ */
+object StandardDescriptor {
+
+    /** Standard input file descriptor. */
+    const val STDIN: Descriptor = 0
+
+    /** Standard output file descriptor. */
+    const val STDOUT: Descriptor = 1
+
+    /** Standard error file descriptor. */
+    const val STDERR: Descriptor = 2
+
+    /** First preopen file descriptor. */
+    const val FIRST_PREOPEN: Descriptor = 3
+}
 
 /** The type of a filesystem object referenced by a descriptor.
  *
@@ -67,13 +118,89 @@ enum class DescriptorType {
     /**
      * The descriptor refers to a regular file inode.
      */
-    REGULAR_FILE,
+    REGULAR_FILE
+}
+
+/**
+ * Descriptor flags.
+ *
+ * Note: This was called `fdflags` in earlier versions of WASI.
+ */
+data class DescriptorFlags(
+    /** Read mode: Data can be read. */
+    val read: Boolean = false,
+
+    /** Write mode: Data can be written to. */
+    val write: Boolean = false,
 
     /**
-     * The descriptor refers to a socket.
+     * Requests non-blocking operation.
+     *
+     * When this flag is enabled, functions may return immediately with an
+     * `error-code::would-block` error code in situations where they would otherwise
+     * block. However, this non-blocking behavior is not required.
+     * Implementations are permitted to ignore this flag and block.
      */
-    SOCKET
-}
+     val nonBlocking: Boolean = false,
+
+     /**
+      * Request that writes be performed according to synchronized I/O file
+      * integrity completion. The data stored in the file and the file's
+      * metadata are synchronized.
+      *
+      * The precise semantics of this operation have not yet been defined for
+      * WASI. At this time, it should be interpreted as a request, and not a
+      * requirement.
+      */
+    val fileIntegritySync: Boolean = false,
+
+    /**
+     * Request that writes be performed according to synchronized I/O data
+     * integrity completion. Only the data stored in the file is
+     * synchronized.
+     *
+     * The precise semantics of this operation have not yet been defined for
+     * WASI. At this time, it should be interpreted as a request, and not a
+     * requirement.
+     */
+    val dataIntegritySync: Boolean = false,
+
+    /**
+     * Requests that reads be performed at the same level of integrety
+     * requested for writes.
+     *
+     * The precise semantics of this operation have not yet been defined for
+     * WASI. At this time, it should be interpreted as a request, and not a
+     * requirement.
+     */
+    val requestedWriteSync: Boolean = false,
+
+    /**
+     * Mutating directories mode: Directory contents may be mutated.
+     *
+     * When this flag is unset on a descriptor, operations using the
+     * descriptor which would create, rename, delete, modify the data or
+     * metadata of filesystem objects, or obtain another handle which
+     * would permit any of those, shall fail with `error-code::read-only` if
+     * they would otherwise succeed.
+     *
+     * This may only be set on directories.
+     */
+    val mutateDirectory: Boolean = false
+)
+
+/** Permissions mode used by `openAt`, `changeFilePermissionsAt`, and similar. **/
+data class Modes(
+
+    /** True if the resource is considered readable by the containing filesystem. */
+    val readable: Boolean = false,
+
+    /**  True if the resource is considered writeable by the containing filesystem. */
+    val writeable: Boolean = false,
+
+    /** True if the resource is considered executable by the containing filesystem. This does not apply to directories. */
+    val executable: Boolean = false
+)
 
 /**
  * A directory entry.
@@ -101,38 +228,148 @@ data class DirectoryEntry(
     val name: String
 )
 
+/**
+ * Error codes returned by functions.
+ * Not all of these error codes are returned by the functions provided by this
+ * API; some are used in higher-level library layers, and others are provided
+ * merely for alignment with POSIX.
+ */
+enum class ErrorCode {
+    /** Permission denied. */
+    ACCESS,
+    /** Resource unavailable, or operation would block. */
+    WOULD_BLOCK,
+    /** Connection already in progress. */
+    ALREADY,
+    /**  Bad descriptor. */
+    BAD_DESCRIPTOR,
+    /** Device or resource busy. */
+    BUSY,
+    /** Resource deadlock would occur. */
+    DEADLOCK,
+    /** Storage quota exceeded. */
+    QUOTA,
+    /** File exists. */
+    EXIST,
+    /** File too large. */
+    FILE_TOO_LARGE,
+    /** Illegal byte sequence. */
+    ILLEGAL_BYTE_SEQUENCE,
+    /** Operation in progress. */
+    IN_PROGRESS,
+    /** Interrupted function. */
+    INTERRUPTED,
+    /** Invalid argument. */
+    INVALID,
+    /** I/O error. */
+    IO,
+    /** Is a directory. */
+    IS_DIRECTORY,
+    /** Too many levels of symbolic links. */
+    LOOP,
+    /** Too many links. */
+    TOO_MANY_LINKS,
+    /** Message too large. */
+    MESSAGE_SIZE,
+    /** Filename too long. */
+    NAME_TOO_LONG,
+    /** No such device. */
+    NO_DEVICE,
+    /** No such file or directory. */
+    NO_ENTRY,
+    /** No locks available. */
+    NO_LOCK,
+    /** Not enough space. */
+    INSUFFICIENT_MEMORY,
+    /** No space left on device. */
+    INSUFFICIENT_SPACE,
+    /** Not a directory or a symbolic link to a directory. */
+    NOT_DIRECTORY,
+    /** Directory not empty. */
+    NOT_EMPTY,
+    /** State not recoverable. */
+    NOT_RECOVERABLE,
+    /** Not supported */
+    UNSUPPORTED,
+    /** Inappropriate I/O control operation. */
+    NO_TTY,
+    /** No such device or address. */
+    NO_SUCH_DEVICE,
+    /** Value too large to be stored in data type. */
+    OVERFLOW,
+    /** Operation not permitted. */
+    NOT_PERMITTED,
+    /** Broken pipe. */
+    PIPE,
+    /** Read-only file system. */
+    READ_ONLY,
+    /** Invalid seek. */
+    INVALID_SEEK,
+    /** Text file busy. */
+    TEXT_FILE_BUSY,
+    /** Cross-device link. */
+    CROSS_DEVICE,
+}
+
+class FilesystemException(val code: ErrorCode) : Exception()
+
 interface WasiFileSystem {
 
     /**
-     * Create a new directory with the given [path] from the root of the first preopen path of the WASI sandbox.
+     * Create a directory.
+     * @param descriptor Reference to the parent directory where the new one should be created.
+     * @param path The relative path at which to create the directory.
      */
-    fun createDirectory(path: String)
+    fun createDirectoryAt(descriptor: Descriptor, path: String)
 
     /**
-     * Create a new file with the given [path] from the root of the first preopen path of the WASI sandbox.
+     * Open a file or directory.
+     *
+     * The returned descriptor is not guaranteed to be the lowest-numbered
+     * descriptor not currently open/ it is randomized to prevent applications
+     * from depending on making assumptions about indexes, since this is
+     * error-prone in multi-threaded contexts. The returned descriptor is
+     * guaranteed to be less than 2**31.
+     *
+     * If `flags` contains [DescriptorFlags.mutateDirectory], and the base
+     * descriptor doesn't have [DescriptorFlags.mutateDirectory] set,
+     * `openAt` fails with [ErrorCode.READ_ONLY].
+     *
+     * If `flags` contains [DescriptorFlags.write], or `openFlags` contains [OpenFlags.truncate]
+     * or [OpenFlags.create], and the base descriptor doesn't have
+     * [DescriptorFlags.mutateDirectory] set, `openAt` fails with [ErrorCode.READ_ONLY].
+     *
+     * Note: This is similar to `openat` in POSIX.
+     *
+     * @param descriptor Reference to the parent directory where the new one should be created.
+     * @param path The relative path of the object to open.
+     * @param openFlags The method by which to open the file.
+     * @param flags Flags to use for the resulting descriptor.
+     * @param modes Permissions to use when creating a new file.
+     * @param pathFlags Flags determining the method of how the path is resolved.
      */
-    fun createFile(path: String)
+    fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags,
+               flags: DescriptorFlags, modes: Modes, pathFlags: PathFlags = PathFlags(false))
 
     /**
-     * Return the list of the directory entry (file and directory) names contained in the directory with the given
-     * [path] from the root of the first preopen path of the WASI sandbox.
+     * Read directory entries from a directory
      */
-    fun listDirectoryEntries(path: String): List<DirectoryEntry>
+    fun readDirectory(descriptor: Descriptor, path: String = ""): List<DirectoryEntry>
 
 }
 
 object DefaultWasiFilesystem: WasiFileSystem {
 
-    override fun createDirectory(path: String) {
-        pathCreateDirectory(StandardFileDescriptor.FIRST_PREOPEN.ordinal, path)
+    override fun createDirectoryAt(descriptor: Descriptor, path: String) {
+        pathCreateDirectory(descriptor, path)
     }
 
-    override fun createFile(path: String) {
-        pathOpen(StandardFileDescriptor.FIRST_PREOPEN.ordinal, 0, path, OFlag.CREAT, 0, 0, 0)
+    override fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags, flags: DescriptorFlags, modes: Modes, pathFlags: PathFlags) {
+        pathOpen(descriptor, pathFlags.toLookupFlags(), path, openFlags.toOFlags(), 0, 0, 0)
     }
 
-    override fun listDirectoryEntries(path: String): List<DirectoryEntry> {
-        val fd = pathOpen(fd = StandardFileDescriptor.FIRST_PREOPEN.ordinal, dirflags = 0, path = path,
+    override fun readDirectory(descriptor: Descriptor, path: String): List<DirectoryEntry> {
+        val fd = pathOpen(fd = descriptor, dirflags = 0, path = path,
             oflags = OFlag.DIRECTORY,
             fsRightsBase = Right.FD_READDIR,
             fsRightsInheriting = 0,
@@ -150,5 +387,18 @@ object DefaultWasiFilesystem: WasiFileSystem {
         Filetype.REGULAR_FILE -> DescriptorType.REGULAR_FILE
         Filetype.SYMBOLIC_LINK -> DescriptorType.SYMBOLIC_LINK
         else -> DescriptorType.UNKNOWN
+    }
+
+    private fun PathFlags.toLookupFlags(): LookupFlags {
+        return if (this.symlinkFollow) LookupFlag.SYMLINK_FOLLOW else 0
+    }
+
+    private fun OpenFlags.toOFlags() : OFlags {
+        var flags = 0
+        if (this.create) flags += OFlag.CREAT
+        if (this.directory) flags += OFlag.DIRECTORY
+        if (this.exclude) flags += OFlag.EXCL
+        if (this.truncate) flags += OFlag.TRUNC
+        return flags.toShort()
     }
 }

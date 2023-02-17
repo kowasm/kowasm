@@ -23,9 +23,9 @@ fun main() {
 
     Wasi.println(Clock.System.now().toString())
 
-    Wasi.createDirectory("testDir")
-    Wasi.createFile("testFile")
-    Wasi.listDirectoryEntries(".").forEach { Wasi.println(it.toString()) }
+    Wasi.createDirectoryAt(StandardDescriptor.FIRST_PREOPEN,"testDir")
+    Wasi.openAt(StandardDescriptor.FIRST_PREOPEN,"testFile", OpenFlags(create = true), DescriptorFlags(write = true), Modes(writeable = true))
+    Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach { Wasi.println(it.toString()) }
 
     val pseudoGenerator = SeededWasiRandom()
     Wasi.println("Pseudo random number generator")
