@@ -349,7 +349,7 @@ interface WasiFileSystem {
      * @param pathFlags Flags determining the method of how the path is resolved.
      */
     fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags,
-               flags: DescriptorFlags, modes: Modes, pathFlags: PathFlags = PathFlags(false))
+               flags: DescriptorFlags, modes: Modes, pathFlags: PathFlags = PathFlags(false)): Descriptor
 
     /**
      * Read directory entries from a directory
@@ -364,8 +364,8 @@ object DefaultWasiFilesystem: WasiFileSystem {
         pathCreateDirectory(descriptor, path)
     }
 
-    override fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags, flags: DescriptorFlags, modes: Modes, pathFlags: PathFlags) {
-        pathOpen(descriptor, pathFlags.toLookupFlags(), path, openFlags.toOFlags(), 0, 0, 0)
+    override fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags, flags: DescriptorFlags, modes: Modes, pathFlags: PathFlags): Descriptor {
+        return pathOpen(descriptor, pathFlags.toLookupFlags(), path, openFlags.toOFlags(), 0, 0, 0)
     }
 
     override fun readDirectory(descriptor: Descriptor, path: String): List<DirectoryEntry> {
