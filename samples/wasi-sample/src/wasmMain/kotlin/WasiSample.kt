@@ -74,4 +74,5 @@ private fun cli() {
     Wasi.out.println("\n== CLI ==")
 
     Wasi.args.forEach { Wasi.out.println(it) }
+    Wasi.envVars.forEach { Wasi.out.println(it) }
 }
