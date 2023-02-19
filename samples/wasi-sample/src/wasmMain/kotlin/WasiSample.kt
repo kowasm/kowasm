@@ -16,24 +16,24 @@
 
 import kotlinx.datetime.Clock
 import org.kowasm.wasi.*
-import kotlin.random.Random
 
 fun main() {
-    Wasi.println("Hello, world!")
+    Wasi.out.println("Hello, world!")
+    Wasi.err.println("Error")
 
-    Wasi.println(Clock.System.now().toString())
+    Wasi.out.println(Clock.System.now().toString())
 
     Wasi.createDirectoryAt(StandardDescriptor.FIRST_PREOPEN,"testDir")
-    Wasi.openAt(StandardDescriptor.FIRST_PREOPEN,"testFile", OpenFlags(create = true), DescriptorFlags(write = true), Modes(writeable = true))
-    Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach { Wasi.println(it.toString()) }
+    Wasi.openAt(StandardDescriptor.FIRST_PREOPEN,"testFile", OpenFlags(create = true), DescriptorFlags(write = true))
+    Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach { Wasi.out.println(it) }
 
     val pseudoGenerator = SeededWasiRandom()
-    Wasi.println("Pseudo random number generator")
-    Wasi.println(pseudoGenerator.nextLong())
-    Wasi.println(pseudoGenerator.nextLong())
+    Wasi.out.println("Pseudo random number generator")
+    Wasi.out.println(pseudoGenerator.nextLong())
+    Wasi.out.println(pseudoGenerator.nextLong())
 
     val secureGenerator = SecureWasiRandom()
-    Wasi.println("Secure random number generator")
-    Wasi.println(secureGenerator.nextLong())
-    Wasi.println(secureGenerator.nextLong())
+    Wasi.out.println("Secure random number generator")
+    Wasi.out.println(secureGenerator.nextLong())
+    Wasi.out.println(secureGenerator.nextLong())
 }

@@ -16,12 +16,16 @@
 
 package org.kowasm.wasi
 
-import org.kowasm.wasi.DefaultWasiFilesystem.toLookupFlags
 import org.kowasm.wasi.internal.*
 import org.kowasm.wasi.internal.OFlag
 import org.kowasm.wasi.internal.Right
 import org.kowasm.wasi.internal.pathCreateDirectory
 import org.kowasm.wasi.internal.pathOpen
+
+/**
+ * File size or length of a region within a file.
+ */
+typealias Filesize = ULong
 
 /**
  * Filesystem object serial number that is unique within its file system.
@@ -186,7 +190,7 @@ data class DescriptorFlags(
      *
      * This may only be set on directories.
      */
-    val mutateDirectory: Boolean = false
+    val mutateDirectory: Boolean = true
 )
 
 /** Permissions mode used by `openAt`, `changeFilePermissionsAt`, and similar. **/
@@ -341,20 +345,39 @@ interface WasiFileSystem {
      *
      * Note: This is similar to `openat` in POSIX.
      *
+     * TODO Support modes
+     *
      * @param descriptor Reference to the parent directory where the new one should be created.
      * @param path The relative path of the object to open.
      * @param openFlags The method by which to open the file.
      * @param flags Flags to use for the resulting descriptor.
-     * @param modes Permissions to use when creating a new file.
      * @param pathFlags Flags determining the method of how the path is resolved.
      */
     fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags,
-               flags: DescriptorFlags, modes: Modes, pathFlags: PathFlags = PathFlags(false)): Descriptor
+               flags: DescriptorFlags, pathFlags: PathFlags = PathFlags(true)): Descriptor
 
     /**
      * Read directory entries from a directory
      */
     fun readDirectory(descriptor: Descriptor, path: String = ""): List<DirectoryEntry>
+
+    /**
+     * Write to a descriptor, without using and updating the descriptor's offset.
+     *
+     * It is valid to write past the end of a file; the file is extended to the
+     * extent of the write, with bytes between the previous end and the start of
+     * the write set to zero.
+     *
+     * Note: This is similar to `pwrite` in POSIX.
+     *
+     * TODO Support offset
+     *
+     * @param descriptor The descriptor to write to.
+     * @param buffer The data to write.
+     */
+    fun write(descriptor: Descriptor, buffer: ByteArray) {
+        fdWrite(descriptor, listOf(buffer))
+    }
 
 }
 
@@ -364,8 +387,9 @@ object DefaultWasiFilesystem: WasiFileSystem {
         pathCreateDirectory(descriptor, path)
     }
 
-    override fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags, flags: DescriptorFlags, modes: Modes, pathFlags: PathFlags): Descriptor {
-        return pathOpen(descriptor, pathFlags.toLookupFlags(), path, openFlags.toOFlags(), 0, 0, 0)
+    override fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags, flags: DescriptorFlags, pathFlags: PathFlags): Descriptor {
+        return pathOpen(fd = descriptor, dirflags = pathFlags.toLookupFlags(), path = path,
+            oflags = openFlags.toOFlags(), fsRightsBase = flags.toRights(), fsRightsInheriting = 0, fdflags = flags.toFdflags())
     }
 
     override fun readDirectory(descriptor: Descriptor, path: String): List<DirectoryEntry> {
@@ -394,11 +418,57 @@ object DefaultWasiFilesystem: WasiFileSystem {
     }
 
     private fun OpenFlags.toOFlags() : OFlags {
-        var flags = 0
-        if (this.create) flags += OFlag.CREAT
-        if (this.directory) flags += OFlag.DIRECTORY
-        if (this.exclude) flags += OFlag.EXCL
-        if (this.truncate) flags += OFlag.TRUNC
-        return flags.toShort()
+        var flags: OFlags = 0
+        if (this.create) flags = flags or OFlag.CREAT
+        if (this.directory) flags = flags or OFlag.DIRECTORY
+        if (this.exclude) flags = flags or OFlag.EXCL
+        if (this.truncate) flags = flags or OFlag.TRUNC
+        return flags
+    }
+
+    private fun DescriptorFlags.toRights(): Rights {
+        var rights: Long = 0
+        rights = rights or Right.PATH_OPEN
+        rights = rights or Right.POLL_FD_READWRITE
+        if (this.read) {
+            rights = rights or Right.FD_READ
+            rights = rights or Right.FD_SEEK
+            rights = rights or Right.FD_TELL
+            rights = rights or Right.FD_ADVISE
+            rights = rights or Right.FD_READDIR
+            rights = rights or Right.PATH_READLINK
+            rights = rights or Right.PATH_FILESTAT_GET
+            rights = rights or Right.FD_FILESTAT_GET
+        }
+        if (this.write) {
+            rights = rights or Right.FD_DATASYNC
+            rights = rights or Right.FD_FDSTAT_SET_FLAGS
+            rights = rights or Right.FD_SYNC
+            rights = rights or Right.FD_WRITE
+            rights = rights or Right.FD_ALLOCATE
+            rights = rights or Right.PATH_CREATE_DIRECTORY
+            rights = rights or Right.PATH_CREATE_FILE
+            rights = rights or Right.PATH_LINK_SOURCE
+            rights = rights or Right.PATH_LINK_TARGET
+            rights = rights or Right.PATH_RENAME_SOURCE
+            rights = rights or Right.PATH_RENAME_TARGET
+            rights = rights or Right.PATH_FILESTAT_SET_SIZE
+            rights = rights or Right.PATH_FILESTAT_SET_TIMES
+            rights = rights or Right.FD_FILESTAT_SET_SIZE
+            rights = rights or Right.FD_FILESTAT_SET_TIMES
+            rights = rights or Right.PATH_SYMLINK
+            rights = rights or Right.PATH_REMOVE_DIRECTORY
+            rights = rights or Right.PATH_UNLINK_FILE
+        }
+        return rights
+    }
+
+    private fun DescriptorFlags.toFdflags(): Fdflags {
+        var flags: Fdflags = 0
+        if (this.dataIntegritySync) flags = flags or FdFlag.DSYNC
+        if (this.fileIntegritySync) flags = flags or FdFlag.SYNC
+        if (this.requestedWriteSync) flags = flags or FdFlag.RSYNC
+        if (this.nonBlocking) flags = flags or FdFlag.NONBLOCK
+        return flags
     }
 }

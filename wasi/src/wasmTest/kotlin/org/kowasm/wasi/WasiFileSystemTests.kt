@@ -27,7 +27,9 @@ class WasiFileSystemTests {
 
     @Test
     fun testCreateFile() {
-        Wasi.createDirectoryAt(StandardDescriptor.FIRST_PREOPEN,"testFile")
+        val descriptor = Wasi.openAt(StandardDescriptor.FIRST_PREOPEN,"testFile",
+            OpenFlags(create = true), DescriptorFlags(read = true, write = true))
+        Wasi.write(descriptor, "Hello, world!".encodeToByteArray())
     }
 
     @Test
