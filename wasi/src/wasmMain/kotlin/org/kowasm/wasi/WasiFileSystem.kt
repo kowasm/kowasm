@@ -370,14 +370,10 @@ interface WasiFileSystem {
      *
      * Note: This is similar to `pwrite` in POSIX.
      *
-     * TODO Support offset
-     *
      * @param descriptor The descriptor to write to.
      * @param buffer The data to write.
      */
-    fun write(descriptor: Descriptor, buffer: ByteArray) {
-        fdWrite(descriptor, listOf(buffer))
-    }
+    fun write(descriptor: Descriptor, buffer: ByteArray, offset: Filesize = 0u) : Filesize
 
 }
 
@@ -402,6 +398,10 @@ object DefaultWasiFilesystem: WasiFileSystem {
         return fdReadDir(fd).map { (entry, name) ->
             DirectoryEntry(entry.inode.toULong(), entry.type.toDescriptorType(), name)
         }
+    }
+
+    override fun write(descriptor: Descriptor, buffer: ByteArray, offset: Filesize): Filesize {
+        return fdPWrite(descriptor, listOf(buffer), offset).toULong()
     }
 
     private fun Filetype.toDescriptorType() = when(this) {

@@ -22,6 +22,8 @@ import kotlin.wasm.WasmImport
 
 internal typealias Fd = Int
 
+internal typealias filesize = ULong
+
 internal typealias LookupFlags = Int
 
 internal object LookupFlag {
@@ -207,6 +209,25 @@ internal fun fdWrite(fd: Fd, ivos: List<ByteArray>): Size {
     }
 }
 
+internal fun fdPWrite(fd: Fd, ivos: List<ByteArray>, offset: filesize): Size {
+    withScopedMemoryAllocator { allocator ->
+        val iovs = ivos.map { UnsafeCiovec(allocator.writeToLinearMemory(it), it.size) }
+        val pointer = allocator.allocate(4)
+        val returnCode =
+            rawFdPWrite(
+                fd,
+                allocator.writeToLinearMemory(iovs).address.toInt(),
+                iovs.size,
+                offset.toLong(),
+                pointer.address.toInt())
+        return if (returnCode == 0) {
+            (Pointer(pointer.address.toInt().toUInt())).loadInt()
+        } else {
+            throw WasiError(Errno.values()[returnCode])
+        }
+    }
+}
+
 internal fun pathCreateDirectory(fd: Fd, path: String) {
     withScopedMemoryAllocator { allocator ->
         val pathByteArray = path.encodeToByteArray()
@@ -303,6 +324,16 @@ private external fun rawFdWrite(
     arg1: Int,
     arg2: Int,
     arg3: Int,
+): Int
+
+/** Write to a file descriptor, without using and updating the file descriptor's offset. Note: This is similar to pwritev in Linux (and other Unix-es). */
+@WasmImport("wasi_snapshot_preview1", "fd_pwrite")
+private external fun rawFdPWrite(
+    arg0: Int,
+    arg1: Int,
+    arg2: Int,
+    arg3: Long,
+    arg4: Int,
 ): Int
 
 /** Create a directory. Note: This is similar to `mkdirat` in POSIX. */
