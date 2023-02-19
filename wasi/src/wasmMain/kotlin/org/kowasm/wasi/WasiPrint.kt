@@ -30,10 +30,21 @@ interface WasiPrint {
     fun println(message: Any)
 }
 
-object DefaultWasiPrint: WasiPrint {
+object OutputWasiPrint: WasiPrint {
 
     override fun print(message: Any) {
         fdWrite(StandardDescriptor.STDOUT, listOf(message.toString().encodeToByteArray()))
+    }
+
+    override fun println(message: Any) {
+        print(message.toString() + "\n")
+    }
+}
+
+object ErrorWasiPrint: WasiPrint {
+
+    override fun print(message: Any) {
+        fdWrite(StandardDescriptor.STDERR, listOf(message.toString().encodeToByteArray()))
     }
 
     override fun println(message: Any) {

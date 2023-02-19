@@ -16,4 +16,9 @@
 
 package org.kowasm.wasi
 
-object Wasi : WasiPrint by DefaultWasiPrint, WasiFileSystem by DefaultWasiFilesystem
+object Wasi : WasiFileSystem by DefaultWasiFilesystem {
+
+    val out : WasiPrint = OutputWasiPrint
+
+    val err : WasiPrint = ErrorWasiPrint
+}
