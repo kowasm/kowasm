@@ -24,7 +24,10 @@ fun main() {
     Wasi.out.println(Clock.System.now().toString())
 
     Wasi.createDirectoryAt(StandardDescriptor.FIRST_PREOPEN,"testDir")
-    Wasi.openAt(StandardDescriptor.FIRST_PREOPEN,"testFile", OpenFlags(create = true), DescriptorFlags(write = true))
+    val descriptor = Wasi.openAt(StandardDescriptor.FIRST_PREOPEN,"testFile", OpenFlags(create = true), DescriptorFlags(read = true, write = true))
+    val content = "Hello, file!"
+    Wasi.write(descriptor, content.encodeToByteArray())
+    Wasi.out.println(Wasi.read(descriptor, content.length.toULong()).first.decodeToString())
     Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach { Wasi.out.println(it) }
 
     val pseudoGenerator = SeededWasiRandom()

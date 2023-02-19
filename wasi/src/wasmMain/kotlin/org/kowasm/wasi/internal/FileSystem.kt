@@ -191,9 +191,9 @@ internal enum class Filetype {
     SYMBOLIC_LINK,
 }
 
-internal fun fdWrite(fd: Fd, ivos: List<ByteArray>): Size {
+internal fun fdWrite(fd: Fd, buffer: List<ByteArray>): Size {
     withScopedMemoryAllocator { allocator ->
-        val iovs = ivos.map { UnsafeCiovec(allocator.writeToLinearMemory(it), it.size) }
+        val iovs = buffer.map { UnsafeCiovec(allocator.writeToLinearMemory(it), it.size) }
         val pointer = allocator.allocate(4)
         val returnCode =
             rawFdWrite(
@@ -209,9 +209,9 @@ internal fun fdWrite(fd: Fd, ivos: List<ByteArray>): Size {
     }
 }
 
-internal fun fdPWrite(fd: Fd, ivos: List<ByteArray>, offset: filesize): Size {
+internal fun fdPWrite(fd: Fd, buffer: List<ByteArray>, offset: filesize): Size {
     withScopedMemoryAllocator { allocator ->
-        val iovs = ivos.map { UnsafeCiovec(allocator.writeToLinearMemory(it), it.size) }
+        val iovs = buffer.map { UnsafeCiovec(allocator.writeToLinearMemory(it), it.size) }
         val pointer = allocator.allocate(4)
         val returnCode =
             rawFdPWrite(
@@ -227,6 +227,35 @@ internal fun fdPWrite(fd: Fd, ivos: List<ByteArray>, offset: filesize): Size {
         }
     }
 }
+
+internal fun fdPRead(
+    fd: Fd,
+    length: filesize,
+    offset: filesize,
+): Pair<ByteArray, Size> {
+    withScopedMemoryAllocator { allocator ->
+        val len = length.toInt()
+        val ptr = allocator.allocate(len)
+        val iovs = listOf(UnsafeCiovec(ptr, len))
+        val rp0 = allocator.allocate(4)
+        val ret =
+            rawFdPRead(
+                fd,
+                allocator.writeToLinearMemory(iovs).address.toInt(),
+                iovs.size,
+                offset.toLong(),
+                rp0.address.toInt()
+            )
+        return if (ret == 0) {
+            val readLength = (Pointer(rp0.address.toInt().toUInt())).loadInt()
+            Pair(loadByteArray(ptr, readLength), readLength)
+        } else {
+            throw WasiError(Errno.values()[ret])
+        }
+    }
+}
+
+
 
 internal fun pathCreateDirectory(fd: Fd, path: String) {
     withScopedMemoryAllocator { allocator ->
@@ -329,6 +358,19 @@ private external fun rawFdWrite(
 /** Write to a file descriptor, without using and updating the file descriptor's offset. Note: This is similar to pwritev in Linux (and other Unix-es). */
 @WasmImport("wasi_snapshot_preview1", "fd_pwrite")
 private external fun rawFdPWrite(
+    arg0: Int,
+    arg1: Int,
+    arg2: Int,
+    arg3: Long,
+    arg4: Int,
+): Int
+
+/**
+ * Read from a file descriptor, without using and updating the file descriptor's offset. Note: This
+ * is similar to `preadv` in POSIX.
+ */
+@WasmImport("wasi_snapshot_preview1", "fd_pread")
+private external fun rawFdPRead(
     arg0: Int,
     arg1: Int,
     arg2: Int,

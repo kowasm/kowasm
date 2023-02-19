@@ -375,6 +375,19 @@ interface WasiFileSystem {
      */
     fun write(descriptor: Descriptor, buffer: ByteArray, offset: Filesize = 0u) : Filesize
 
+    /**
+     * Read from a descriptor, without using and updating the descriptor's offset.
+     *
+     * This function returns a list of bytes containing the data that was
+     * read, along with a bool which, when true, indicates that the end of the
+     * file was reached. The returned list will contain up to `length` bytes; it
+     * may return fewer than requested, if the end of the file is reached or
+     * if the I/O operation is interrupted.
+     *
+     * Note: This is similar to `pread` in POSIX.
+     */
+    fun read(descriptor: Descriptor, length: Filesize, offset: Filesize = 0u) : Pair<ByteArray, Boolean>
+
 }
 
 object DefaultWasiFilesystem: WasiFileSystem {
@@ -402,6 +415,10 @@ object DefaultWasiFilesystem: WasiFileSystem {
 
     override fun write(descriptor: Descriptor, buffer: ByteArray, offset: Filesize): Filesize {
         return fdPWrite(descriptor, listOf(buffer), offset).toULong()
+    }
+
+    override fun read(descriptor: Descriptor, length: Filesize, offset: Filesize): Pair<ByteArray, Boolean> {
+        return fdPRead(descriptor, length, offset).let { Pair(it.first, it.second < length.toInt()) }
     }
 
     private fun Filetype.toDescriptorType() = when(this) {
