@@ -2,6 +2,7 @@ import { instantiate } from "./build/compileSync/wasm/main/productionExecutable/
 import { WASI } from "wasi";
 
 export const wasi = new WASI({
+    args: ["argument1", "argument2"],
     preopens: {
         '/sandbox': process.cwd() + '/build/'
     }

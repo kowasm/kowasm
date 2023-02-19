@@ -16,9 +16,15 @@
 
 package org.kowasm.wasi
 
-object Wasi : WasiFileSystem by DefaultWasiFilesystem, WasiCli by DefaultWasiCli {
+import org.kowasm.wasi.internal.argsGet
 
-    val out : WasiPrint = OutputWasiPrint
+interface WasiCli {
 
-    val err : WasiPrint = ErrorWasiPrint
+    val args: List<String>
+}
+
+object DefaultWasiCli : WasiCli {
+
+    override val args: List<String>
+        get() = argsGet()
 }

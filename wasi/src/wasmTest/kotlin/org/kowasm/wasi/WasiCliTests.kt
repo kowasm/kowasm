@@ -16,9 +16,13 @@
 
 package org.kowasm.wasi
 
-object Wasi : WasiFileSystem by DefaultWasiFilesystem, WasiCli by DefaultWasiCli {
+import kotlin.test.*
 
-    val out : WasiPrint = OutputWasiPrint
+class WasiCliTests {
 
-    val err : WasiPrint = ErrorWasiPrint
+    @Test
+    fun testArgs() {
+        assertEquals(listOf("argument1", "argument2"), Wasi.args)
+    }
+
 }

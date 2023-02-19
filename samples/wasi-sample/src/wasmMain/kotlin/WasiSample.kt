@@ -22,6 +22,7 @@ fun main() {
     clock()
     random()
     filesystem()
+    cli()
 }
 
 private fun print() {
@@ -67,4 +68,10 @@ private fun random() {
     Wasi.out.println("Secure random number generator")
     Wasi.out.println(secureGenerator.nextLong())
     Wasi.out.println(secureGenerator.nextLong())
+}
+
+private fun cli() {
+    Wasi.out.println("\n== CLI ==")
+
+    Wasi.args.forEach { Wasi.out.println(it) }
 }
