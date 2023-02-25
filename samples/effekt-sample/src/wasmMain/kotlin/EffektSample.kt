@@ -27,10 +27,9 @@ import reactivity.computed
 import reactivity.ref
 import reactivity.watchEffect
 
-data class Person(val name: String, val age: Int)
-
-var person by ref(Person("Sébastien", 41))
-val message by computed { "Hello! My name is <mark>${person.name}</mark>. I'm <mark>${person.age}</mark> years old." }
+var surname by ref("Sébastien")
+var age by ref(41)
+val message by computed { "Hello! My name is <mark>$surname</mark>. I'm <mark>$age</mark> years old." }
 
 fun main() {
     document.body?.init()
@@ -45,18 +44,16 @@ fun Node.init() {
         p {
             +"Edit person's name "
             input(type = InputType.text, classes = "person-name-input") {
-                placeholder = "name"
-                value = "Sébastien"
+                value = surname
                 onKeyUpFunction = {
-                    person = person.copy(name = (it.target as HTMLInputElement).value)
+                    surname = (it.target as HTMLInputElement).value
                 }
             }
             +" and age "
             input(type = InputType.text, classes = "person-age-input") {
-                placeholder = "age"
-                value = "41"
+                value = age.toString()
                 onKeyUpFunction = {
-                    person = person.copy(age = (it.target as HTMLInputElement).value.toInt())
+                    age = (it.target as HTMLInputElement).value.toInt()
                 }
             }
         }
