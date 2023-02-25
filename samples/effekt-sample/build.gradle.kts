@@ -11,6 +11,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":effekt-wasm"))
+                implementation(project(":kotlinx-html-wasm"))
             }
 
         }

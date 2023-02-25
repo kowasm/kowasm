@@ -15,8 +15,14 @@
  */
 
 import kotlinx.browser.document
-
+import kotlinx.html.InputType
+import kotlinx.html.dom.append
+import kotlinx.html.h3
+import kotlinx.html.input
+import kotlinx.html.js.onKeyUpFunction
+import kotlinx.html.p
 import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import reactivity.computed
 import reactivity.ref
@@ -24,16 +30,36 @@ import reactivity.watchEffect
 
 data class Person(val name: String, val age: Int)
 
+var person by ref(Person("Sébastien", 41))
+val message by computed { "Hello! My name is <mark>${person.name}</mark>. I'm <mark>${person.age}</mark> years old." }
+
 fun main() {
-    var person by ref(Person("Sébastien", 41))
-    document.getElementById("person-name-input")!!.addEventListener("keyup", {
-        person = person.copy(name = (it.target as HTMLInputElement).value)
-    })
-    document.getElementById("person-age-input")!!.addEventListener("keyup", { it: Event ->
-        person = person.copy(age = (it.target as HTMLInputElement).value.toInt())
-    })
-    val message by computed { "Hello! My name is <mark>${person.name}</mark>. I'm <mark>${person.age}</mark> years old." }
+    document.body?.init()
     watchEffect {
-        document.getElementById("message")?.innerHTML = message
+        document.getElementByClassName("message").innerHTML = message
+    }
+}
+
+fun Node.init() {
+    append {
+        h3("message")
+        p {
+            +"Edit person's name "
+            input(type = InputType.text, classes = "person-name-input") {
+                placeholder = "name"
+                value = "Sébastien"
+                onKeyUpFunction = { it: Event ->
+                    person = person.copy(name = (it.target as HTMLInputElement).value)
+                }
+            }
+            +" and age "
+            input(type = InputType.text, classes = "person-age-input") {
+                placeholder = "age"
+                value = "41"
+                onKeyUpFunction = { it: Event ->
+                    person = person.copy(age = (it.target as HTMLInputElement).value.toInt())
+                }
+            }
+        }
     }
 }
