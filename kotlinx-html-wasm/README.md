@@ -1,0 +1,2 @@
+WASM implementation of `kotlinx-html`, see https://github.com/Kotlin/kotlinx.html/issues/210 related issue.
+Implementation is for now copied from https://github.com/Kotlin/kotlinx.html until it get Wasm support.
