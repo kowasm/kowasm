@@ -23,7 +23,6 @@ import kotlinx.html.js.onKeyUpFunction
 import kotlinx.html.p
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.Node
-import org.w3c.dom.events.Event
 import reactivity.computed
 import reactivity.ref
 import reactivity.watchEffect
@@ -48,7 +47,7 @@ fun Node.init() {
             input(type = InputType.text, classes = "person-name-input") {
                 placeholder = "name"
                 value = "Sébastien"
-                onKeyUpFunction = { it: Event ->
+                onKeyUpFunction = {
                     person = person.copy(name = (it.target as HTMLInputElement).value)
                 }
             }
@@ -56,7 +55,7 @@ fun Node.init() {
             input(type = InputType.text, classes = "person-age-input") {
                 placeholder = "age"
                 value = "41"
-                onKeyUpFunction = { it: Event ->
+                onKeyUpFunction = {
                     person = person.copy(age = (it.target as HTMLInputElement).value.toInt())
                 }
             }
