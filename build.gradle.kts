@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+
 plugins {
     kotlin("multiplatform") version "1.8.20-Beta" apply false
 }
@@ -8,5 +11,12 @@ allprojects {
 
     repositories {
         mavenCentral()
+    }
+}
+
+rootProject.plugins.withType(NodeJsRootPlugin::class.java) {
+    rootProject.the<NodeJsRootExtension>().apply {
+        nodeVersion = "20.0.0-v8-canary202212266b2b946a63"
+        nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
     }
 }
