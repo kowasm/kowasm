@@ -43,14 +43,14 @@ fun Node.init() {
         h3("message")
         p {
             +"Edit person's name "
-            input(type = InputType.text, classes = "person-name-input") {
+            input(classes = "person-name-input") {
                 value = surname
                 onKeyUpFunction = {
                     surname = (it.target as HTMLInputElement).value
                 }
             }
             +" and age "
-            input(type = InputType.text, classes = "person-age-input") {
+            input(classes = "person-age-input") {
                 value = age.toString()
                 onKeyUpFunction = {
                     age = (it.target as HTMLInputElement).value.toInt()
