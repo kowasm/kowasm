@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-
 plugins {
     kotlin("multiplatform")
 }
@@ -17,11 +15,4 @@ kotlin {
             }
         }
     }
-
-    tasks.withType<KotlinCompile<*>> {
-        kotlinOptions {
-            freeCompilerArgs += "-opt-in=kotlin.wasm.unsafe.UnsafeWasmMemoryApi"
-        }
-    }
-
 }
