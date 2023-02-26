@@ -39,7 +39,7 @@ external object STATUS_CODES {
 }
 
 open external class Server : NetServer {
-    constructor(requestListener: RequestListener = definedExternally)
+    constructor(requestListener: RequestListener)
 }
 
 open external class IncomingMessage(socket: Socket) : Readable {
@@ -53,7 +53,8 @@ open external class IncomingMessage(socket: Socket) : Readable {
     open var headers: IncomingHttpHeaders
     open var rawHeaders: JsStringArray
     open var rawTrailers: JsStringArray
-    open fun setTimeout(msecs: Number, callback: () -> Unit = definedExternally): IncomingMessage /* this */
+    open fun setTimeout(msecs: Number): IncomingMessage
+    open fun setTimeout(msecs: Number, callback: () -> Unit): IncomingMessage
     open var method: String
     open var url: String
     open var statusCode: Number
@@ -70,7 +71,8 @@ open external class OutgoingMessage : Writable {
     open var headersSent: Boolean
     open var connection: Socket
     open var socket: Socket
-    open fun setTimeout(msecs: Number, callback: () -> Unit = definedExternally): OutgoingMessage /* this */
+    open fun setTimeout(msecs: Number): OutgoingMessage
+    open fun setTimeout(msecs: Number, callback: () -> Unit): OutgoingMessage
     open fun setHeader(name: String, value: Number)
     open fun setHeader(name: String, value: String)
     open fun setHeader(name: String, value: JsStringArray)
@@ -87,9 +89,11 @@ open external class ServerResponse(req: IncomingMessage) : OutgoingMessage {
     open var statusMessage: String
     open fun assignSocket(socket: Socket)
     open fun detachSocket(socket: Socket)
-    open fun writeContinue(callback: () -> Unit = definedExternally)
-    open fun writeHead(statusCode: Number, reasonPhrase: String = definedExternally, headers: OutgoingHttpHeaders = definedExternally): ServerResponse /* this */
-    open fun writeHead(statusCode: Number, headers: OutgoingHttpHeaders = definedExternally): ServerResponse /* this */
+    open fun writeContinue(callback: () -> Unit)
+    open fun writeHead(statusCode: Number): ServerResponse
+    open fun writeHead(statusCode: Number, reasonPhrase: String): ServerResponse
+    open fun writeHead(statusCode: Number, reasonPhrase: String, headers: OutgoingHttpHeaders): ServerResponse
+    open fun writeHead(statusCode: Number, headers: OutgoingHttpHeaders): ServerResponse
     open fun writeProcessing()
 }
 
