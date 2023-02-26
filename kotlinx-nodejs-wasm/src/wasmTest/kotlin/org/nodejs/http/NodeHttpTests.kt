@@ -14,20 +14,33 @@
  * limitations under the License.
  */
 
-package org.kowasm.wasi
+package org.nodejs.http
 
-import kotlin.test.*
+import org.nodejs.RequestListener
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class WasiCliTests {
+class NodeHttpTests {
 
     @Test
-    fun testArgs() {
-        assertEquals(listOf("argument1", "argument2"), Wasi.args)
+    fun testMethods() {
+        assertEquals("GET", METHODS.at(6))
+        assertEquals(34, METHODS.length)
     }
 
     @Test
-    fun testEnvVars() {
-        assertEquals(listOf(Pair("PATH", "/usr/local/bin:/usr/bin"), Pair("HOME", "/home/seb")), Wasi.envVars)
+    fun testStatusCodes() {
+        assertEquals("OK", STATUS_CODES[200])
+    }
+
+    @Test
+    fun testCreateServer() {
+        val requestListener: RequestListener = { req, res ->
+            println(req.headers.accept)
+            res.statusCode = 200
+            res.end("Hello, World!")
+        }
+        createServer(requestListener)
     }
 
 }
