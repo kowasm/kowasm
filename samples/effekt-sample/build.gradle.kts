@@ -6,6 +6,7 @@ kotlin {
     wasm {
         binaries.executable()
         browser()
+        applyBinaryen()
     }
     sourceSets {
         val commonMain by getting {
@@ -15,11 +16,7 @@ kotlin {
             }
 
         }
-        val wasmMain by getting {
-            dependencies {
-                implementation(project(":effekt-wasm"))
-            }
-        }
+        val wasmMain by getting
     }
 
 }
