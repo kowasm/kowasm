@@ -22,15 +22,14 @@ import kotlinx.html.p
 import kotlinx.html.stream.createHTML
 import org.kowasm.wasi.*
 import org.kowasm.web.HttpHeaders
+import org.kowasm.web.MediaType
 import org.kowasm.web.server.nodejs.listen
 import org.kowasm.web.server.webServer
-import org.nodejs.RequestListener
-import org.nodejs.http.createServer
 
 fun main() {
     webServer {
         router {
-            GET("/") {
+            (GET("/") and accept(MediaType.TEXT_HTML)) {
                 println("Accept header: ${it.headers[HttpHeaders.ACCEPT]}")
                 ok().body(content)
             }

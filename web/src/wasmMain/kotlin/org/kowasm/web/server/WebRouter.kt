@@ -42,6 +42,8 @@ object WebRouter {
 
         fun OPTIONS(pattern: String, handler: ServerHandler): Builder
 
+        fun add(routerHandler: RouterHandler): Builder
+
         fun build(): RouterHandler
     }
 
@@ -63,8 +65,8 @@ internal class WebRouterBuilder  : WebRouter.Builder {
 
     private val routerFunctions: MutableList<RouterHandler> = ArrayList()
 
-    fun add(routerFunction: RouterHandler): WebRouter.Builder {
-        routerFunctions.add(routerFunction)
+    override fun add(routerHandler: RouterHandler): WebRouter.Builder {
+        routerFunctions.add(routerHandler)
         return this
     }
 

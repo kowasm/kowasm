@@ -1,6 +1,6 @@
 package org.kowasm.web
 
-sealed class HttpStatus (val code: Int) {
+sealed class HttpStatus(val code: Int) {
 
     object CONTINUE : HttpStatus(100)
     object OK : HttpStatus(200)
