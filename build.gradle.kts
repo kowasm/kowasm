@@ -14,7 +14,7 @@ allprojects {
     }
 }
 
-rootProject.plugins.withType(NodeJsRootPlugin::class.java) {
+rootProject.plugins.withType<NodeJsRootPlugin>(NodeJsRootPlugin::class.java) {
     rootProject.the<NodeJsRootExtension>().apply {
         nodeVersion = "20.0.0-v8-canary202212266b2b946a63"
         nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
