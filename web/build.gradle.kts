@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.8.20-Beta"
+    kotlin("multiplatform")
 }
 
 group = "org.jetbrains.kotlinx"
@@ -23,4 +23,10 @@ kotlin {
             }
         }
     }
+
+    // Disabled for now since require custom WASI module configuration, run wasi/test.sh instead.
+    tasks.named("wasmNodeTest") {
+        enabled = false
+    }
+
 }

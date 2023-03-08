@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.8.20-Beta"
+    kotlin("multiplatform")
 }
 
 group = "org.jetbrains.kotlinx"
