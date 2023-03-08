@@ -1,18 +1,15 @@
 package org.kowasm.web.server
 
-import org.kowasm.web.AbstractDsl
+import org.kowasm.web.KoWasmDslMarker
 
-open class WebServerDsl(private val init: WebServerDsl.() -> Unit): AbstractDsl() {
+@KoWasmDslMarker
+open class WebServerDsl(internal val init: WebServerDsl.() -> Unit) {
 
     var port: Number = 8080
 
     var hostname: String = "localhost"
 
     internal var routerHandler : RouterHandler? = null
-
-    override fun initialize() {
-        init()
-    }
 
     fun router(routes: (WebRouterDsl.() -> Unit)) {
         routerHandler = WebRouterDsl(routes).build()
@@ -21,5 +18,5 @@ open class WebServerDsl(private val init: WebServerDsl.() -> Unit): AbstractDsl(
 }
 
 fun webServer(dsl: WebServerDsl.() -> Unit =  {}): WebServerDsl {
-    return WebServerDsl(dsl).apply { initialize() }
+    return WebServerDsl(dsl).apply { init() }
 }
