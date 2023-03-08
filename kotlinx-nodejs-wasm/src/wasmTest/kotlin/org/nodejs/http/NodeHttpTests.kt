@@ -35,8 +35,7 @@ class NodeHttpTests {
 
     @Test
     fun testCreateServer() {
-        val requestListener: RequestListener = { req, res ->
-            println(req.headers.accept)
+        val requestListener: RequestListener = { _, res ->
             res.statusCode = 200
             res.end("Hello, World!")
         }
