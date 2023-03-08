@@ -105,7 +105,7 @@ class WebRouterDsl internal constructor (private val dsl: (WebRouterDsl.() -> Un
 
     // TODO Implement real media type matching
     fun accept(mediaType: MediaType): RequestPredicate =
-        RequestPredicates.headers { it[HttpHeaders.ACCEPT]!!.contains(MediaType.TEXT_HTML.toString()) }
+        RequestPredicates.headers { it[HttpHeaders.ACCEPT]!!.contains(mediaType.toString()) }
 
     fun method(httpMethod: HttpMethod): RequestPredicate = RequestPredicates.method(httpMethod)
 
