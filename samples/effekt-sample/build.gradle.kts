@@ -9,7 +9,7 @@ kotlin {
         applyBinaryen()
     }
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(project(":effekt-wasm"))
                 implementation(project(":kotlinx-html-wasm"))
@@ -18,5 +18,9 @@ kotlin {
         }
         val wasmMain by getting
     }
+}
 
+// See https://youtrack.jetbrains.com/issue/KT-57203 related issue
+tasks.named("wasmDevelopmentExecutableCompileSync") {
+    dependsOn("wasmBrowserProductionWebpack")
 }
