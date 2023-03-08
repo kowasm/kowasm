@@ -1,9 +1,7 @@
 plugins {
     kotlin("multiplatform")
+    id("org.jetbrains.dokka")
 }
-
-group = "org.jetbrains.kotlinx"
-version = "0.0.8-SNAPSHOT"
 
 kotlin {
     wasm {

@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
+    id("org.jetbrains.dokka")
 }
 
 kotlin {
