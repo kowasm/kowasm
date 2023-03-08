@@ -1,14 +1,14 @@
-package org.kowasm.web.server
+package org.kowasm.web.http.server
 
-import org.kowasm.web.HttpHeaders
-import org.kowasm.web.Method
-import org.kowasm.web.StatusCode
-import org.kowasm.web.MediaType
+import org.kowasm.web.http.Header
+import org.kowasm.web.http.Method
+import org.kowasm.web.http.StatusCode
+import org.kowasm.web.http.MediaType
 
-class WebRouterDsl internal constructor (private val dsl: (WebRouterDsl.() -> Unit)) {
+class RouterDsl internal constructor (private val dsl: (RouterDsl.() -> Unit)) {
 
     @PublishedApi
-    internal val builder = WebRouter.route()
+    internal val builder = Router.route()
 
     infix fun RequestPredicate.and(other: String): RequestPredicate = this.and(path(other))
 
@@ -25,7 +25,7 @@ class WebRouterDsl internal constructor (private val dsl: (WebRouterDsl.() -> Un
     operator fun RequestPredicate.not(): RequestPredicate = this.negate()
 
     operator fun RequestPredicate.invoke(f: (ServerRequest) -> ServerResponse) {
-        builder.add(WebRouter.route(this, f))
+        builder.add(Router.route(this, f))
     }
 
     fun GET(f: ServerHandler) {
@@ -100,12 +100,12 @@ class WebRouterDsl internal constructor (private val dsl: (WebRouterDsl.() -> Un
 
     fun OPTIONS(pattern: String): RequestPredicate = RequestPredicates.OPTIONS(pattern)
 
-    fun headers(headersPredicate: (HttpHeaders) -> Boolean): RequestPredicate =
+    fun headers(headersPredicate: (List<Header>) -> Boolean): RequestPredicate =
         RequestPredicates.headers(headersPredicate)
 
     // TODO Implement real media type matching
     fun accept(mediaType: MediaType): RequestPredicate =
-        RequestPredicates.headers { it[HttpHeaders.ACCEPT]!!.contains(mediaType.toString()) }
+        RequestPredicates.headers { it[Header.ACCEPT]?.values?.any { value -> value.contains(mediaType.toString()) } ?: false }
 
     fun method(method: Method): RequestPredicate = RequestPredicates.method(method)
 

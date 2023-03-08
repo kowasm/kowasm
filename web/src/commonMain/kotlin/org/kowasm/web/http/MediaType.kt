@@ -1,4 +1,4 @@
-package org.kowasm.web
+package org.kowasm.web.http
 
 /**
  * An HTTP media type, as defined in the [RFC 7231](https://tools.ietf.org/html/rfc7231#section-3.1.1.1).

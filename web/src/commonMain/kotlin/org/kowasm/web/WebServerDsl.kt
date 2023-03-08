@@ -1,8 +1,9 @@
-package org.kowasm.web.server
+package org.kowasm.web
 
-import org.kowasm.web.KoWasmDslMarker
+import org.kowasm.web.http.server.RouterDsl
+import org.kowasm.web.http.server.RouterHandler
 
-@KoWasmDslMarker
+@Dsl
 open class WebServerDsl(internal val init: WebServerDsl.() -> Unit) {
 
     var port: Number = 8080
@@ -11,8 +12,8 @@ open class WebServerDsl(internal val init: WebServerDsl.() -> Unit) {
 
     internal var routerHandler : RouterHandler? = null
 
-    fun router(routes: (WebRouterDsl.() -> Unit)) {
-        routerHandler = WebRouterDsl(routes).build()
+    fun router(routes: (RouterDsl.() -> Unit)) {
+        routerHandler = RouterDsl(routes).build()
     }
 
 }

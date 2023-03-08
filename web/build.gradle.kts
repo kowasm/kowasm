@@ -8,6 +8,11 @@ kotlin {
         nodejs()
     }
     sourceSets {
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
         val wasmMain by getting {
             dependencies {
                 implementation(project(":kotlinx-nodejs-wasm"))

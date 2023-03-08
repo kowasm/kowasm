@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 
 plugins {
     kotlin("multiplatform") version "1.8.20-RC" apply false
@@ -20,4 +21,8 @@ rootProject.plugins.withType<NodeJsRootPlugin>(NodeJsRootPlugin::class.java) {
         nodeVersion = "20.0.0-v8-canary202212266b2b946a63"
         nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
     }
+}
+
+tasks.withType<KotlinNpmInstallTask> {
+    args.add("--ignore-engines")
 }

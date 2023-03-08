@@ -1,11 +1,11 @@
-package org.kowasm.web.server
+package org.kowasm.web.http.server
 
-import org.kowasm.web.Method
+import org.kowasm.web.http.Method
 
-object WebRouter {
+object Router {
 
     fun route(): Builder {
-        return WebRouterBuilder()
+        return RouterBuilder()
     }
 
     fun route(predicate: RequestPredicate, handlerFunction: ServerHandler): RouterHandler {
@@ -47,8 +47,7 @@ object WebRouter {
         fun build(): RouterHandler
     }
 
-    private class DefaultRouterHandler(private val predicate: RequestPredicate, private val handler: ServerHandler) :
-        RouterHandler {
+    private class DefaultRouterHandler(private val predicate: RequestPredicate, private val handler: ServerHandler) : RouterHandler {
 
         override fun invoke(request: ServerRequest): ServerHandler? {
             return if (predicate.test(request)) {
@@ -61,11 +60,11 @@ object WebRouter {
     }
 }
 
-internal class WebRouterBuilder  : WebRouter.Builder {
+internal class RouterBuilder : Router.Builder {
 
     private val routerFunctions: MutableList<RouterHandler> = ArrayList()
 
-    override fun add(routerHandler: RouterHandler): WebRouter.Builder {
+    override fun add(routerHandler: RouterHandler): Router.Builder {
         routerFunctions.add(routerHandler)
         return this
     }
@@ -73,74 +72,74 @@ internal class WebRouterBuilder  : WebRouter.Builder {
     private fun add(
         predicate: RequestPredicate,
         handler: ServerHandler
-    ): WebRouter.Builder {
-        routerFunctions.add(WebRouter.route(predicate, handler))
+    ): Router.Builder {
+        routerFunctions.add(Router.route(predicate, handler))
         return this
     }
 
-    override fun GET(handler: ServerHandler): WebRouter.Builder {
+    override fun GET(handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.method(Method.GET), handler)
     }
 
-    override fun GET(pattern: String, handler: ServerHandler): WebRouter.Builder {
+    override fun GET(pattern: String, handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.GET(pattern), handler)
     }
 
-    override fun HEAD(handler: ServerHandler): WebRouter.Builder {
+    override fun HEAD(handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.method(Method.HEAD), handler)
     }
 
-    override fun HEAD(pattern: String, handler: ServerHandler): WebRouter.Builder {
+    override fun HEAD(pattern: String, handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.HEAD(pattern), handler)
     }
 
-    override fun POST(pattern: String, handler: ServerHandler): WebRouter.Builder {
+    override fun POST(pattern: String, handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.POST(pattern), handler)
     }
 
-    override fun POST(handler: ServerHandler): WebRouter.Builder {
+    override fun POST(handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.method(Method.POST), handler)
     }
 
-    override fun PUT(pattern: String, handler: ServerHandler): WebRouter.Builder {
+    override fun PUT(pattern: String, handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.PUT(pattern), handler)
     }
 
-    override fun PUT(handler: ServerHandler): WebRouter.Builder {
+    override fun PUT(handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.method(Method.PUT), handler)
     }
 
-    override fun PATCH(pattern: String, handler: ServerHandler): WebRouter.Builder {
+    override fun PATCH(pattern: String, handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.PATCH(pattern), handler)
     }
 
-    override fun PATCH(handler: ServerHandler): WebRouter.Builder {
+    override fun PATCH(handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.method(Method.PATCH), handler)
     }
 
-    override fun DELETE(pattern: String, handler: ServerHandler): WebRouter.Builder {
+    override fun DELETE(pattern: String, handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.DELETE(pattern), handler)
     }
 
-    override fun DELETE(handler: ServerHandler): WebRouter.Builder {
+    override fun DELETE(handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.method(Method.DELETE), handler)
     }
 
-    override fun OPTIONS(pattern: String, handler: ServerHandler): WebRouter.Builder {
+    override fun OPTIONS(pattern: String, handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.OPTIONS(pattern), handler)
     }
 
-    override fun OPTIONS(handler: ServerHandler): WebRouter.Builder {
+    override fun OPTIONS(handler: ServerHandler): Router.Builder {
         return add(RequestPredicates.method(Method.OPTIONS), handler)
     }
 
     override fun build(): RouterHandler {
         check(routerFunctions.isNotEmpty()) { "No routes registered. Register a route with GET(), POST(), etc." }
-        return BuiltRouterFunction(routerFunctions)
+        return RouterFunctions(routerFunctions)
 
     }
 
-    private class BuiltRouterFunction(private val routerFunctions: List<RouterHandler>) : RouterHandler {
+    private class RouterFunctions(private val routerFunctions: List<RouterHandler>) : RouterHandler {
 
         override fun invoke(request: ServerRequest): ServerHandler? {
             for (routerFunction in routerFunctions) {

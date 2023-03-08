@@ -1,4 +1,4 @@
-package org.kowasm.web
+package org.kowasm.web.http
 
 /**
  * An HTTP response status code, as defined in the [RFC 7231](https://tools.ietf.org/html/rfc7231#section-6).
@@ -102,5 +102,5 @@ sealed class StatusCode(val code: Int) {
      *
      * @param code The status code.
      */
-    class Other(code: Int) : StatusCode(code)
+    class Custom(code: Int) : StatusCode(code)
 }

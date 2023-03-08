@@ -1,11 +1,12 @@
 package org.kowasm.web.server.nodejs
 
-import org.kowasm.web.HttpHeaders
-import org.kowasm.web.Method
-import org.kowasm.web.StatusCode
-import org.kowasm.web.server.ServerRequest
-import org.kowasm.web.server.ServerResponse
-import org.kowasm.web.server.WebServerDsl
+import org.kowasm.web.http.Method
+import org.kowasm.web.http.StatusCode
+import org.kowasm.web.http.server.ServerRequest
+import org.kowasm.web.http.server.ServerResponse
+import org.kowasm.web.WebServerDsl
+import org.kowasm.web.http.Header
+import org.kowasm.web.http.Headers
 import org.nodejs.RequestListener
 import org.nodejs.http.IncomingMessage
 import org.nodejs.http.createServer
@@ -18,7 +19,9 @@ fun WebServerDsl.listen() {
         val response = handler?.invoke(request) ?: ServerResponse.status(StatusCode.NOT_FOUND).build()
         res.statusCode = response.status.code
         for (header in response.headers) {
-            res.setHeader(header.key, header.value)
+            for (value in header.values) {
+                res.setHeader(header.name, value)
+            }
         }
         if (response.body != null) {
             res.end(response.body!!.decodeToString())
@@ -36,30 +39,30 @@ fun WebServerDsl.listen() {
 
 class NodejsServerRequest(private val incomingMessage: IncomingMessage): ServerRequest {
 
-    override val method: Method
-        get() = when (incomingMessage.method) {
-            Method.GET.method -> Method.GET
-            Method.HEAD.method -> Method.HEAD
-            Method.POST.method -> Method.POST
-            Method.PUT.method -> Method.PUT
-            Method.PATCH.method -> Method.PATCH
-            Method.OPTIONS.method -> Method.OPTIONS
-            Method.TRACE.method -> Method.TRACE
-            Method.DELETE.method -> Method.DELETE
-            else -> Method.Other(incomingMessage.method)
-        }
+    override val method: Method by lazy {
+        Method.from(incomingMessage.method)
+    }
 
     override val path: String
         get() = incomingMessage.url
 
-    override val headers: HttpHeaders
-        get() = HttpHeaders().apply {
-            for (i in 0 until incomingMessage.rawHeaders.length step 2) {
-                val header = incomingMessage.rawHeaders.at(i)
-                val value = incomingMessage.rawHeaders.at(i + 1)
-                put(header, value)
+    override val headers: Headers by lazy {
+        val headersMap = mutableMapOf<String, MutableList<String>>()
+        val headerNames = incomingMessage.rawHeaders
+        for (i in 0 until headerNames.length step 2) {
+            val name = headerNames.at(i)
+            val value = headerNames.at(i + 1)
+            if (headersMap.containsKey(name)){
+                headersMap[name]!!.add(value)
+            }
+            else {
+                headersMap[name] = mutableListOf(value)
             }
         }
+        val headers = mutableListOf<Header>()
+        headersMap.forEach { (name, values) -> headers.add(Header.from(name, values)) }
+        Headers(headers)
+    }
 
     override fun <T : Any> body(type: KClass<T>): T {
         TODO()

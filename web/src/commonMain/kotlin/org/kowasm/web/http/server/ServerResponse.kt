@@ -1,37 +1,20 @@
-package org.kowasm.web.server
+package org.kowasm.web.http.server
 
-import org.kowasm.web.HttpHeaders
-import org.kowasm.web.Method
-import org.kowasm.web.StatusCode
-import kotlin.reflect.KClass
-
-typealias ServerHandler = (request: ServerRequest) -> ServerResponse
-
-typealias RouterHandler = (request: ServerRequest) -> ServerHandler?
-
-interface ServerRequest {
-
-    val method: Method
-
-    val path: String
-
-    val headers: HttpHeaders
-
-    fun <T: Any> body(type : KClass<T>): T
-
-}
+import org.kowasm.web.http.Header
+import org.kowasm.web.http.Headers
+import org.kowasm.web.http.StatusCode
 
 interface ServerResponse {
 
     val status: StatusCode
 
-    val headers: HttpHeaders
+    val headers: Headers
 
     val body: ByteArray?
 
     interface HeadersBuilder<B : HeadersBuilder<B>> {
 
-        fun header(headerName: String, headerValue: String): B
+        fun header(name: String, vararg value: String): B
 
         fun build(): ServerResponse
 
@@ -74,7 +57,7 @@ interface ServerResponse {
 
 class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.BodyBuilder {
 
-    private val headers: HttpHeaders = HttpHeaders()
+    private val headers: MutableList<Header> = mutableListOf()
 
     var body: ByteArray? = null
 
@@ -88,8 +71,8 @@ class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.Body
         return this.build()
     }
 
-    override fun header(headerName: String, headerValue: String): ServerResponse.BodyBuilder {
-        headers[headerName] = headerValue
+    override fun header(name: String, vararg value: String): ServerResponse.BodyBuilder {
+        headers.add(Header.from(name, value.toList()))
         return this
     }
 
@@ -97,8 +80,8 @@ class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.Body
         return object: ServerResponse {
             override val status: StatusCode
                 get() = this@DefaultServerResponseBuilder.status
-            override val headers: HttpHeaders
-                get() = this@DefaultServerResponseBuilder.headers
+            override val headers: Headers
+                get() = Headers(this@DefaultServerResponseBuilder.headers)
             override val body: ByteArray?
                 get() = this@DefaultServerResponseBuilder.body
 

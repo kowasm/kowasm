@@ -1,11 +1,11 @@
-package org.kowasm.web
+package org.kowasm.web.http
 
 /**
  * An HTTP request method, as defined in the [RFC 7231](https://www.rfc-editor.org/rfc/rfc7231#section-4).
  *
- * @property method The method name, e.g. "GET", "POST", etc.
+ * @property name The method name, e.g. "GET", "POST", etc.
  */
-sealed class Method(val method: String) {
+sealed class Method(val name: String) {
 
     /**
      * A [`GET` method](https://www.rfc-editor.org/rfc/rfc7231#section-4.3.1).
@@ -55,7 +55,23 @@ sealed class Method(val method: String) {
     /**
      * A custom method.
      *
-     * @param method The method name.
+     * @param name The method name.
      */
-    class Other(method: String) : Method(method)
+    class Custom(name: String) : Method(name)
+
+    companion object {
+
+        fun from(name: String): Method = when (name) {
+            GET.name -> GET
+            HEAD.name -> HEAD
+            POST.name -> POST
+            PUT.name -> PUT
+            DELETE.name -> DELETE
+            CONNECT.name -> CONNECT
+            OPTIONS.name -> OPTIONS
+            TRACE.name -> TRACE
+            PATCH.name -> PATCH
+            else -> Custom(name)
+        }
+    }
 }
