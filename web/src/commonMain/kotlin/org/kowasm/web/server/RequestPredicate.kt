@@ -32,6 +32,7 @@ object RequestPredicates {
         return HttpMethodPredicate(httpMethod)
     }
 
+    @Suppress("NAME_SHADOWING")
     fun path(path: String): RequestPredicate {
         var path = path
         if (path.isNotEmpty() && !path.startsWith("/")) {

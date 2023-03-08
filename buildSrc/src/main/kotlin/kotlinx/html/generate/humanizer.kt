@@ -1,14 +1,19 @@
 package kotlinx.html.generate
 
-fun String.humanize() : String {
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.HashSet
+
+fun String.humanize(): String {
     if (this.isEmpty()) {
         return "empty"
     }
 
-    val fixedAllUpper = if (all { it.isUpperCase() }) toLowerCase() else this
-    val fixedFirstUpper = fixedAllUpper.decapitalize()
+    val fixedAllUpper = if (all { it.isUpperCase() }) lowercase() else this
+    val fixedFirstUpper = fixedAllUpper.replaceFirstChar { it.lowercase() }
 
-    return fixedFirstUpper.replaceHyphensToCamelCase().makeCamelCaseByDictionary().replaceMistakesAndUglyWords().decapitalize()
+    return fixedFirstUpper.replaceHyphensToCamelCase().makeCamelCaseByDictionary().replaceMistakesAndUglyWords()
+        .replaceFirstChar { it.lowercase() }
 }
 
 fun humanizeJoin(parts: Iterable<String>) = humanizeJoin(parts, separator = "")
@@ -28,7 +33,8 @@ fun humanizeJoin(parts: Iterable<String>, separator: String): String {
                 end += start + 1
             }
 
-            val word = part.substring(start, end).capitalize()
+            val word = part.substring(start, end)
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 
             val newCount = dictionary.getOrElse(word) { 0 } + 1
             dictionary[word] = newCount
@@ -53,7 +59,10 @@ fun humanizeJoin(parts: Iterable<String>, separator: String): String {
         filteredParts.add(cutPart)
     }
 
-    return filteredParts.joinToString(separator = separator, transform = String::capitalize) + trailingParts.joinToString("", transform = String::capitalize)
+    return filteredParts.joinToString(separator = separator, transform = { it -> it.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}) + trailingParts.joinToString(
+        "",
+        transform = { it -> it.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}
+    )
 }
 
 private fun String.replaceMistakesAndUglyWords() : String =
@@ -65,7 +74,7 @@ private fun String.replaceHyphensToCamelCase() : String =
         this.split("[.:_\\-<>/]".toRegex())
                 .mapIndexed { i, s ->
                     if (i == 0) s
-                    else s.capitalize()
+                    else s.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
                 }
                 .joinToString("")
 

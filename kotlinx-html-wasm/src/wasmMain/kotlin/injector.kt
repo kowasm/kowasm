@@ -9,6 +9,7 @@ fun <F : Any, T : Any> F.injectTo(bean: T, field: KMutableProperty1<T, in F>) {
     field.set(bean, this)
 }
 
+@Suppress("UNCHECKED_CAST")
 private fun <F : Any, T : Any> F.injectToUnsafe(bean: T, field: KMutableProperty1<T, out F>) {
     injectTo(bean, field as KMutableProperty1<T, in F>)
 }

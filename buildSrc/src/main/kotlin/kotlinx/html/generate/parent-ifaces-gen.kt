@@ -5,8 +5,14 @@ import java.util.*
 
 fun generateParentInterfaces(todir: String, packg: String) {
     val allParentIfaces = Repository.tags.values.filterIgnored().map { tag ->
-        val parentAttributeIfaces = tag.attributeGroups.map { it.name.humanize().capitalize() + "Facade" }
-        val parentElementIfaces = tag.tagGroupNames.map { it.humanize().capitalize() }
+        val parentAttributeIfaces = tag.attributeGroups.map {
+            it.name.humanize()
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + "Facade"
+        }
+        val parentElementIfaces = tag.tagGroupNames.map {
+            it.humanize()
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+        }
         val sum = parentAttributeIfaces + parentElementIfaces
 
         sum.toSet()

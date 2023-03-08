@@ -63,8 +63,8 @@ fun generate(packg: String, todir: String, jsdir: String) {
             emptyLine()
 
             Repository.tags.values.filterIgnored().forEach {
-                val contentlessTag = it.name.toLowerCase() in contentlessTags
-                if (it.possibleChildren.isEmpty() && it.name.toLowerCase() !in emptyTags && !contentlessTag) {
+                val contentlessTag = it.name.lowercase() in contentlessTags
+                if (it.possibleChildren.isEmpty() && it.name.lowercase() !in emptyTags && !contentlessTag) {
                     consumerBuilderShared(it, false)
                 } else if (contentlessTag) {
                     deprecated("This tag doesn't support content or requires unsafe (try unsafe {})")
@@ -92,8 +92,8 @@ fun generate(packg: String, todir: String, jsdir: String) {
             emptyLine()
 
             Repository.tags.values.filterIgnored().forEach {
-                val contentlessTag = it.name.toLowerCase() in contentlessTags
-                if (it.possibleChildren.isEmpty() && it.name.toLowerCase() !in emptyTags && !contentlessTag) {
+                val contentlessTag = it.name.lowercase() in contentlessTags
+                if (it.possibleChildren.isEmpty() && it.name.lowercase() !in emptyTags && !contentlessTag) {
                     consumerBuilderJS(it, false)
                 } else if (contentlessTag) {
                     deprecated("This tag doesn't support content or requires unsafe (try unsafe {})")
@@ -120,7 +120,8 @@ fun generate(packg: String, todir: String, jsdir: String) {
 
             Repository.attributeFacades.filter { it.value.attributeNames.any { it.startsWith("on") } }.forEach { facade ->
                 facade.value.attributes.filter { it.name.startsWith("on") }.forEach {
-                    eventProperty(facade.value.name.capitalize() + "Facade", it)
+                    eventProperty(facade.value.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + "Facade",
+                        it)
                 }
             }
         }
@@ -272,10 +273,10 @@ fun generate(packg: String, todir: String, jsdir: String) {
                 }
 
                 append(";")
-                appendln()
+                appendLine()
 
                 variable(Var(name = "text", type = "String"))
-                appendln()
+                appendLine()
                 getter()
                 defineIs(StringBuilder().apply {
                     append("&".quote())
@@ -285,7 +286,7 @@ fun generate(packg: String, todir: String, jsdir: String) {
                     append(" + ")
                     append(";".quote())
                 })
-                appendln()
+                appendLine()
             }
         }
     }

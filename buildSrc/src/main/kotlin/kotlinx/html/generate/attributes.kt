@@ -35,13 +35,14 @@ fun Appendable.attributeProperty(attribute: AttributeInfo, receiver: String? = n
 }
 
 fun Appendable.facade(facade: AttributeFacade) {
-    val facadeName = facade.name.capitalize() + "Facade"
+    val facadeName =
+        facade.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + "Facade"
 
     clazz(Clazz(facadeName, isInterface = true, parents = listOf("Tag"))) {
     }
 
     facade.attributes.filter { !isAttributeExcluded(it.name) }.forEach { attribute ->
-        if (attribute.name.isLowerCase() || attribute.name.toLowerCase() !in facade.attributeNames) {
+        if (attribute.name.isLowercase() || attribute.name.lowercase() !in facade.attributeNames) {
             attributeProperty(attribute, receiver = facadeName, indent = 0)
         }
     }

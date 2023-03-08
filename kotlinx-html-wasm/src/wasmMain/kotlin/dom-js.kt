@@ -5,6 +5,7 @@ import kotlinx.html.consumers.*
 import kotlinx.html.org.w3c.dom.events.Event
 import org.w3c.dom.*
 
+@Suppress("UNCHECKED_CAST")
 private inline fun HTMLElement.setEvent(name: String, noinline callback : (Event) -> Unit) : Unit {
     addEventListener(name.substring(2), callback as (org.w3c.dom.events.Event) -> Unit)
 }

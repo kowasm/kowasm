@@ -35,7 +35,12 @@ fun handleAttributeDeclaration(prefix: String, attributeDeclaration: XSAttribute
                 .filter { it.name == "enumeration" }
                 .map { it.value.value }
 
-        return AttributeInfo(name, AttributeType.STRING, enumValues = enumEntries.toAttributeValues(), enumTypeName = prefix.capitalize() + name.humanize().capitalize())
+        return AttributeInfo(
+            name,
+            AttributeType.STRING,
+            enumValues = enumEntries.toAttributeValues(),
+            enumTypeName = prefix.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + name.humanize()
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() })
     } else if (type.isPrimitive || type.name in setOf<String?>("integer", "string", "boolean", "decimal")) {
         return AttributeInfo(name, xsdToType[type.primitiveType.name] ?: AttributeType.STRING)
     } else if (type.isRestriction) {
@@ -52,7 +57,12 @@ fun handleAttributeDeclaration(prefix: String, attributeDeclaration: XSAttribute
         } else if (enumEntries.isEmpty()) {
             return AttributeInfo(name, AttributeType.STRING)
         } else {
-            return AttributeInfo(name, AttributeType.ENUM, enumValues = enumEntries.toAttributeValues(), enumTypeName = prefix.capitalize() + name.humanize().capitalize())
+            return AttributeInfo(
+                name,
+                AttributeType.ENUM,
+                enumValues = enumEntries.toAttributeValues(),
+                enumTypeName = prefix.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + name.humanize()
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() })
         }
     } else {
         return AttributeInfo(name, AttributeType.STRING)
