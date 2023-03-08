@@ -1,7 +1,7 @@
 package org.kowasm.web.server
 
 import org.kowasm.web.HttpHeaders
-import org.kowasm.web.HttpMethod
+import org.kowasm.web.Method
 
 fun interface RequestPredicate {
 
@@ -28,8 +28,8 @@ object RequestPredicates {
 
     fun all() = RequestPredicate { true }
 
-    fun method(httpMethod: HttpMethod): RequestPredicate {
-        return HttpMethodPredicate(httpMethod)
+    fun method(method: Method): RequestPredicate {
+        return HttpMethodPredicate(method)
     }
 
     @Suppress("NAME_SHADOWING")
@@ -46,46 +46,46 @@ object RequestPredicates {
     }
 
     fun GET(pattern: String): RequestPredicate {
-        return method(HttpMethod.GET).and(path(pattern))
+        return method(Method.GET).and(path(pattern))
     }
 
     fun HEAD(pattern: String): RequestPredicate {
-        return method(HttpMethod.HEAD).and(path(pattern))
+        return method(Method.HEAD).and(path(pattern))
     }
 
     fun POST(pattern: String): RequestPredicate {
-        return method(HttpMethod.POST).and(path(pattern))
+        return method(Method.POST).and(path(pattern))
     }
 
     fun PUT(pattern: String): RequestPredicate {
-        return method(HttpMethod.PUT).and(path(pattern))
+        return method(Method.PUT).and(path(pattern))
     }
 
     fun PATCH(pattern: String): RequestPredicate {
-        return method(HttpMethod.PATCH).and(path(pattern))
+        return method(Method.PATCH).and(path(pattern))
     }
 
     fun DELETE(pattern: String): RequestPredicate {
-        return method(HttpMethod.DELETE).and(path(pattern))
+        return method(Method.DELETE).and(path(pattern))
     }
 
     fun OPTIONS(pattern: String): RequestPredicate {
-        return method(HttpMethod.OPTIONS).and(path(pattern))
+        return method(Method.OPTIONS).and(path(pattern))
     }
 
     private class HttpMethodPredicate : RequestPredicate {
-        private val httpMethods: Set<HttpMethod>
+        private val methods: Set<Method>
 
-        constructor(httpMethod: HttpMethod) {
-            httpMethods = setOf(httpMethod)
+        constructor(method: Method) {
+            methods = setOf(method)
         }
 
-        constructor(vararg httpMethods: HttpMethod) {
-            this.httpMethods = setOf(*httpMethods)
+        constructor(vararg methods: Method) {
+            this.methods = setOf(*methods)
         }
 
         override fun test(request: ServerRequest): Boolean {
-            return httpMethods.contains(request.method)
+            return methods.contains(request.method)
         }
 
     }

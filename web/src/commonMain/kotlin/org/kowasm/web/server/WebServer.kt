@@ -1,8 +1,8 @@
 package org.kowasm.web.server
 
 import org.kowasm.web.HttpHeaders
-import org.kowasm.web.HttpMethod
-import org.kowasm.web.HttpStatus
+import org.kowasm.web.Method
+import org.kowasm.web.StatusCode
 import kotlin.reflect.KClass
 
 typealias ServerHandler = (request: ServerRequest) -> ServerResponse
@@ -11,7 +11,7 @@ typealias RouterHandler = (request: ServerRequest) -> ServerHandler?
 
 interface ServerRequest {
 
-    val method: HttpMethod
+    val method: Method
 
     val path: String
 
@@ -23,7 +23,7 @@ interface ServerRequest {
 
 interface ServerResponse {
 
-    val status: HttpStatus
+    val status: StatusCode
 
     val headers: HttpHeaders
 
@@ -46,33 +46,33 @@ interface ServerResponse {
 
     companion object {
 
-        fun status(status: HttpStatus): BodyBuilder {
+        fun status(status: StatusCode): BodyBuilder {
             return DefaultServerResponseBuilder(status)
         }
 
         fun ok(): BodyBuilder {
-            return status(HttpStatus.OK)
+            return status(StatusCode.OK)
         }
 
         fun accepted(): BodyBuilder {
-            return status(HttpStatus.ACCEPTED)
+            return status(StatusCode.ACCEPTED)
         }
 
         fun noContent(): HeadersBuilder<*> {
-            return status(HttpStatus.NO_CONTENT)
+            return status(StatusCode.NO_CONTENT)
         }
 
         fun badRequest(): BodyBuilder {
-            return status(HttpStatus.BAD_REQUEST)
+            return status(StatusCode.BAD_REQUEST)
         }
 
         fun notFound(): HeadersBuilder<*> {
-            return status(HttpStatus.NOT_FOUND)
+            return status(StatusCode.NOT_FOUND)
         }
     }
 }
 
-class DefaultServerResponseBuilder(val status: HttpStatus) : ServerResponse.BodyBuilder {
+class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.BodyBuilder {
 
     private val headers: HttpHeaders = HttpHeaders()
 
@@ -95,7 +95,7 @@ class DefaultServerResponseBuilder(val status: HttpStatus) : ServerResponse.Body
 
     override fun build(): ServerResponse {
         return object: ServerResponse {
-            override val status: HttpStatus
+            override val status: StatusCode
                 get() = this@DefaultServerResponseBuilder.status
             override val headers: HttpHeaders
                 get() = this@DefaultServerResponseBuilder.headers

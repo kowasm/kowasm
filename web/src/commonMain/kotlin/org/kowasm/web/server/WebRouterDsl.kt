@@ -1,8 +1,8 @@
 package org.kowasm.web.server
 
 import org.kowasm.web.HttpHeaders
-import org.kowasm.web.HttpMethod
-import org.kowasm.web.HttpStatus
+import org.kowasm.web.Method
+import org.kowasm.web.StatusCode
 import org.kowasm.web.MediaType
 
 class WebRouterDsl internal constructor (private val dsl: (WebRouterDsl.() -> Unit)) {
@@ -107,7 +107,7 @@ class WebRouterDsl internal constructor (private val dsl: (WebRouterDsl.() -> Un
     fun accept(mediaType: MediaType): RequestPredicate =
         RequestPredicates.headers { it[HttpHeaders.ACCEPT]!!.contains(mediaType.toString()) }
 
-    fun method(httpMethod: HttpMethod): RequestPredicate = RequestPredicates.method(httpMethod)
+    fun method(method: Method): RequestPredicate = RequestPredicates.method(method)
 
     fun path(pattern: String): RequestPredicate = RequestPredicates.path(pattern)
 
@@ -147,6 +147,6 @@ class WebRouterDsl internal constructor (private val dsl: (WebRouterDsl.() -> Un
     /**
      * @see ServerResponse.status
      */
-    fun status(status: HttpStatus) = ServerResponse.status(status)
+    fun status(status: StatusCode) = ServerResponse.status(status)
 
 }

@@ -1,8 +1,8 @@
 package org.kowasm.web.server.nodejs
 
 import org.kowasm.web.HttpHeaders
-import org.kowasm.web.HttpMethod
-import org.kowasm.web.HttpStatus
+import org.kowasm.web.Method
+import org.kowasm.web.StatusCode
 import org.kowasm.web.server.ServerRequest
 import org.kowasm.web.server.ServerResponse
 import org.kowasm.web.server.WebServerDsl
@@ -15,7 +15,7 @@ fun WebServerDsl.listen() {
     val requestListener: RequestListener = { req, res ->
         val request = NodejsServerRequest(req)
         val handler = routerHandler!!.invoke(request)
-        val response = handler?.invoke(request) ?: ServerResponse.status(HttpStatus.NOT_FOUND).build()
+        val response = handler?.invoke(request) ?: ServerResponse.status(StatusCode.NOT_FOUND).build()
         res.statusCode = response.status.code
         for (header in response.headers) {
             res.setHeader(header.key, header.value)
@@ -36,17 +36,17 @@ fun WebServerDsl.listen() {
 
 class NodejsServerRequest(private val incomingMessage: IncomingMessage): ServerRequest {
 
-    override val method: HttpMethod
+    override val method: Method
         get() = when (incomingMessage.method) {
-            HttpMethod.GET.method -> HttpMethod.GET
-            HttpMethod.HEAD.method -> HttpMethod.HEAD
-            HttpMethod.POST.method -> HttpMethod.POST
-            HttpMethod.PUT.method -> HttpMethod.PUT
-            HttpMethod.PATCH.method -> HttpMethod.PATCH
-            HttpMethod.OPTIONS.method -> HttpMethod.OPTIONS
-            HttpMethod.TRACE.method -> HttpMethod.TRACE
-            HttpMethod.DELETE.method -> HttpMethod.DELETE
-            else -> HttpMethod.Other(incomingMessage.method)
+            Method.GET.method -> Method.GET
+            Method.HEAD.method -> Method.HEAD
+            Method.POST.method -> Method.POST
+            Method.PUT.method -> Method.PUT
+            Method.PATCH.method -> Method.PATCH
+            Method.OPTIONS.method -> Method.OPTIONS
+            Method.TRACE.method -> Method.TRACE
+            Method.DELETE.method -> Method.DELETE
+            else -> Method.Other(incomingMessage.method)
         }
 
     override val path: String

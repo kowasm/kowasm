@@ -1,6 +1,6 @@
 package org.kowasm.web.server
 
-import org.kowasm.web.HttpMethod
+import org.kowasm.web.Method
 
 object WebRouter {
 
@@ -79,7 +79,7 @@ internal class WebRouterBuilder  : WebRouter.Builder {
     }
 
     override fun GET(handler: ServerHandler): WebRouter.Builder {
-        return add(RequestPredicates.method(HttpMethod.GET), handler)
+        return add(RequestPredicates.method(Method.GET), handler)
     }
 
     override fun GET(pattern: String, handler: ServerHandler): WebRouter.Builder {
@@ -87,7 +87,7 @@ internal class WebRouterBuilder  : WebRouter.Builder {
     }
 
     override fun HEAD(handler: ServerHandler): WebRouter.Builder {
-        return add(RequestPredicates.method(HttpMethod.HEAD), handler)
+        return add(RequestPredicates.method(Method.HEAD), handler)
     }
 
     override fun HEAD(pattern: String, handler: ServerHandler): WebRouter.Builder {
@@ -99,7 +99,7 @@ internal class WebRouterBuilder  : WebRouter.Builder {
     }
 
     override fun POST(handler: ServerHandler): WebRouter.Builder {
-        return add(RequestPredicates.method(HttpMethod.POST), handler)
+        return add(RequestPredicates.method(Method.POST), handler)
     }
 
     override fun PUT(pattern: String, handler: ServerHandler): WebRouter.Builder {
@@ -107,7 +107,7 @@ internal class WebRouterBuilder  : WebRouter.Builder {
     }
 
     override fun PUT(handler: ServerHandler): WebRouter.Builder {
-        return add(RequestPredicates.method(HttpMethod.PUT), handler)
+        return add(RequestPredicates.method(Method.PUT), handler)
     }
 
     override fun PATCH(pattern: String, handler: ServerHandler): WebRouter.Builder {
@@ -115,7 +115,7 @@ internal class WebRouterBuilder  : WebRouter.Builder {
     }
 
     override fun PATCH(handler: ServerHandler): WebRouter.Builder {
-        return add(RequestPredicates.method(HttpMethod.PATCH), handler)
+        return add(RequestPredicates.method(Method.PATCH), handler)
     }
 
     override fun DELETE(pattern: String, handler: ServerHandler): WebRouter.Builder {
@@ -123,7 +123,7 @@ internal class WebRouterBuilder  : WebRouter.Builder {
     }
 
     override fun DELETE(handler: ServerHandler): WebRouter.Builder {
-        return add(RequestPredicates.method(HttpMethod.DELETE), handler)
+        return add(RequestPredicates.method(Method.DELETE), handler)
     }
 
     override fun OPTIONS(pattern: String, handler: ServerHandler): WebRouter.Builder {
@@ -131,7 +131,7 @@ internal class WebRouterBuilder  : WebRouter.Builder {
     }
 
     override fun OPTIONS(handler: ServerHandler): WebRouter.Builder {
-        return add(RequestPredicates.method(HttpMethod.OPTIONS), handler)
+        return add(RequestPredicates.method(Method.OPTIONS), handler)
     }
 
     override fun build(): RouterHandler {
