@@ -3,6 +3,9 @@ package org.kowasm.web.http.server
 import org.kowasm.core.Dsl
 import org.kowasm.web.http.*
 
+/**
+ * Dsl for configuring a router.
+ */
 @Dsl
 class RouterDsl internal constructor (private val dsl: (RouterDsl.() -> Unit)) {
 
