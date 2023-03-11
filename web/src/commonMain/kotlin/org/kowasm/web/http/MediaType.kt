@@ -8,16 +8,16 @@ package org.kowasm.web.http
  */
 sealed class MediaType(val type: String, val subtype: String) {
 
-    /** A media type for plain text. */
+    /** The media type for plain text. */
     object TEXT_PLAIN : MediaType("text", "plain")
 
-    /** A media type for HTML. */
+    /** The media type for HTML. */
     object TEXT_HTML : MediaType("text", "html")
 
-    /** A media type for JSON. */
+    /** The media type for JSON. */
     object APPLICATION_JSON : MediaType("application", "json")
 
-    /** A media type for XML. */
+    /** The media type for XML. */
     object APPLICATION_XML : MediaType("application", "xml")
 
     /** Returns a media type for the given type and subtype, for example `text/plain`. */
