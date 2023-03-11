@@ -6,6 +6,7 @@ pluginManagement {
 
 rootProject.name = "kowasm"
 
+include("core")
 include("wasi")
 include("web")
 include("component-model")

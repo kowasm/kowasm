@@ -1,5 +1,6 @@
 package org.kowasm.web
 
+import org.kowasm.core.Dsl
 import org.kowasm.web.http.server.RouterDsl
 import org.kowasm.web.http.server.RouterHandler
 

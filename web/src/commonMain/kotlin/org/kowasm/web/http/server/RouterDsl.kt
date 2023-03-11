@@ -1,10 +1,12 @@
 package org.kowasm.web.http.server
 
+import org.kowasm.core.Dsl
 import org.kowasm.web.http.Header
 import org.kowasm.web.http.Method
 import org.kowasm.web.http.StatusCode
 import org.kowasm.web.http.MediaType
 
+@Dsl
 class RouterDsl internal constructor (private val dsl: (RouterDsl.() -> Unit)) {
 
     @PublishedApi

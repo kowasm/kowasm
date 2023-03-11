@@ -8,6 +8,11 @@ kotlin {
         nodejs()
     }
     sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core"))
+            }
+        }
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
