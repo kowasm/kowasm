@@ -5,11 +5,7 @@ import org.kowasm.web.http.server.RouterDsl
 import org.kowasm.web.http.server.RouterHandler
 
 @Dsl
-open class WebServerDsl(internal val init: WebServerDsl.() -> Unit) {
-
-    var port: Number = 8080
-
-    var hostname: String = "localhost"
+open class WebServerDsl(var host: String, var port: Number, internal val init: WebServerDsl.() -> Unit) {
 
     internal var routerHandler : RouterHandler? = null
 
@@ -19,6 +15,6 @@ open class WebServerDsl(internal val init: WebServerDsl.() -> Unit) {
 
 }
 
-fun webServer(dsl: WebServerDsl.() -> Unit =  {}): WebServerDsl {
-    return WebServerDsl(dsl).apply { init() }
+fun webServer(host: String = "localhost", port: Number = 8080, dsl: WebServerDsl.() -> Unit): WebServerDsl {
+    return WebServerDsl(host, port, dsl).apply { init() }
 }

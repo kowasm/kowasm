@@ -9,7 +9,10 @@ import org.nodejs.http.IncomingMessage
 import org.nodejs.http.createServer
 import kotlin.reflect.KClass
 
-fun WebServerDsl.listen() {
+/**
+ * Starts a Nodejs server listening on the specified host and port.
+ */
+fun WebServerDsl.startNodejs() {
     val requestListener: RequestListener = { req, res ->
         val request = NodejsServerRequest(req)
         val handler = routerHandler!!.invoke(request)
@@ -29,12 +32,12 @@ fun WebServerDsl.listen() {
         }
     }
     val server = createServer(requestListener)
-    server.listen(port, hostname) {
+    server.listen(port, host) {
         println("Nodejs server is running on port $port")
     }
 }
 
-class NodejsServerRequest(private val incomingMessage: IncomingMessage): ServerRequest {
+private class NodejsServerRequest(private val incomingMessage: IncomingMessage): ServerRequest {
 
     override val method: Method by lazy {
         incomingMessage.method.toMethod()
