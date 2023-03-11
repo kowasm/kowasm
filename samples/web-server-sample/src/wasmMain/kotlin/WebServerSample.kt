@@ -21,7 +21,6 @@ import kotlinx.html.html
 import kotlinx.html.p
 import kotlinx.html.stream.createHTML
 import org.kowasm.wasi.*
-import org.kowasm.web.http.HeaderName
 import org.kowasm.web.http.MediaType
 import org.kowasm.web.http.RequestHeaderName
 import org.kowasm.web.server.nodejs.listen
@@ -50,7 +49,7 @@ val content = createHTML().html {
 
     val fileContent = Wasi.read(descriptor, 1024u).first.decodeToString()
     body {
-        h1 { +"Kotlin/Wasm demo of WASI exposed via Node.js HTTP server" }
+        h1 { +"Kotlin/Wasm WASI web server demo" }
         p { +"Current time: $now" }
         p { +"Pseudo random number generator: ${pseudoGenerator.nextLong()}, ${pseudoGenerator.nextLong()}, ${pseudoGenerator.nextLong()}" }
         p { +"Secure random number generator: ${secureGenerator.nextLong()}, ${secureGenerator.nextLong()}, ${secureGenerator.nextLong()}" }
