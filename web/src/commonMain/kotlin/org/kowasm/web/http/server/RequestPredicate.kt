@@ -1,7 +1,7 @@
 package org.kowasm.web.http.server
 
-import org.kowasm.web.http.Headers
 import org.kowasm.web.http.Method
+import org.kowasm.web.http.RequestHeaders
 
 fun interface RequestPredicate {
 
@@ -41,7 +41,7 @@ object RequestPredicates {
         return PathPredicate(path)
     }
 
-    fun headers(headersPredicate: (Headers) -> Boolean): RequestPredicate {
+    fun headers(headersPredicate: (RequestHeaders) -> Boolean): RequestPredicate {
         return HeadersPredicate(headersPredicate)
     }
 
@@ -97,7 +97,7 @@ object RequestPredicates {
         }
     }
 
-    private class HeadersPredicate(private val headersPredicate: (Headers) -> Boolean) : RequestPredicate {
+    private class HeadersPredicate(private val headersPredicate: (RequestHeaders) -> Boolean) : RequestPredicate {
         override fun test(request: ServerRequest) = headersPredicate.invoke(request.headers)
     }
 

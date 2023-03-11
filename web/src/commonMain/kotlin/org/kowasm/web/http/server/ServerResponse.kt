@@ -1,18 +1,18 @@
 package org.kowasm.web.http.server
 
-import org.kowasm.web.http.Header
-import org.kowasm.web.http.Headers
-import org.kowasm.web.http.StatusCode
+import org.kowasm.web.http.*
 
 interface ServerResponse {
 
     val status: StatusCode
 
-    val headers: Headers
+    val headers: ResponseHeaders
 
     val body: ByteArray?
 
     interface HeadersBuilder<B : HeadersBuilder<B>> {
+
+        fun header(name: ResponseHeaderName, vararg value: String): B
 
         fun header(name: String, vararg value: String): B
 
@@ -57,7 +57,7 @@ interface ServerResponse {
 
 class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.BodyBuilder {
 
-    private val headers: MutableList<Header> = mutableListOf()
+    private val headers: MutableMap<ResponseHeaderName, List<String>> = mutableMapOf()
 
     var body: ByteArray? = null
 
@@ -71,8 +71,13 @@ class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.Body
         return this.build()
     }
 
+    override fun header(name: ResponseHeaderName, vararg value: String): ServerResponse.BodyBuilder {
+        headers[name] = value.toList()
+        return this
+    }
+
     override fun header(name: String, vararg value: String): ServerResponse.BodyBuilder {
-        headers.add(Header.from(name, value.toList()))
+        headers[name.toResponseHeaderName()] = value.toList()
         return this
     }
 
@@ -80,8 +85,8 @@ class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.Body
         return object: ServerResponse {
             override val status: StatusCode
                 get() = this@DefaultServerResponseBuilder.status
-            override val headers: Headers
-                get() = Headers(this@DefaultServerResponseBuilder.headers)
+            override val headers: ResponseHeaders
+                get() = ResponseHeaders(this@DefaultServerResponseBuilder.headers)
             override val body: ByteArray?
                 get() = this@DefaultServerResponseBuilder.body
 

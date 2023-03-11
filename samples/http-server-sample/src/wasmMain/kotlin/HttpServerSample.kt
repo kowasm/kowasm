@@ -21,8 +21,9 @@ import kotlinx.html.html
 import kotlinx.html.p
 import kotlinx.html.stream.createHTML
 import org.kowasm.wasi.*
-import org.kowasm.web.http.Header
+import org.kowasm.web.http.HeaderName
 import org.kowasm.web.http.MediaType
+import org.kowasm.web.http.RequestHeaderName
 import org.kowasm.web.server.nodejs.listen
 import org.kowasm.web.webServer
 
@@ -30,7 +31,7 @@ fun main() {
     webServer {
         router {
             (GET("/") and accept(MediaType.TEXT_HTML)) {
-                println(it.headers[Header.ACCEPT])
+                println(it.headers[RequestHeaderName.ACCEPT])
                 ok().body(content)
             }
         }

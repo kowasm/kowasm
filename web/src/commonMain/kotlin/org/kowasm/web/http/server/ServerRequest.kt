@@ -1,7 +1,7 @@
 package org.kowasm.web.http.server
 
-import org.kowasm.web.http.Headers
 import org.kowasm.web.http.Method
+import org.kowasm.web.http.RequestHeaders
 import kotlin.reflect.KClass
 
 interface ServerRequest {
@@ -10,7 +10,7 @@ interface ServerRequest {
 
     val path: String
 
-    val headers: Headers
+    val headers: RequestHeaders
 
     fun <T: Any> body(type : KClass<T>): T
 

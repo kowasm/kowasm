@@ -1,10 +1,7 @@
 package org.kowasm.web.http.server
 
 import org.kowasm.core.Dsl
-import org.kowasm.web.http.Header
-import org.kowasm.web.http.Method
-import org.kowasm.web.http.StatusCode
-import org.kowasm.web.http.MediaType
+import org.kowasm.web.http.*
 
 @Dsl
 class RouterDsl internal constructor (private val dsl: (RouterDsl.() -> Unit)) {
@@ -102,12 +99,12 @@ class RouterDsl internal constructor (private val dsl: (RouterDsl.() -> Unit)) {
 
     fun OPTIONS(pattern: String): RequestPredicate = RequestPredicates.OPTIONS(pattern)
 
-    fun headers(headersPredicate: (List<Header>) -> Boolean): RequestPredicate =
+    fun headers(headersPredicate: (RequestHeaders) -> Boolean): RequestPredicate =
         RequestPredicates.headers(headersPredicate)
 
     // TODO Implement real media type matching
     fun accept(mediaType: MediaType): RequestPredicate =
-        RequestPredicates.headers { it[Header.ACCEPT]?.values?.any { value -> value.contains(mediaType.toString()) } ?: false }
+        RequestPredicates.headers { it[RequestHeaderName.ACCEPT]?.any { value -> value.contains(mediaType.toString()) } ?: false }
 
     fun method(method: Method): RequestPredicate = RequestPredicates.method(method)
 

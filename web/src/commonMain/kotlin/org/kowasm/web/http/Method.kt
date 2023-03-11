@@ -59,19 +59,22 @@ sealed class Method(val name: String) {
      */
     class Custom(name: String) : Method(name)
 
-    companion object {
+}
 
-        fun from(name: String): Method = when (name) {
-            GET.name -> GET
-            HEAD.name -> HEAD
-            POST.name -> POST
-            PUT.name -> PUT
-            DELETE.name -> DELETE
-            CONNECT.name -> CONNECT
-            OPTIONS.name -> OPTIONS
-            TRACE.name -> TRACE
-            PATCH.name -> PATCH
-            else -> Custom(name)
-        }
-    }
+/**
+ * Create a [Method] from a [String].
+ *
+ * @receiver The name of the header.
+ */
+fun String.toMethod() = when (this) {
+    Method.GET.name -> Method.GET
+    Method.HEAD.name -> Method.HEAD
+    Method.POST.name -> Method.POST
+    Method.PUT.name -> Method.PUT
+    Method.DELETE.name -> Method.DELETE
+    Method.CONNECT.name -> Method.CONNECT
+    Method.OPTIONS.name -> Method.OPTIONS
+    Method.TRACE.name -> Method.TRACE
+    Method.PATCH.name -> Method.PATCH
+    else -> Method.Custom(this)
 }
