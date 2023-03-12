@@ -15,7 +15,7 @@
  */
 
 import kotlinx.browser.document
-import kotlinx.html.InputType
+import kotlinx.browser.window
 import kotlinx.html.dom.append
 import kotlinx.html.h3
 import kotlinx.html.input
@@ -27,14 +27,23 @@ import reactivity.computed
 import reactivity.ref
 import reactivity.watchEffect
 
-var surname by ref("Sébastien")
-var age by ref(41)
-val message by computed { "Hello! My name is <mark>$surname</mark>. I'm <mark>$age</mark> years old." }
 
+var user by ref(User("Sébastien", 41))
+val message by computed { "Hello! My name is <mark>${user.name}</mark>. I'm <mark>${user.age}</mark> years old." }
 fun main() {
     document.body?.init()
     watchEffect {
         document.getElementByClassName("message").innerHTML = message
+    }
+}
+
+fun updateUserIfValid(updatedUser: User) {
+    val result = validateUser(updatedUser)
+    if (result.errors.isEmpty()) {
+        user = updatedUser
+    }
+    else {
+        window.alert(result.errors.joinToString("\n"))
     }
 }
 
@@ -43,17 +52,17 @@ fun Node.init() {
         h3("message")
         p {
             +"Edit person's name "
-            input(classes = "person-name-input") {
-                value = surname
+            input {
+                value = user.name
                 onKeyUpFunction = {
-                    surname = (it.target as HTMLInputElement).value
+                    updateUserIfValid(user.copy(name = (it.target as HTMLInputElement).value))
                 }
             }
             +" and age "
-            input(classes = "person-age-input") {
-                value = age.toString()
+            input {
+                value = user.age.toString()
                 onKeyUpFunction = {
-                    age = (it.target as HTMLInputElement).value.toInt()
+                    updateUserIfValid(user.copy(age = (it.target as HTMLInputElement).value.toInt()))
                 }
             }
         }
