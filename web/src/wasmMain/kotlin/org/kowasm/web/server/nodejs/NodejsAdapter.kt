@@ -24,7 +24,12 @@ fun WebServerDsl.startNodejs() {
             }
         }
         if (response.body != null) {
-            res.end(response.body!!.decodeToString())
+            if (response.body is String) {
+                res.end(response.body as String)
+            }
+            else {
+                throw UnsupportedOperationException("Only String body is supported")
+            }
         }
         else {
             // TODO Improve

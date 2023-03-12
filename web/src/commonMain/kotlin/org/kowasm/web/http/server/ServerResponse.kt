@@ -8,7 +8,7 @@ interface ServerResponse {
 
     val headers: ResponseHeaders
 
-    val body: ByteArray?
+    val body: Any?
 
     interface HeadersBuilder<B : HeadersBuilder<B>> {
 
@@ -22,9 +22,8 @@ interface ServerResponse {
 
     interface BodyBuilder : HeadersBuilder<BodyBuilder> {
 
-        fun body(body: ByteArray): ServerResponse
+        fun body(body: Any): ServerResponse
 
-        fun body(body: String): ServerResponse
     }
 
     companion object {
@@ -59,18 +58,12 @@ internal class DefaultServerResponseBuilder(val status: StatusCode) : ServerResp
 
     private val headers: MutableMap<ResponseHeaderName, List<String>> = mutableMapOf()
 
-    var body: ByteArray? = null
+    var body: Any? = null
 
-    override fun body(body: ByteArray): ServerResponse {
+    override fun body(body: Any): ServerResponse {
         this.body = body
         return this.build()
     }
-
-    override fun body(body: String): ServerResponse {
-        this.body = body.encodeToByteArray()
-        return this.build()
-    }
-
     override fun header(name: ResponseHeaderName, vararg value: String): ServerResponse.BodyBuilder {
         headers[name] = value.toList()
         return this
@@ -87,7 +80,7 @@ internal class DefaultServerResponseBuilder(val status: StatusCode) : ServerResp
                 get() = this@DefaultServerResponseBuilder.status
             override val headers: ResponseHeaders
                 get() = ResponseHeaders(this@DefaultServerResponseBuilder.headers)
-            override val body: ByteArray?
+            override val body: Any?
                 get() = this@DefaultServerResponseBuilder.body
 
         }
