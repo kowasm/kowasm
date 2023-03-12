@@ -12,6 +12,7 @@ private var atomicEffect: Effect? = null
  * represents a delegate getter
  */
 internal interface Gettable<T> {
+    operator fun getValue(thisRef: Any, property: Any?): T = getValue(null, property)
     operator fun getValue(thisRef: Nothing?, property: Any?): T
 }
 
@@ -19,6 +20,7 @@ internal interface Gettable<T> {
  * represents a delegate setter
  */
 internal interface Settable<T> {
+    operator fun setValue(thisRef: Any, property: Any?, value: T) = setValue(null, property, value)
     operator fun setValue(thisRef: Nothing?, property: Any?, value: T)
 }
 
