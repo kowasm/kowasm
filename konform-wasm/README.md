@@ -1,0 +1,2 @@
+Kotlin/Wasm support for [konform](https://github.com/konform-kt/konform), see https://github.com/konform-kt/konform/issues/68 and https://youtrack.jetbrains.com/issue/KT-57276 related issues.
+Common implementation is for now copied without test and with adapted build until it get Wasm support.
