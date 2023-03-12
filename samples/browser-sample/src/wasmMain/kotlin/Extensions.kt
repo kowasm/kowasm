@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-import kotlinx.browser.document
-import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.get
 
-fun Document.getElementByClassName(className: String): Element {
-    return document.getElementsByClassName(className)[0]!!
+fun Element.getElementByClassName(className: String): Element {
+    return this.getElementsByClassName(className)[0]!!
 }
