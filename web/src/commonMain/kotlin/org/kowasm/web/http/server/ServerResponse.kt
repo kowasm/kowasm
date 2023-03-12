@@ -55,7 +55,7 @@ interface ServerResponse {
     }
 }
 
-class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.BodyBuilder {
+internal class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.BodyBuilder {
 
     private val headers: MutableMap<ResponseHeaderName, List<String>> = mutableMapOf()
 
