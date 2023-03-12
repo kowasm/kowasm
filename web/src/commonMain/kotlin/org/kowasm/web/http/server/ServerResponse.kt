@@ -12,9 +12,9 @@ interface ServerResponse {
 
     interface HeadersBuilder<B : HeadersBuilder<B>> {
 
-        fun header(name: ResponseHeaderName, vararg value: String): B
+        fun header(name: ResponseHeaderName, value: String): B
 
-        fun header(name: String, vararg value: String): B
+        fun header(name: String, value: String): B
 
         fun build(): ServerResponse
 
@@ -56,7 +56,7 @@ interface ServerResponse {
 
 internal class DefaultServerResponseBuilder(val status: StatusCode) : ServerResponse.BodyBuilder {
 
-    private val headers: MutableMap<ResponseHeaderName, List<String>> = mutableMapOf()
+    private val headers: MutableMap<ResponseHeaderName, MutableList<String>> = mutableMapOf()
 
     var body: Any? = null
 
@@ -64,13 +64,18 @@ internal class DefaultServerResponseBuilder(val status: StatusCode) : ServerResp
         this.body = body
         return this.build()
     }
-    override fun header(name: ResponseHeaderName, vararg value: String): ServerResponse.BodyBuilder {
-        headers[name] = value.toList()
+    override fun header(name: ResponseHeaderName, value: String): ServerResponse.BodyBuilder {
+        if (headers.containsKey(name)) {
+            headers[name]!!.add(value)
+        }
+        else {
+            headers[name] = mutableListOf(value)
+        }
         return this
     }
 
-    override fun header(name: String, vararg value: String): ServerResponse.BodyBuilder {
-        headers[name.toResponseHeaderName()] = value.toList()
+    override fun header(name: String, value: String): ServerResponse.BodyBuilder {
+        header(name.toResponseHeaderName(), value)
         return this
     }
 

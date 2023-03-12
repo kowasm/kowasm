@@ -14,8 +14,14 @@ sealed class MediaType(val type: String, val subtype: String) {
     /** The media type for HTML. */
     object TEXT_HTML : MediaType("text", "html")
 
+    /** The media type for Javascript. */
+    object APPLICATION_JAVASCRIPT : MediaType("application", "javascript")
+
     /** The media type for JSON. */
     object APPLICATION_JSON : MediaType("application", "json")
+
+    /** The media type for WebAssembly. */
+    object APPLICATION_WASM : MediaType("application", "wasm")
 
     /** The media type for XML. */
     object APPLICATION_XML : MediaType("application", "xml")

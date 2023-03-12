@@ -31,6 +31,11 @@ sealed class ResponseHeaderName(name: String) : HeaderName(name) {
     object CONNECTION : ResponseHeaderName("Connection")
 
     /**
+     * The HTTP ['Content-Type'](https://www.rfc-editor.org/rfc/rfc1049) header field name.
+     */
+    object CONTENT_TYPE : ResponseHeaderName("Content-Type")
+
+    /**
      * The HTTP [`Date`](https://www.rfc-editor.org/rfc/rfc7231#section-7.1.1.2) header field name.
      */
     object DATE : ResponseHeaderName("Date")

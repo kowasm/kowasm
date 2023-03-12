@@ -1,5 +1,8 @@
 package org.kowasm.web.server.nodejs
 
+import org.khronos.webgl.Uint16Array
+import org.khronos.webgl.Uint8Array
+import org.khronos.webgl.set
 import org.kowasm.web.http.server.ServerRequest
 import org.kowasm.web.http.server.ServerResponse
 import org.kowasm.web.WebServerDsl
@@ -27,6 +30,9 @@ fun WebServerDsl.startNodejs() {
             if (response.body is String) {
                 res.end(response.body as String)
             }
+            else if (response.body is ByteArray) {
+                res.end(copyToUint8Array(response.body as ByteArray))
+            }
             else {
                 throw UnsupportedOperationException("Only String body is supported")
             }
@@ -40,6 +46,14 @@ fun WebServerDsl.startNodejs() {
     server.listen(port, host) {
         println("Nodejs server is running on port $port")
     }
+}
+
+private fun copyToUint8Array(array: ByteArray): Uint8Array {
+    val result = Uint8Array(array.size)
+    for (i in array.indices) {
+        result[i] = array[i]
+    }
+    return result
 }
 
 private class NodejsServerRequest(private val incomingMessage: IncomingMessage): ServerRequest {
