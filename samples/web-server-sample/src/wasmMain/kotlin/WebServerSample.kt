@@ -15,10 +15,7 @@
  */
 
 import kotlinx.datetime.Clock
-import kotlinx.html.body
-import kotlinx.html.h1
-import kotlinx.html.html
-import kotlinx.html.p
+import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 import org.kowasm.wasi.*
 import org.kowasm.web.http.MediaType
@@ -38,6 +35,9 @@ fun main() {
 }
 
 val content = createHTML().html {
+    head {
+        meta { charset = "utf-8" }
+    }
     val now = Clock.System.now()
     val pseudoGenerator = SeededWasiRandom()
     val secureGenerator = SecureWasiRandom()
