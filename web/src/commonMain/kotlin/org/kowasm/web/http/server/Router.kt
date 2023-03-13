@@ -1,55 +1,78 @@
 package org.kowasm.web.http.server
 
-import org.kowasm.web.http.Method
-
+/**
+ * Provides access to route functions and builder.
+ */
 object Router {
 
+    /**
+     * Create a [Router.Builder] to define routes.
+     */
     fun route(): Builder {
         return RouterBuilder()
     }
 
-    fun route(predicate: RequestPredicate, handlerFunction: ServerHandler): RouterHandler {
+    /**
+     * Create a [RouterHandler] invoking the specified [ExchangeHandler] when the specified [RequestPredicate] matches.
+     */
+    fun route(predicate: RequestPredicate, handlerFunction: ExchangeHandler): RouterHandler {
         return DefaultRouterHandler(predicate, handlerFunction)
     }
 
+    /**
+     * Builder for defining routes.
+     */
     interface Builder {
 
-        fun GET(handler: ServerHandler): Builder
+        /**
+         * Define a route for GET requests with the specified path pattern.
+         */
+        fun GET(pattern: String, handler: ExchangeHandler): Builder
 
-        fun GET(pattern: String, handler: ServerHandler): Builder
+        /**
+         * Define a route for POST requests with the specified path pattern.
+         */
+        fun HEAD(pattern: String, handler: ExchangeHandler): Builder
 
-        fun HEAD(handler: ServerHandler): Builder
+        /**
+         * Define a route for POST requests with the specified path pattern.
+         */
+        fun POST(pattern: String, handler: ExchangeHandler): Builder
 
-        fun HEAD(pattern: String, handler: ServerHandler): Builder
+        /**
+         * Define a route for PUT requests with the specified path pattern.
+         */
+        fun PUT(pattern: String, handler: ExchangeHandler): Builder
 
-        fun POST(handler: ServerHandler): Builder
+        /**
+         * Define a route for PATCH requests with the specified path pattern.
+         */
+        fun PATCH(pattern: String, handler: ExchangeHandler): Builder
 
-        fun POST(pattern: String, handler: ServerHandler): Builder
+        /**
+         * Define a route for DELETE requests with the specified path pattern.
+         */
+        fun DELETE(pattern: String, handler: ExchangeHandler): Builder
 
-        fun PUT(handler: ServerHandler): Builder
+        /**
+         * Define a route for OPTIONS requests with the specified path pattern.
+         */
+        fun OPTIONS(pattern: String, handler: ExchangeHandler): Builder
 
-        fun PUT(pattern: String, handler: ServerHandler): Builder
-
-        fun PATCH(handler: ServerHandler): Builder
-
-        fun PATCH(pattern: String, handler: ServerHandler): Builder
-
-        fun DELETE(handler: ServerHandler): Builder
-
-        fun DELETE(pattern: String, handler: ServerHandler): Builder
-
-        fun OPTIONS(handler: ServerHandler): Builder
-
-        fun OPTIONS(pattern: String, handler: ServerHandler): Builder
-
+        /**
+         * Add the specified [RouterHandler] to the routes.
+         */
         fun add(routerHandler: RouterHandler): Builder
 
+        /**
+         * Build the [Router] from the defined routes.
+         */
         fun build(): RouterHandler
     }
 
-    private class DefaultRouterHandler(private val predicate: RequestPredicate, private val handler: ServerHandler) : RouterHandler {
+    private class DefaultRouterHandler(private val predicate: RequestPredicate, private val handler: ExchangeHandler) : RouterHandler {
 
-        override fun invoke(request: ServerRequest): ServerHandler? {
+        override fun invoke(request: ServerRequest): ExchangeHandler? {
             return if (predicate.test(request)) {
                 handler
             } else {
@@ -71,66 +94,38 @@ internal class RouterBuilder : Router.Builder {
 
     private fun add(
         predicate: RequestPredicate,
-        handler: ServerHandler
+        handler: ExchangeHandler
     ): Router.Builder {
         routerFunctions.add(Router.route(predicate, handler))
         return this
     }
 
-    override fun GET(handler: ServerHandler): Router.Builder {
-        return add(RequestPredicates.method(Method.GET), handler)
-    }
-
-    override fun GET(pattern: String, handler: ServerHandler): Router.Builder {
+    override fun GET(pattern: String, handler: ExchangeHandler): Router.Builder {
         return add(RequestPredicates.GET(pattern), handler)
     }
 
-    override fun HEAD(handler: ServerHandler): Router.Builder {
-        return add(RequestPredicates.method(Method.HEAD), handler)
-    }
-
-    override fun HEAD(pattern: String, handler: ServerHandler): Router.Builder {
+    override fun HEAD(pattern: String, handler: ExchangeHandler): Router.Builder {
         return add(RequestPredicates.HEAD(pattern), handler)
     }
 
-    override fun POST(pattern: String, handler: ServerHandler): Router.Builder {
+    override fun POST(pattern: String, handler: ExchangeHandler): Router.Builder {
         return add(RequestPredicates.POST(pattern), handler)
     }
 
-    override fun POST(handler: ServerHandler): Router.Builder {
-        return add(RequestPredicates.method(Method.POST), handler)
-    }
-
-    override fun PUT(pattern: String, handler: ServerHandler): Router.Builder {
+    override fun PUT(pattern: String, handler: ExchangeHandler): Router.Builder {
         return add(RequestPredicates.PUT(pattern), handler)
     }
 
-    override fun PUT(handler: ServerHandler): Router.Builder {
-        return add(RequestPredicates.method(Method.PUT), handler)
-    }
-
-    override fun PATCH(pattern: String, handler: ServerHandler): Router.Builder {
+    override fun PATCH(pattern: String, handler: ExchangeHandler): Router.Builder {
         return add(RequestPredicates.PATCH(pattern), handler)
     }
 
-    override fun PATCH(handler: ServerHandler): Router.Builder {
-        return add(RequestPredicates.method(Method.PATCH), handler)
-    }
-
-    override fun DELETE(pattern: String, handler: ServerHandler): Router.Builder {
+    override fun DELETE(pattern: String, handler: ExchangeHandler): Router.Builder {
         return add(RequestPredicates.DELETE(pattern), handler)
     }
 
-    override fun DELETE(handler: ServerHandler): Router.Builder {
-        return add(RequestPredicates.method(Method.DELETE), handler)
-    }
-
-    override fun OPTIONS(pattern: String, handler: ServerHandler): Router.Builder {
+    override fun OPTIONS(pattern: String, handler: ExchangeHandler): Router.Builder {
         return add(RequestPredicates.OPTIONS(pattern), handler)
-    }
-
-    override fun OPTIONS(handler: ServerHandler): Router.Builder {
-        return add(RequestPredicates.method(Method.OPTIONS), handler)
     }
 
     override fun build(): RouterHandler {
@@ -141,7 +136,7 @@ internal class RouterBuilder : Router.Builder {
 
     private class RouterFunctions(private val routerFunctions: List<RouterHandler>) : RouterHandler {
 
-        override fun invoke(request: ServerRequest): ServerHandler? {
+        override fun invoke(request: ServerRequest): ExchangeHandler? {
             for (routerFunction in routerFunctions) {
                 val result = routerFunction.invoke(request)
                 if (result != null) {

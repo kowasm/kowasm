@@ -30,73 +30,44 @@ class RouterDsl internal constructor (private val dsl: (RouterDsl.() -> Unit)) {
         builder.add(Router.route(this, f))
     }
 
-    fun GET(f: ServerHandler) {
-        builder.GET(f)
-    }
-
-    fun GET(pattern: String, f: ServerHandler) {
+    fun GET(pattern: String, f: ExchangeHandler) {
         builder.GET(pattern, f)
     }
 
     fun GET(pattern: String): RequestPredicate = RequestPredicates.GET(pattern)
 
-    fun HEAD(f: ServerHandler) {
-        builder.HEAD(f)
-    }
-
-    fun HEAD(pattern: String, f: ServerHandler) {
+    fun HEAD(pattern: String, f: ExchangeHandler) {
         builder.HEAD(pattern, f)
     }
 
     fun HEAD(pattern: String): RequestPredicate = RequestPredicates.HEAD(pattern)
 
-    fun POST(f: ServerHandler) {
-        builder.POST(f)
-    }
-
-    fun POST(pattern: String, f: ServerHandler) {
+    fun POST(pattern: String, f: ExchangeHandler) {
         builder.POST(pattern, f)
     }
 
     fun POST(pattern: String): RequestPredicate = RequestPredicates.POST(pattern)
 
-    fun PUT(f: ServerHandler) {
-        builder.PUT(f)
-    }
-
-    fun PUT(pattern: String, f: ServerHandler) {
+    fun PUT(pattern: String, f: ExchangeHandler) {
         builder.PUT(pattern, f)
     }
 
     fun PUT(pattern: String): RequestPredicate = RequestPredicates.PUT(pattern)
 
-    fun PATCH(f: ServerHandler) {
-        builder.PATCH(f)
-    }
-
-    fun PATCH(pattern: String, f: ServerHandler) {
+    fun PATCH(pattern: String, f: ExchangeHandler) {
         builder.PATCH(pattern, f)
     }
 
     fun PATCH(pattern: String): RequestPredicate = RequestPredicates.PATCH(pattern)
 
-
-    fun DELETE(f: ServerHandler) {
-        builder.DELETE(f)
-    }
-
-    fun DELETE(pattern: String, f: ServerHandler) {
+    fun DELETE(pattern: String, f: ExchangeHandler) {
         builder.DELETE(pattern, f)
     }
 
     fun DELETE(pattern: String): RequestPredicate = RequestPredicates.DELETE(pattern)
 
 
-    fun OPTIONS(f: ServerHandler) {
-        builder.OPTIONS(f)
-    }
-
-    fun OPTIONS(pattern: String, f: ServerHandler) {
+    fun OPTIONS(pattern: String, f: ExchangeHandler) {
         builder.OPTIONS(pattern, f)
     }
 
