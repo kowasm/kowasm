@@ -1,5 +1,9 @@
-@file:Suppress("MayBeConstant", "RedundantNullableReturnType", "UNUSED_PARAMETER")
+/*
+ * Copyright 2023 the original author or authors.
+ * Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+ */
 
+@file:Suppress("MayBeConstant", "RedundantNullableReturnType", "UNUSED_PARAMETER")
 package org.kowasm.componentmodel
 
 // Kotlin equivalent of WIT constructs defined in https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md
