@@ -11,8 +11,7 @@ import org.kowasm.wasi.StandardDescriptor
 import org.kowasm.wasi.Wasi
 import org.kowasm.web.http.MediaType
 import org.kowasm.web.http.RequestHeaderName
-import org.kowasm.web.http.ResponseHeaderName
-import org.kowasm.web.server.nodejs.startNodejs
+import org.kowasm.web.nodejs.startNodejs
 import org.kowasm.web.webServer
 
 fun main() {
@@ -30,7 +29,7 @@ fun main() {
                 )
                 val fileContent = Wasi.read(descriptor, 10000u).first.decodeToString()
                 ok()
-                    .header(ResponseHeaderName.CONTENT_TYPE, MediaType.APPLICATION_JAVASCRIPT.toString())
+                    .contentType(MediaType.APPLICATION_JAVASCRIPT)
                     .body(fileContent)
             }
             GET("/kowasm-client-wasm.wasm") {
@@ -41,7 +40,7 @@ fun main() {
                 )
                 val fileContent = Wasi.read(descriptor, 100000u).first
                 ok()
-                    .header(ResponseHeaderName.CONTENT_TYPE, MediaType.APPLICATION_WASM.toString())
+                    .contentType(MediaType.APPLICATION_WASM)
                     .body(fileContent)
             }
         }

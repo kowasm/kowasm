@@ -23,18 +23,6 @@ kotlin {
                 implementation(project(":kotlinx-nodejs-wasm"))
             }
         }
-        val wasmTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(project(":kotlinx-datetime-wasm"))
-                implementation(project(":wasi"))
-            }
-        }
-    }
-
-    // Disabled for now since require custom WASI module configuration, run wasi/test.sh instead.
-    tasks.named("wasmNodeTest") {
-        enabled = false
     }
 
 }

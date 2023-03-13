@@ -33,6 +33,13 @@ interface ServerResponse {
     interface HeadersBuilder<B : HeadersBuilder<B>> {
 
         /**
+         * Set the content type of the response.
+         *
+         * @param contentType the content type
+         */
+        fun contentType(contentType: MediaType): B
+
+        /**
          * Add the given header.
          *
          * @param name the header name
@@ -133,6 +140,12 @@ internal class DefaultServerResponseBuilder(val status: StatusCode) : ServerResp
         this.body = body
         return this.build()
     }
+
+    override fun contentType(contentType: MediaType): ServerResponse.BodyBuilder {
+        header(ResponseHeaderName.CONTENT_TYPE, contentType.toString())
+        return this
+    }
+
     override fun header(name: ResponseHeaderName, value: String): ServerResponse.BodyBuilder {
         if (headers.containsKey(name)) {
             headers[name]!!.add(value)

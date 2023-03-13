@@ -1,10 +1,11 @@
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 
 plugins {
     kotlin("multiplatform") version "1.8.20-RC" apply false
-    id("org.jetbrains.dokka") version "1.8.10" apply false
+    id("org.jetbrains.dokka") version "1.8.10"
 }
 
 allprojects {
@@ -25,4 +26,12 @@ rootProject.plugins.withType<NodeJsRootPlugin>(NodeJsRootPlugin::class.java) {
 
 tasks.withType<KotlinNpmInstallTask> {
     args.add("--ignore-engines")
+}
+
+subprojects {
+    tasks.withType<DokkaTaskPartial>().configureEach {
+        dokkaSourceSets.configureEach {
+            includes.from("README.md")
+        }
+    }
 }

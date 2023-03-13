@@ -20,7 +20,7 @@ import kotlinx.html.stream.createHTML
 import org.kowasm.wasi.*
 import org.kowasm.web.http.MediaType
 import org.kowasm.web.http.RequestHeaderName
-import org.kowasm.web.server.nodejs.startNodejs
+import org.kowasm.web.nodejs.startNodejs
 import org.kowasm.web.webServer
 
 fun main() {

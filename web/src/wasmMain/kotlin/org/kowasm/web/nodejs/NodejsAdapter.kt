@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
  */
 
-package org.kowasm.web.server.nodejs
+package org.kowasm.web.nodejs
 
 import org.khronos.webgl.Uint8Array
 import org.khronos.webgl.set
