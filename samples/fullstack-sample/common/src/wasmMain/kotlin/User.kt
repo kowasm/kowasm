@@ -4,7 +4,7 @@ import io.konform.validation.jsonschema.maximum
 import io.konform.validation.jsonschema.minLength
 import io.konform.validation.jsonschema.minimum
 
-data class User(var name: String, var age: Int) {
+data class User(val name: String, val age: Int) {
 
     companion object {
         private val validation = Validation {
