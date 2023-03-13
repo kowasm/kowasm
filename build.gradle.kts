@@ -1,3 +1,4 @@
+
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
@@ -7,6 +8,8 @@ plugins {
     kotlin("multiplatform") version "1.8.20-RC" apply false
     id("org.jetbrains.dokka") version "1.8.10"
 }
+
+description = "Fullstack application development with Kotlin and WebAssembly"
 
 allprojects {
     group = "org.kowasm"
