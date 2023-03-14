@@ -1,6 +1,6 @@
 [!["API documentation](https://img.shields.io/badge/documentation-blue.svg)](https://kowasm.org/api/)
 
-# KoWasm
+!["KoWasm logo](https://avatars.githubusercontent.com/u/122670045?s=200&v=4)
 
 KoWasm explores fullstack development with [Kotlin](https://kotlinlang.org/) and [WebAssembly](https://webassembly.org/). It leverages Kotlin/Wasm, [WASI](https://wasi.dev/) and [WebAssembly Component Model](https://github.com/WebAssembly/component-model).
 
