@@ -3,8 +3,6 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
  */
 
-import kotlinx.html.*
-import kotlinx.html.stream.createHTML
 import org.kowasm.wasi.DescriptorFlags
 import org.kowasm.wasi.OpenFlags
 import org.kowasm.wasi.StandardDescriptor
@@ -19,7 +17,7 @@ fun main() {
         router {
             (GET("/") and accept(MediaType.TEXT_HTML)) {
                 println(it.headers[RequestHeaderName.ACCEPT])
-                ok().body(content)
+                ok().body(home)
             }
             GET("/client.js") {
                 val descriptor = Wasi.openAt(
@@ -47,17 +45,3 @@ fun main() {
     }.startNodejs()
 }
 
-val content = createHTML().html {
-    head {
-        meta { charset = "utf-8" }
-        script {
-            type = "application/ecmascript"
-            src = "client.js"
-        }
-    }
-    body {
-        div("user") {
-            user(User("Sébastien", 41))
-        }
-    }
-}

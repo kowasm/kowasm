@@ -7,6 +7,6 @@ import kotlinx.browser.document
 
 
 fun main() {
-    var user = User("Sébastien", 41)
-    UserComponent(user, document.body!!)
+    val user = User("Sébastien", 41)
+    Html(user, document.body!!)
 }

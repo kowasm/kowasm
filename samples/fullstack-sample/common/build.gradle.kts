@@ -10,7 +10,7 @@ kotlin {
         val wasmMain by getting {
             dependencies {
                 implementation(project(":konform-wasm"))
-                implementation(project(":kotlinx-html-wasm"))
+                implementation(project(":kotlin-html-wasm"))
             }
         }
     }

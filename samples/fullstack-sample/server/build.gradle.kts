@@ -14,7 +14,7 @@ kotlin {
                 implementation(project(":samples:fullstack-sample:common"))
                 implementation(project(":wasi"))
                 implementation(project(":web"))
-                implementation(project(":kotlinx-html-wasm"))
+                implementation(project(":kotlin-html-wasm"))
             }
         }
     }

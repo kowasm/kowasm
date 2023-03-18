@@ -13,7 +13,7 @@ kotlin {
             dependencies {
                 implementation(project(":konform-wasm"))
                 implementation(project(":effekt-wasm"))
-                implementation(project(":kotlinx-html-wasm"))
+                implementation(project(":kotlin-html-wasm"))
             }
 
         }

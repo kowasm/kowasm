@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+import dev.scottpierce.html.writer.createHtml
+import dev.scottpierce.html.writer.element.*
 import kotlinx.datetime.Clock
-import kotlinx.html.*
-import kotlinx.html.stream.createHTML
 import org.kowasm.wasi.*
 import org.kowasm.web.http.MediaType
 import org.kowasm.web.http.RequestHeaderName
@@ -34,9 +34,9 @@ fun main() {
     }.startNodejs()
 }
 
-val content = createHTML().html {
+val content = createHtml {
     head {
-        meta { charset = "utf-8" }
+        metaCharsetUtf8()
     }
     val now = Clock.System.now()
     val pseudoGenerator = SeededWasiRandom()

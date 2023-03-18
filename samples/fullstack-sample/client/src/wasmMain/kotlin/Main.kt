@@ -8,5 +8,5 @@ import kotlinx.browser.document
 
 fun main() {
     val userDiv = document.body!!.getElementByClassName("user")
-    UserComponent(userDiv)
+    Html(userDiv)
 }

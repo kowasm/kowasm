@@ -1,0 +1,1 @@
+WASM implementation of `kotlinx-htm`, implementation is copied from https://github.com/ScottPierce/kotlin-html since the project is no longer maintained.
