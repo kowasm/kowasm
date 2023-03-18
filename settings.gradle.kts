@@ -1,6 +1,9 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
+        maven("https://packages.jetbrains.team/maven/p/karpovich-sandbox/ksandbox")
     }
 }
 
@@ -17,6 +20,7 @@ include("kotlinx-html-wasm")
 include("kotlinx-nodejs-wasm")
 include("samples:wasi-sample")
 include("samples:browser-sample")
+include("samples:compose-sample")
 include("samples:web-server-sample")
 include("samples:fullstack-sample:client")
 include("samples:fullstack-sample:common")
