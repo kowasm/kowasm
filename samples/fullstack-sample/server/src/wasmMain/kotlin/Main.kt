@@ -20,23 +20,15 @@ fun main() {
                 ok().body(home)
             }
             GET("/client.js") {
-                val descriptor = Wasi.openAt(
-                    StandardDescriptor.FIRST_PREOPEN,
-                    "distributions/client.js",
-                    OpenFlags(), DescriptorFlags(read = true)
-                )
-                val fileContent = Wasi.read(descriptor, 10000u).first.decodeToString()
+                val descriptor = Wasi.openAt("distributions/client.js")
+                val fileContent = Wasi.read(descriptor, 10000u).data.decodeToString()
                 ok()
                     .contentType(MediaType.APPLICATION_JAVASCRIPT)
                     .body(fileContent)
             }
             GET("/kowasm-client-wasm.wasm") {
-                val descriptor = Wasi.openAt(
-                    StandardDescriptor.FIRST_PREOPEN,
-                    "compileSync/wasm/main/productionExecutable/kotlin/kowasm-client-wasm.wasm",
-                    OpenFlags(), DescriptorFlags(read = true)
-                )
-                val fileContent = Wasi.read(descriptor, 100000u).first
+                val descriptor = Wasi.openAt("compileSync/wasm/main/productionExecutable/kotlin/kowasm-client-wasm.wasm")
+                val fileContent = Wasi.read(descriptor, 100000u).data
                 ok()
                     .contentType(MediaType.APPLICATION_WASM)
                     .body(fileContent)

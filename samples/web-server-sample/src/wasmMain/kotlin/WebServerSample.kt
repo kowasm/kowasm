@@ -41,13 +41,9 @@ val content = createHtml {
     val now = Clock.System.now()
     val pseudoGenerator = SeededWasiRandom()
     val secureGenerator = SecureWasiRandom()
-    val descriptor = Wasi.openAt(
-        StandardDescriptor.FIRST_PREOPEN,
-        "processedResources/wasm/main/test.txt",
-        OpenFlags(), DescriptorFlags(read = true)
-    )
+    val descriptor = Wasi.openAt("processedResources/wasm/main/test.txt")
 
-    val fileContent = Wasi.read(descriptor, 1024u).first.decodeToString()
+    val fileContent = Wasi.read(descriptor, 1024u).data.decodeToString()
     body {
         h1 { +"Kotlin/Wasm WASI web server demo" }
         p { +"Current time: $now" }

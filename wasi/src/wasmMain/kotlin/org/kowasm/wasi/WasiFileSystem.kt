@@ -306,14 +306,30 @@ enum class ErrorCode {
 
 class FilesystemException(val code: ErrorCode) : Exception()
 
+/**
+ * Result of a read operation.
+ *
+ * @param data The data read.
+ * @param eof True if the end of the file has been reached.
+ */
+data class ReadResult(val data: ByteArray, val eof: Boolean) {
+    override fun equals(other: Any?): Boolean = this === other
+
+    override fun hashCode(): Int {
+        var result = data.contentHashCode()
+        result = 31 * result + eof.hashCode()
+        return result
+    }
+}
+
 interface WasiFileSystem {
 
     /**
      * Create a directory.
-     * @param descriptor Reference to the parent directory where the new one should be created.
      * @param path The relative path at which to create the directory.
+     * @param descriptor Reference to the parent directory where the new one should be created.
      */
-    fun createDirectoryAt(descriptor: Descriptor, path: String)
+    fun createDirectoryAt(path: String, descriptor: Descriptor = StandardDescriptor.FIRST_PREOPEN)
 
     /**
      * Open a file or directory.
@@ -336,14 +352,14 @@ interface WasiFileSystem {
      *
      * TODO Support modes
      *
-     * @param descriptor Reference to the parent directory where the new one should be created.
      * @param path The relative path of the object to open.
+     * @param descriptor Reference to the parent directory where the new one should be created.
      * @param openFlags The method by which to open the file.
      * @param flags Flags to use for the resulting descriptor.
      * @param pathFlags Flags determining the method of how the path is resolved.
      */
-    fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags,
-               flags: DescriptorFlags, pathFlags: PathFlags = PathFlags(true)): Descriptor
+    fun openAt(path: String, openFlags: OpenFlags = OpenFlags(),
+               flags: DescriptorFlags = DescriptorFlags(read = true), pathFlags: PathFlags = PathFlags(true), descriptor: Descriptor = StandardDescriptor.FIRST_PREOPEN): Descriptor
 
     /**
      * Read directory entries from a directory
@@ -375,17 +391,17 @@ interface WasiFileSystem {
      *
      * Note: This is similar to `pread` in POSIX.
      */
-    fun read(descriptor: Descriptor, length: Filesize, offset: Filesize = 0u) : Pair<ByteArray, Boolean>
+    fun read(descriptor: Descriptor, length: Filesize, offset: Filesize = 0u) : ReadResult
 
 }
 
 object DefaultWasiFilesystem: WasiFileSystem {
 
-    override fun createDirectoryAt(descriptor: Descriptor, path: String) {
+    override fun createDirectoryAt(path: String, descriptor: Descriptor) {
         pathCreateDirectory(descriptor, path)
     }
 
-    override fun openAt(descriptor: Descriptor, path: String, openFlags: OpenFlags, flags: DescriptorFlags, pathFlags: PathFlags): Descriptor {
+    override fun openAt(path: String, openFlags: OpenFlags, flags: DescriptorFlags, pathFlags: PathFlags, descriptor: Descriptor): Descriptor {
         return pathOpen(fd = descriptor, dirflags = pathFlags.toLookupFlags(), path = path,
             oflags = openFlags.toOFlags(), fsRightsBase = flags.toRights(), fsRightsInheriting = 0, fdflags = flags.toFdflags())
     }
@@ -406,8 +422,8 @@ object DefaultWasiFilesystem: WasiFileSystem {
         return fdPWrite(descriptor, listOf(buffer), offset).toULong()
     }
 
-    override fun read(descriptor: Descriptor, length: Filesize, offset: Filesize): Pair<ByteArray, Boolean> {
-        return fdPRead(descriptor, length, offset).let { Pair(it.first, it.second < length.toInt()) }
+    override fun read(descriptor: Descriptor, length: Filesize, offset: Filesize): ReadResult {
+        return fdPRead(descriptor, length, offset).let { ReadResult(it.first, it.second < length.toInt()) }
     }
 
     private fun Filetype.toDescriptorType() = when(this) {

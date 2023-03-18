@@ -42,17 +42,15 @@ private fun clock() {
 private fun filesystem() {
     Wasi.out.println("\n== Filesystem ==")
 
-    Wasi.createDirectoryAt(StandardDescriptor.FIRST_PREOPEN,"testDir")
-    val descriptor = Wasi.openAt(
-        StandardDescriptor.FIRST_PREOPEN,
-        "testFile",
+    Wasi.createDirectoryAt("testDir")
+    val descriptor = Wasi.openAt("testFile",
         OpenFlags(create = true),
         DescriptorFlags(read = true, write = true)
     )
     val content = "Hello, file!"
     Wasi.write(descriptor, content.encodeToByteArray())
     val readResult = Wasi.read(descriptor, content.length.toULong())
-    Wasi.out.println(readResult.first.decodeToString())
+    Wasi.out.println(readResult.data.decodeToString())
     Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach { Wasi.out.println(it) }
 }
 
