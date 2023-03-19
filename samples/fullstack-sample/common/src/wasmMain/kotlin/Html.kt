@@ -9,9 +9,9 @@ import dev.scottpierce.html.writer.element.*
 fun BodyContext.message(user: User) {
     span {
         +"Hello! My name is "
-        mark { +user.name }
+        span(classes = "highlight") { +user.name }
         +". I'm "
-        mark { +user.age.toString() }
+        span(classes = "highlight") { +user.age.toString() }
         +" years old."
     }
 }
