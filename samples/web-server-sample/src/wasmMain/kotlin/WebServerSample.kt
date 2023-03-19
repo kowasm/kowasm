@@ -15,31 +15,34 @@
  */
 
 import dev.scottpierce.html.writer.BodyContext
+import org.kowasm.web.http.MediaType
 import org.kowasm.web.nodejs.startNodejs
 import org.kowasm.web.webServer
 
 fun main() {
     webServer {
         router {
-            GET("/") {
-                val content = template("KoWasm WASI webapp demo", BodyContext::home)
-                ok().body(content)
-            }
-            GET("/clock") {
-                val content = template("WASI clock", BodyContext::clock)
-                ok().body(content)
-            }
-            GET("/random") {
-                val content = template("WASI random", BodyContext::random)
-                ok().body(content)
-            }
-            GET("/filesystem") {
-                val content = template("WASI filesystem", BodyContext::filesystem)
-                ok().body(content)
-            }
-            GET("/environment") {
-                val content = template("WASI environment", BodyContext::environment)
-                ok().body(content)
+            accept(MediaType.TEXT_HTML).nest {
+                GET("/") {
+                    val content = template("KoWasm WASI webapp demo", BodyContext::home)
+                    ok().body(content)
+                }
+                GET("/clock") {
+                    val content = template("WASI clock", BodyContext::clock)
+                    ok().body(content)
+                }
+                GET("/random") {
+                    val content = template("WASI random", BodyContext::random)
+                    ok().body(content)
+                }
+                GET("/filesystem") {
+                    val content = template("WASI filesystem", BodyContext::filesystem)
+                    ok().body(content)
+                }
+                GET("/environment") {
+                    val content = template("WASI environment", BodyContext::environment)
+                    ok().body(content)
+                }
             }
         }
     }.startNodejs()

@@ -5,6 +5,7 @@
 
 package org.kowasm.web.server
 
+import org.kowasm.web.http.MediaType
 import org.kowasm.web.webServer
 import kotlin.test.Test
 
@@ -14,8 +15,10 @@ class WebServerTests {
     fun testMethods() {
         webServer {
             router {
-                GET("/now") {
-                    ok().body("test")
+                accept(MediaType.TEXT_HTML).nest {
+                    GET("/now") {
+                        ok().body("test")
+                    }
                 }
             }
         }

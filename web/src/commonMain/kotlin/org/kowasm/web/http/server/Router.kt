@@ -25,6 +25,13 @@ object Router {
     }
 
     /**
+     * Create a nested [RouterHandler] using the specified [RouterHandler] when the specified [RequestPredicate] matches.
+     */
+    fun nest(predicate: RequestPredicate, routerHandler: RouterHandler): RouterHandler {
+        return DefaultNestedHandler(predicate, routerHandler)
+    }
+
+    /**
      * Builder for defining routes.
      */
     interface Builder {
@@ -80,6 +87,18 @@ object Router {
         override fun invoke(request: ServerRequest): ExchangeHandler? {
             return if (predicate.test(request)) {
                 handler
+            } else {
+                null
+            }
+        }
+
+    }
+
+    private class DefaultNestedHandler(private val predicate: RequestPredicate, private val handler: RouterHandler) : RouterHandler {
+
+        override fun invoke(request: ServerRequest): ExchangeHandler? {
+            return if (predicate.test(request)) {
+                handler.invoke(request)
             } else {
                 null
             }

@@ -35,6 +35,10 @@ class RouterDsl internal constructor (private val dsl: (RouterDsl.() -> Unit)) {
         builder.add(Router.route(this, f))
     }
 
+    fun RequestPredicate.nest(nestedDsl: (RouterDsl.() -> Unit)) {
+        builder.add(Router.nest(this, RouterDsl(nestedDsl).build()))
+    }
+
     fun GET(pattern: String, f: ExchangeHandler) {
         builder.GET(pattern, f)
     }
@@ -83,7 +87,9 @@ class RouterDsl internal constructor (private val dsl: (RouterDsl.() -> Unit)) {
 
     // TODO Implement real media type matching
     fun accept(mediaType: MediaType): RequestPredicate =
-        RequestPredicates.headers { it[RequestHeaderName.ACCEPT]?.any { value -> value.contains(mediaType.toString()) } ?: false }
+        RequestPredicates.headers { it[RequestHeaderName.ACCEPT]?.any { value ->
+            value.contains(mediaType.toString()) || value.contains("*/*")
+        } ?: false }
 
     fun method(method: Method): RequestPredicate = RequestPredicates.method(method)
 
