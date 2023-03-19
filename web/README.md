@@ -18,9 +18,9 @@ fun main() {
     }.startNodejs() // could be startServer() when WASI runtimes will support WasmGC
 }
 
-fun content(users: List<User>) = createHTML().html {
+fun content(users: List<User>) = createHtml {
     head {
-        meta { charset = "utf-8" }
+        metaCharsetUtf8()
     }
     body {
         h1 { +"Users" }
