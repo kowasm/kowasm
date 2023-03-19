@@ -85,11 +85,11 @@ object Baz {
  * ```
  */
 enum class ErrorCode { TOO_BIG, TOO_SMALL }
-class CodeException(val code: ErrorCode) : Exception()
+class ErrorCodeException(val code: ErrorCode) : RuntimeException()
 
 fun a(input: String): String {
     if (input.isNotEmpty()) return input
-    else throw CodeException(ErrorCode.TOO_SMALL)
+    else throw ErrorCodeException(ErrorCode.TOO_SMALL)
 }
 
 /**
