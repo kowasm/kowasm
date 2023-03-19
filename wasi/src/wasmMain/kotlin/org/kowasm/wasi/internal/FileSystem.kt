@@ -145,7 +145,7 @@ internal typealias DirectoryCookie = Long
 
 internal typealias Inode = Long
 
-typealias DirectoryNameLength = Int
+internal typealias DirectoryNameLength = Int
 
 internal data class DirectoryEntry(
     /** The offset of the next directory entry stored in this directory. */
