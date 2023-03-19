@@ -15,7 +15,7 @@ fun main() {
                 ok().contentType(MediaType.APPLICATION_JSON).body(userService.findAll())
             }
         }
-    }.startNodejs() // could be startServer() when WASI runtimes will support WasmGC  
+    }.startNodejs() // could be startServer() when WASI runtimes will support WasmGC
 }
 
 fun content(users: List<User>) = createHTML().html {
