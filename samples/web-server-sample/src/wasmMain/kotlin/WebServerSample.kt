@@ -14,52 +14,33 @@
  * limitations under the License.
  */
 
-import dev.scottpierce.html.writer.createHtml
-import dev.scottpierce.html.writer.element.*
-import kotlinx.datetime.Clock
-import org.kowasm.wasi.*
-import org.kowasm.web.http.MediaType
-import org.kowasm.web.http.RequestHeaderName
+import dev.scottpierce.html.writer.BodyContext
 import org.kowasm.web.nodejs.startNodejs
 import org.kowasm.web.webServer
 
 fun main() {
     webServer {
         router {
-            (GET("/") and accept(MediaType.TEXT_HTML)) {
-                println(it.headers[RequestHeaderName.ACCEPT])
+            GET("/") {
+                val content = template("KoWasm WASI webapp demo", BodyContext::home)
+                ok().body(content)
+            }
+            GET("/clock") {
+                val content = template("WASI clock", BodyContext::clock)
+                ok().body(content)
+            }
+            GET("/random") {
+                val content = template("WASI random", BodyContext::random)
+                ok().body(content)
+            }
+            GET("/filesystem") {
+                val content = template("WASI filesystem", BodyContext::filesystem)
+                ok().body(content)
+            }
+            GET("/environment") {
+                val content = template("WASI environment", BodyContext::environment)
                 ok().body(content)
             }
         }
     }.startNodejs()
-}
-
-val content = createHtml {
-    head {
-        metaCharsetUtf8()
-    }
-    val now = Clock.System.now()
-    val pseudoGenerator = SeededWasiRandom()
-    val secureGenerator = SecureWasiRandom()
-    val descriptor = Wasi.openAt("processedResources/wasm/main/test.txt")
-
-    val fileContent = Wasi.read(descriptor, 1024u).data.decodeToString()
-    body {
-        h1 { +"Kotlin/Wasm WASI web server demo" }
-        p { +"Current time: $now" }
-        p { +"Pseudo random number generator: ${pseudoGenerator.nextLong()}, ${pseudoGenerator.nextLong()}, ${pseudoGenerator.nextLong()}" }
-        p { +"Secure random number generator: ${secureGenerator.nextLong()}, ${secureGenerator.nextLong()}, ${secureGenerator.nextLong()}" }
-        p {
-            +"Arguments: "
-            Wasi.args.forEach { +"$it " }
-        }
-        p {
-            +"Environment variables: "
-            Wasi.envVars.forEach { +"${it.first} = ${it.second} " }
-        }
-        p {
-            +"Content of a file: "
-            +fileContent
-        }
-    }
 }
