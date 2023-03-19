@@ -76,28 +76,20 @@ object Baz {
 /**
  * result
  *
- *
  * ```
- * enum errno {
+ * enum error-code {
  *     too-big,
  *     too-small,
- *     too-fast,
- *     too-slow,
  * }
- * a: func(input: string) -> result<string, errno>
+ * a: func(input: string) -> result<string, error-code>
  * ```
- *
- * TODO Does it translate to regular return value + Exception thrown for most use cases?
  */
-enum class Errno { TOO_BIG, TOO_SMALL, TOO_FAST, TOO_SLOW }
-class Err(val code: Errno) : Exception()
+enum class ErrorCode { TOO_BIG, TOO_SMALL }
+class CodeException(val code: ErrorCode) : Exception()
+
 fun a(input: String): String {
-    if (input.isNotEmpty()) {
-        return input
-    }
-    else {
-        throw Err(Errno.TOO_SMALL)
-    }
+    if (input.isNotEmpty()) return input
+    else throw CodeException(ErrorCode.TOO_SMALL)
 }
 
 /**
@@ -113,10 +105,6 @@ typealias myAwesomeUInt = UInt
 typealias myComplicatedTuple = Triple<UInt, Int, String>
 
 /**
- * A record statement declares a new named structure with named fields. Records are similar to a struct in many languages.
- * Instances of a record always have their fields defined.
- *
- * ```
  * record point {
  *     x: u32,
  *     y: u32,
@@ -124,14 +112,10 @@ typealias myComplicatedTuple = Triple<UInt, Int, String>
  *
  * record person {
  *     name: string,
- *     age: u32,
- *     has-lego-action-figure: bool,
- * }
- * ```
- *
+ *     age: option<u32>,
  */
 data class Point(val x: UInt, val y: UInt)
-data class Person(val name: String, val age: UInt, val hasLegoActionFigure: Boolean)
+data class Person(val name: String, val age: UInt? = null)
 
 /**
  * A flags represents a bitset structure with a name for each bit. The flags type is represented as a bit flags
@@ -257,7 +241,7 @@ val bool: Boolean = false
 val string: String = ""
 
 /**
- * tuple
+ * tuple<s32, string>
  */
 val tuple: Pair<Int, String> = Pair(0, "")
 
@@ -272,6 +256,7 @@ val listOfBytes : ByteArray = byteArrayOf()
 val list: List<String> = listOf()
 
 /**
- * option
+ * option<String>
  */
-val option: String? = ""
+val option: String? = "value"
+
