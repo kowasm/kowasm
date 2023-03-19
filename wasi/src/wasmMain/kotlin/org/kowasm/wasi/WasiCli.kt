@@ -8,14 +8,26 @@ package org.kowasm.wasi
 import org.kowasm.wasi.internal.argsGet
 import org.kowasm.wasi.internal.environGet
 
+/**
+ * Provides access to the command line arguments and environment variables.
+ */
 interface WasiCli {
 
+    /**
+     * The command line arguments.
+     */
     val args: List<String>
 
+    /**
+     * The environment variables.
+     */
     val envVars: List<Pair<String, String>>
 
 }
 
+/**
+ * Default implementation of [WasiCli].
+ */
 object DefaultWasiCli : WasiCli {
 
     override val args: List<String>

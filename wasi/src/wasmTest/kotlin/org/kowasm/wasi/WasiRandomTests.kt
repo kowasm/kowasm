@@ -12,7 +12,7 @@ class WasiRandomTests {
 
     @Test
     fun testSeededGenerator() {
-        val generator = SeededWasiRandom()
+        val generator = Wasi.seededRandom()
         assertTrue(generator.nextFloat() != generator.nextFloat())
         assertTrue(generator.nextDouble() != generator.nextDouble())
         assertTrue(generator.nextInt() != generator.nextInt())
@@ -21,7 +21,7 @@ class WasiRandomTests {
 
     @Test
     fun testSecureGenerator() {
-        val generator = SecureWasiRandom()
+        val generator = Wasi.secureRandom()
         assertTrue(generator.nextFloat() != generator.nextFloat())
         assertTrue(generator.nextDouble() != generator.nextDouble())
         assertTrue(generator.nextInt() != generator.nextInt())

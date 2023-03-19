@@ -193,7 +193,7 @@ internal fun fdWrite(fd: Fd, buffer: List<ByteArray>): Size {
         return if (returnCode == 0) {
             (Pointer(pointer.address.toInt().toUInt())).loadInt()
         } else {
-            throw WasiError(Errno.values()[returnCode])
+            throw WasiException(Errno.values()[returnCode].ordinal)
         }
     }
 }
@@ -212,7 +212,7 @@ internal fun fdPWrite(fd: Fd, buffer: List<ByteArray>, offset: filesize): Size {
         return if (returnCode == 0) {
             (Pointer(pointer.address.toInt().toUInt())).loadInt()
         } else {
-            throw WasiError(Errno.values()[returnCode])
+            throw WasiException(Errno.values()[returnCode].ordinal)
         }
     }
 }
@@ -239,7 +239,7 @@ internal fun fdPRead(
             val readLength = (Pointer(rp0.address.toInt().toUInt())).loadInt()
             Pair(loadByteArray(ptr, readLength), readLength)
         } else {
-            throw WasiError(Errno.values()[ret])
+            throw WasiException(Errno.values()[ret].ordinal)
         }
     }
 }
@@ -253,7 +253,7 @@ internal fun pathCreateDirectory(fd: Fd, path: String) {
         return if (returnCode == 0) {
             Unit
         } else {
-            throw WasiError(Errno.values()[returnCode])
+            throw WasiException(Errno.values()[returnCode].ordinal)
         }
     }
 }
@@ -284,7 +284,7 @@ internal fun pathOpen(
         return if (returnCode == 0) {
             (Pointer(pointer.address.toInt().toUInt())).loadInt()
         } else {
-            throw WasiError(Errno.values()[returnCode])
+            throw WasiException(Errno.values()[returnCode].ordinal)
         }
     }
 }
@@ -303,7 +303,7 @@ internal fun fdReadDir(fd: Fd): List<Pair<DirectoryEntry, String>> {
             val size = if (returnCode == 0) {
                 (Pointer(rp0.address.toInt().toUInt())).loadInt()
             } else {
-                throw WasiError(Errno.values()[returnCode])
+                throw WasiException(Errno.values()[returnCode].ordinal)
             }
             while(true) {
                 if (offset + 24 >  size) {

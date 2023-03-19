@@ -31,7 +31,7 @@ internal fun clockResGet(id: ClockId): Timestamp {
         return if (returnCode == 0) {
             (Pointer(pointer.address.toInt().toUInt())).loadLong()
         } else {
-            throw WasiError(Errno.values()[returnCode])
+            throw WasiException(Errno.values()[returnCode].ordinal)
         }
     }
 }
@@ -43,7 +43,7 @@ internal fun clockTimeGet(id: ClockId, precision: Timestamp): Timestamp {
         return if (returnCode == 0) {
             (Pointer(pointer.address.toInt().toUInt())).loadLong()
         } else {
-            throw WasiError(Errno.values()[returnCode])
+            throw WasiException(Errno.values()[returnCode].ordinal)
         }
     }
 }

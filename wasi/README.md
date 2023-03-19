@@ -13,44 +13,37 @@ fun main() {
 
 private fun print() {
     Wasi.out.println("== Print ==")
-
     Wasi.out.println("Hello, world!")
     Wasi.err.println("Error")
 }
 
 private fun clock() {
     Wasi.out.println("\n== Clock ==")
-
-    val now = Clock.System.now()
+    val now = Wasi.wallClock.now()
     Wasi.out.println(now)
 }
 
 private fun filesystem() {
     Wasi.out.println("\n== Filesystem ==")
-
-    Wasi.createDirectoryAt(StandardDescriptor.FIRST_PREOPEN,"testDir")
-    val descriptor = Wasi.openAt(
-        StandardDescriptor.FIRST_PREOPEN,
-        "testFile",
+    Wasi.createDirectoryAt("testDir")
+    val descriptor = Wasi.openAt("testFile",
         OpenFlags(create = true),
         DescriptorFlags(read = true, write = true)
     )
     val content = "Hello, file!"
     Wasi.write(descriptor, content.encodeToByteArray())
     val readResult = Wasi.read(descriptor, content.length.toULong())
-    Wasi.out.println(readResult.first.decodeToString())
+    Wasi.out.println(readResult.data.decodeToString())
     Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach { Wasi.out.println(it) }
 }
 
 private fun random() {
     Wasi.out.println("\n== Random ==")
-
-    val pseudoGenerator = SeededWasiRandom()
+    val pseudoGenerator = Wasi.seededRandom()
     Wasi.out.println("Pseudo random number generator")
     Wasi.out.println(pseudoGenerator.nextLong())
     Wasi.out.println(pseudoGenerator.nextLong())
-
-    val secureGenerator = SecureWasiRandom()
+    val secureGenerator = Wasi.secureRandom()
     Wasi.out.println("Secure random number generator")
     Wasi.out.println(secureGenerator.nextLong())
     Wasi.out.println(secureGenerator.nextLong())
@@ -58,7 +51,6 @@ private fun random() {
 
 private fun cli() {
     Wasi.out.println("\n== CLI ==")
-
     Wasi.args.forEach { Wasi.out.println(it) }
     Wasi.envVars.forEach { Wasi.out.println(it) }
 }

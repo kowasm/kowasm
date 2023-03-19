@@ -8,6 +8,7 @@ package org.kowasm.wasi
 import org.kowasm.wasi.internal.fdWrite
 
 interface WasiPrint {
+
     /**
      * Prints the given [message] to the standard output.
      */

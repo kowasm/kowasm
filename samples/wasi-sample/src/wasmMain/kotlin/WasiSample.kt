@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import kotlinx.datetime.Clock
 import org.kowasm.wasi.*
 
 fun main() {
@@ -27,21 +26,18 @@ fun main() {
 
 private fun print() {
     Wasi.out.println("== Print ==")
-
     Wasi.out.println("Hello, world!")
     Wasi.err.println("Error")
 }
 
 private fun clock() {
     Wasi.out.println("\n== Clock ==")
-
-    val now = Clock.System.now()
+    val now = Wasi.wallClock.now()
     Wasi.out.println(now)
 }
 
 private fun filesystem() {
     Wasi.out.println("\n== Filesystem ==")
-
     Wasi.createDirectoryAt("testDir")
     val descriptor = Wasi.openAt("testFile",
         OpenFlags(create = true),
@@ -56,13 +52,11 @@ private fun filesystem() {
 
 private fun random() {
     Wasi.out.println("\n== Random ==")
-
-    val pseudoGenerator = SeededWasiRandom()
+    val pseudoGenerator = Wasi.seededRandom()
     Wasi.out.println("Pseudo random number generator")
     Wasi.out.println(pseudoGenerator.nextLong())
     Wasi.out.println(pseudoGenerator.nextLong())
-
-    val secureGenerator = SecureWasiRandom()
+    val secureGenerator = Wasi.secureRandom()
     Wasi.out.println("Secure random number generator")
     Wasi.out.println(secureGenerator.nextLong())
     Wasi.out.println(secureGenerator.nextLong())
@@ -70,7 +64,6 @@ private fun random() {
 
 private fun cli() {
     Wasi.out.println("\n== CLI ==")
-
     Wasi.args.forEach { Wasi.out.println(it) }
     Wasi.envVars.forEach { Wasi.out.println(it) }
 }

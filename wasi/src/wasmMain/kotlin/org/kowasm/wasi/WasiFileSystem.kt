@@ -304,8 +304,6 @@ enum class ErrorCode {
     CROSS_DEVICE,
 }
 
-class FilesystemException(val code: ErrorCode) : Exception()
-
 /**
  * Result of a read operation.
  *

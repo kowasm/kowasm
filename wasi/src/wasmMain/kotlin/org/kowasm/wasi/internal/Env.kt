@@ -5,7 +5,7 @@
 
 package org.kowasm.wasi.internal
 
-import org.kowasm.wasi.WasiError
+import org.kowasm.wasi.WasiException
 import kotlin.wasm.WasmImport
 import kotlin.wasm.unsafe.Pointer
 import kotlin.wasm.unsafe.withScopedMemoryAllocator
@@ -21,7 +21,7 @@ fun environGet(): Map<String, String> {
         val environBuffer = allocator.allocate(bufSize)
         val ret = wasmEnvironGet(environ.address.toInt(), environBuffer.address.toInt())
         if (ret != 0) {
-            throw WasiError(Errno.values()[ret])
+            throw WasiException(Errno.values()[ret].ordinal)
         }
         val result = mutableMapOf<String, String>()
         repeat(numArgs) { idx ->
@@ -46,7 +46,7 @@ private fun environSizesGet(): Pair<Size, Size> {
                 (Pointer(rp0.address.toInt().toUInt())).loadInt(),
                 (Pointer(rp1.address.toInt().toUInt())).loadInt())
         } else {
-            throw WasiError(Errno.values()[ret])
+            throw WasiException(Errno.values()[ret].ordinal)
         }
     }
 }

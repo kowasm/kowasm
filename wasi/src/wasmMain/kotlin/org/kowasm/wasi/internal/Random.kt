@@ -5,7 +5,7 @@
 
 package org.kowasm.wasi.internal
 
-import org.kowasm.wasi.WasiError
+import org.kowasm.wasi.WasiException
 import kotlin.wasm.WasmImport
 import kotlin.wasm.unsafe.withScopedMemoryAllocator
 
@@ -16,7 +16,7 @@ internal fun randomGetInt(): Int {
         return if (returnCode == 0) {
             pointer.loadInt()
         } else {
-            throw WasiError(Errno.values()[returnCode])
+            throw WasiException(Errno.values()[returnCode].ordinal)
         }
     }
 }
@@ -28,7 +28,7 @@ internal fun randomGetLong(): Long {
         return if (returnCode == 0) {
             pointer.loadLong()
         } else {
-            throw WasiError(Errno.values()[returnCode])
+            throw WasiException(Errno.values()[returnCode].ordinal)
         }
     }
 }
