@@ -13,7 +13,7 @@ import kotlin.wasm.unsafe.withScopedMemoryAllocator
 /**
  * Read environment variable data.
  */
-private fun environGet(): Map<String, String> {
+internal fun environGet(): Map<String, String> {
     val (numArgs, bufSize) = environSizesGet()
     val tmpByteArray = ByteArray(bufSize)
     withScopedMemoryAllocator { allocator ->
