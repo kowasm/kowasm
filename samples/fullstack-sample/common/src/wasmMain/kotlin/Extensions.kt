@@ -4,8 +4,16 @@
  */
 
 import org.w3c.dom.Element
+import org.w3c.dom.GlobalEventHandlers
 import org.w3c.dom.get
 
 fun Element.getElementByClassName(className: String): Element {
     return this.getElementsByClassName(className)[0]!!
+}
+
+fun GlobalEventHandlers.addKeyUpListener(listener: (org.w3c.dom.events.KeyboardEvent) -> Unit) {
+    onkeyup = {
+        listener(it)
+        null
+    }
 }

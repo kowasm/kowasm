@@ -3,9 +3,6 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
  */
 
-import org.kowasm.wasi.DescriptorFlags
-import org.kowasm.wasi.OpenFlags
-import org.kowasm.wasi.StandardDescriptor
 import org.kowasm.wasi.Wasi
 import org.kowasm.web.http.MediaType
 import org.kowasm.web.http.RequestHeaderName
