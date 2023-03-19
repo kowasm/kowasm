@@ -47,7 +47,7 @@ private fun filesystem() {
     Wasi.write(descriptor, content.encodeToByteArray())
     val readResult = Wasi.read(descriptor, content.length.toULong())
     Wasi.out.println(readResult.data.decodeToString())
-    Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach { Wasi.out.println(it) }
+    Wasi.readDirectory(".").forEach { Wasi.out.println(it) }
 }
 
 private fun random() {

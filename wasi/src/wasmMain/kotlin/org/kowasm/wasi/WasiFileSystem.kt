@@ -362,7 +362,7 @@ interface WasiFileSystem {
     /**
      * Read directory entries from a directory
      */
-    fun readDirectory(descriptor: Descriptor, path: String = ""): List<DirectoryEntry>
+    fun readDirectory(path: String = "", descriptor: Descriptor = StandardDescriptor.FIRST_PREOPEN): List<DirectoryEntry>
 
     /**
      * Write to a descriptor, without using and updating the descriptor's offset.
@@ -404,7 +404,7 @@ object DefaultWasiFilesystem: WasiFileSystem {
             oflags = openFlags.toOFlags(), fsRightsBase = flags.toRights(), fsRightsInheriting = 0, fdflags = flags.toFdflags())
     }
 
-    override fun readDirectory(descriptor: Descriptor, path: String): List<DirectoryEntry> {
+    override fun readDirectory(path: String, descriptor: Descriptor): List<DirectoryEntry> {
         val fd = pathOpen(fd = descriptor, dirflags = 0, path = path,
             oflags = OFlag.DIRECTORY,
             fsRightsBase = Right.FD_READDIR,
