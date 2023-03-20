@@ -15,14 +15,14 @@ class UserListener(private val element: Element) {
 
     private val nameInput = element.getElementByClassName("name") as HTMLInputElement
     private val ageInput = element.getElementByClassName("age") as HTMLInputElement
+
     private var user by ref(User(nameInput.value, ageInput.value.toInt()))
+    private val message by computed { createInnerHtml { message(user) } }
 
     init {
-        val message by computed { createInnerHtml { message(user) } }
         watchEffect {
             element.getElementByClassName("message").innerHTML = message
         }
-
         nameInput.addKeyUpListener {
             updateUserIfValid(user.copy(name = nameInput.value))
         }
