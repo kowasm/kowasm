@@ -3,6 +3,9 @@ plugins {
     id("maven-publish")
 }
 
+group = "io.konform"
+version = "0.5.0-SNAPSHOT"
+
 kotlin {
     wasm {
         browser()
