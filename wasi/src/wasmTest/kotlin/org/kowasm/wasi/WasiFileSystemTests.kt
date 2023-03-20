@@ -39,6 +39,6 @@ class WasiFileSystemTests {
 
     @Test
     fun testListDirectoryEntries() {
-        Wasi.readDirectory(StandardDescriptor.FIRST_PREOPEN,".").forEach(::println)
+        Wasi.readDirectory(".").forEach(::println)
     }
 }
