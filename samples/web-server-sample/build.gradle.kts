@@ -13,7 +13,6 @@ kotlin {
             dependencies {
                 implementation(project(":web"))
                 implementation(project(":kotlin-html-wasm"))
-                implementation(project(":kotlinx-datetime-wasm"))
                 implementation(project(":wasi"))
             }
         }

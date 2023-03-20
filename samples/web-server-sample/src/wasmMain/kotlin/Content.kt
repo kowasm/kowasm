@@ -1,6 +1,5 @@
 import dev.scottpierce.html.writer.BodyContext
 import dev.scottpierce.html.writer.element.*
-import kotlinx.datetime.Clock
 import org.kowasm.wasi.SecureWasiRandom
 import org.kowasm.wasi.SeededWasiRandom
 import org.kowasm.wasi.Wasi
@@ -19,7 +18,7 @@ fun BodyContext.returnHome() {
 }
 
 fun BodyContext.clock() {
-    val now = Clock.System.now()
+    val now = Wasi.wallClock.now()
     p { +"Current time: $now" }
     returnHome()
 }
