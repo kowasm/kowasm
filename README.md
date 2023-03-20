@@ -1,5 +1,4 @@
 [!["API documentation"](https://img.shields.io/badge/kowasm.org%2Fapi%2F-green?style=flat&color=d45500&label=API%20documentation)](https://kowasm.org/api/)
-[![Twitter](https://img.shields.io/twitter/follow/ko_wasm?style=social)](https://twitter.com/ko_wasm)
 
 !["KoWasm logo](https://avatars.githubusercontent.com/u/122670045?s=200&v=4)
 
