@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
 plugins {
     kotlin("multiplatform")
+    id("maven-publish")
 }
 
 group = "dev.scottpierce.kotlin-html"
