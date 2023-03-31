@@ -15,7 +15,7 @@ This project is developed on Sébastien Deleuze's spare time in collaboration wi
 
 ### IDEA
 
-[IntelliJ IDEA 2023.1 EAP](https://www.jetbrains.com/idea/nextversion/) should be used to get Kotlin/Wasm autocompletion.
+[IntelliJ IDEA 2023.1+](https://www.jetbrains.com/idea/) should be used to get Kotlin/Wasm autocompletion.
 
 ### Node
 
