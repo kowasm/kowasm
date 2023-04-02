@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 
 plugins {
-    kotlin("multiplatform") version "1.8.20-RC" apply false
+    kotlin("multiplatform") version "1.8.20" apply false
     id("org.jetbrains.dokka") version "1.8.10"
 }
 
