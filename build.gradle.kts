@@ -2,7 +2,6 @@
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
-import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 
 plugins {
     kotlin("multiplatform") version "1.8.20" apply false
@@ -20,15 +19,10 @@ allprojects {
     }
 }
 
-rootProject.plugins.withType<NodeJsRootPlugin>(NodeJsRootPlugin::class.java) {
+rootProject.plugins.withType<NodeJsRootPlugin> {
     rootProject.the<NodeJsRootExtension>().apply {
-        nodeVersion = "20.0.0-v8-canary20230319df393cb3e4"
-        nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
+        nodeVersion = "20.0.0"
     }
-}
-
-tasks.withType<KotlinNpmInstallTask> {
-    args.add("--ignore-engines")
 }
 
 subprojects {

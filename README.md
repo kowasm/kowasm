@@ -22,8 +22,8 @@ This project is developed on Sébastien Deleuze's spare time in collaboration wi
 Node 20 should be used (see related [Node WASI documentation](https://nodejs.org/api/wasi.html)) to run the project due to constraints related to [Wasm GC](https://github.com/WebAssembly/gc). You can install it using [nvm](https://github.com/nvm-sh/nvm):
 
 ```bash
-NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/v8-canary nvm install v20.0.0-v8-canary20230319df393cb3e4
-nvm use v20.0.0-v8-canary20230319df393cb3e4
+nvm install v20.0.0
+nvm use v20.0.0
 npm install --global mocha
 ```
 
