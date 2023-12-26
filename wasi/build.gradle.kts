@@ -7,12 +7,12 @@ plugins {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         nodejs()
     }
     sourceSets {
-        val wasmMain by getting
-        val wasmTest by getting {
+        val wasmJsMain by getting
+        val wasmJsTest by getting {
             dependencies {
                 implementation(kotlin("test"))
             }
@@ -26,7 +26,7 @@ kotlin {
     }
 
     // Disabled for now since require custom WASI module configuration, run wasi/test.sh instead.
-    tasks.named("wasmNodeTest") {
+    tasks.named("wasmJsNodeTest") {
         enabled = false
     }
 

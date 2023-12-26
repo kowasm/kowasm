@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
@@ -11,11 +13,16 @@ repositories {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         browser()
     }
     sourceSets {
         val commonMain by getting
-        val wasmMain by getting
+        val wasmJsMain by getting
+    }
+    tasks.withType<KotlinCompile<*>> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xexpect-actual-classes"
+        }
     }
 }

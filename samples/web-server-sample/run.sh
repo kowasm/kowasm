@@ -4,7 +4,7 @@ set -e
 cd $( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 export NODE_NO_WARNINGS=1
 
-../../gradlew clean compileProductionExecutableKotlinWasm
+../../gradlew clean compileProductionExecutableKotlinWasmJs
 echo ""
 echo "Running web-server-sample"
 echo ""

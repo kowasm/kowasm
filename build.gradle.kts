@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
 plugins {
-    kotlin("multiplatform") version "1.8.20" apply false
-    id("org.jetbrains.dokka") version "1.8.10"
+    kotlin("multiplatform") version "1.9.22" apply false
+    id("org.jetbrains.dokka") version "1.9.10"
 }
 
 description = "Fullstack application development with Kotlin and WebAssembly"
@@ -21,8 +21,13 @@ allprojects {
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
     rootProject.the<NodeJsRootExtension>().apply {
-        nodeVersion = "20.0.0"
+        nodeVersion = "21.0.0-v8-canary202309143a48826a08"
+        nodeDownloadBaseUrl = "https://nodejs.org/download/v8-canary"
     }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask>().configureEach {
+    args.add("--ignore-engines")
 }
 
 subprojects {

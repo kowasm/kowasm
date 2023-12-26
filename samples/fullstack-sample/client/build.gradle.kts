@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         binaries.executable()
         browser()
         applyBinaryen()
@@ -13,13 +13,10 @@ kotlin {
             dependencies {
                 implementation(project(":samples:fullstack-sample:common"))
                 implementation(project(":effekt-wasm"))
+                implementation(project(":kotlin-html-wasm")) // not needed previously, bug?
+                implementation(project(":konform-wasm")) // not needed previously, bug?
             }
         }
-        val wasmMain by getting
+        val wasmJsMain by getting
     }
-}
-
-// See https://youtrack.jetbrains.com/issue/KT-57203 related issue
-tasks.named("wasmDevelopmentExecutableCompileSync") {
-    dependsOn("wasmBrowserProductionWebpack")
 }

@@ -3,13 +3,13 @@ plugins {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         binaries.executable()
         nodejs()
         applyBinaryen()
     }
     sourceSets {
-        val wasmMain by getting {
+        val wasmJsMain by getting {
             dependencies {
                 implementation(project(":wasi"))
                 implementation(project(":kotlinx-datetime-wasm"))

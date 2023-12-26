@@ -14,6 +14,5 @@ fun Element.getElementByClassName(className: String): Element {
 fun GlobalEventHandlers.addKeyUpListener(listener: (org.w3c.dom.events.KeyboardEvent) -> Unit) {
     onkeyup = {
         listener(it)
-        null
     }
 }

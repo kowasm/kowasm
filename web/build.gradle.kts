@@ -5,7 +5,7 @@ plugins {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         nodejs()
     }
     sourceSets {
@@ -19,7 +19,7 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val wasmMain by getting {
+        val wasmJsMain by getting {
             dependencies {
                 implementation(project(":kotlinx-nodejs-wasm"))
             }

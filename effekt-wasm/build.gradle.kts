@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         binaries.executable()
         nodejs()
     }
@@ -15,7 +15,7 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val wasmMain by getting
-        val wasmTest by getting
+        val wasmJsMain by getting
+        val wasmJsTest by getting
     }
 }

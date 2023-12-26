@@ -29,9 +29,9 @@ external var METHODS: JsStringArray
 @Suppress("ClassName")
 external object STATUS_CODES {
 
-    operator fun get(errorCode: Number): String?
+    operator fun get(errorCode: Int): String?
 
-    operator fun set(errorCode: Number, value: String?)
+    operator fun set(errorCode: Int, value: String?)
 
     operator fun get(errorCode: String): String?
 
@@ -45,18 +45,18 @@ open external class Server : NetServer {
 open external class IncomingMessage(socket: Socket) : Readable {
     open var aborted: Boolean
     open var httpVersion: String
-    open var httpVersionMajor: Number
-    open var httpVersionMinor: Number
+    open var httpVersionMajor: Int
+    open var httpVersionMinor: Int
     open var complete: Boolean
     open var connection: Socket
     open var socket: Socket
     open var rawHeaders: JsStringArray
     open var rawTrailers: JsStringArray
-    open fun setTimeout(msecs: Number): IncomingMessage
-    open fun setTimeout(msecs: Number, callback: () -> Unit): IncomingMessage
+    open fun setTimeout(msecs: Int): IncomingMessage
+    open fun setTimeout(msecs: Int, callback: () -> Unit): IncomingMessage
     open var method: String
     open var url: String
-    open var statusCode: Number
+    open var statusCode: Int
     open var statusMessage: String
 }
 
@@ -70,9 +70,9 @@ open external class OutgoingMessage : Writable {
     open var headersSent: Boolean
     open var connection: Socket
     open var socket: Socket
-    open fun setTimeout(msecs: Number): OutgoingMessage
-    open fun setTimeout(msecs: Number, callback: () -> Unit): OutgoingMessage
-    open fun setHeader(name: String, value: Number)
+    open fun setTimeout(msecs: Int): OutgoingMessage
+    open fun setTimeout(msecs: Int, callback: () -> Unit): OutgoingMessage
+    open fun setHeader(name: String, value: Int)
     open fun setHeader(name: String, value: String)
     open fun setHeader(name: String, value: JsStringArray)
     open fun getHeaderNames(): JsStringArray
@@ -82,13 +82,13 @@ open external class OutgoingMessage : Writable {
 }
 
 open external class ServerResponse(req: IncomingMessage) : OutgoingMessage {
-    open var statusCode: Number
+    open var statusCode: Int
     open var statusMessage: String
     open fun assignSocket(socket: Socket)
     open fun detachSocket(socket: Socket)
     open fun writeContinue(callback: () -> Unit)
-    open fun writeHead(statusCode: Number): ServerResponse
-    open fun writeHead(statusCode: Number, reasonPhrase: String): ServerResponse
+    open fun writeHead(statusCode: Int): ServerResponse
+    open fun writeHead(statusCode: Int, reasonPhrase: String): ServerResponse
     open fun writeProcessing()
 }
 
