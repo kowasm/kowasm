@@ -16,7 +16,7 @@ import org.kowasm.web.http.server.RouterHandler
  * @param port the port to bind to
  */
 @Dsl
-open class WebServerDsl(var host: String, var port: Number, internal val init: WebServerDsl.() -> Unit) {
+open class WebServerDsl(var host: String, var port: Int, internal val init: WebServerDsl.() -> Unit) {
 
     internal var routerHandler : RouterHandler? = null
 
@@ -35,6 +35,6 @@ open class WebServerDsl(var host: String, var port: Number, internal val init: W
  * @param host the host to bind to
  * @param port the port to bind to
  */
-fun webServer(host: String = "localhost", port: Number = 8080, dsl: WebServerDsl.() -> Unit): WebServerDsl {
+fun webServer(host: String = "localhost", port: Int = 8080, dsl: WebServerDsl.() -> Unit): WebServerDsl {
     return WebServerDsl(host, port, dsl).apply { init() }
 }

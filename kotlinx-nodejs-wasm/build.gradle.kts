@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
@@ -7,12 +9,12 @@ group = "org.jetbrains.kotlinx"
 version = "0.0.8-SNAPSHOT"
 
 kotlin {
-    wasm {
+    wasmJs {
         nodejs()
     }
     sourceSets {
-        val wasmMain by getting
-        val wasmTest by getting {
+        val wasmJsMain by getting
+        val wasmJsTest by getting {
             dependencies {
                 implementation(kotlin("test"))
             }

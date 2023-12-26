@@ -3,14 +3,15 @@ plugins {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         nodejs()
     }
     sourceSets {
-        val wasmMain by getting {
+        val wasmJsMain by getting {
             dependencies {
-                implementation(project(":konform-wasm"))
-                implementation(project(":kotlin-html-wasm"))
+                api(project(":core"))
+                api(project(":konform-wasm"))
+                api(project(":kotlin-html-wasm"))
             }
         }
     }

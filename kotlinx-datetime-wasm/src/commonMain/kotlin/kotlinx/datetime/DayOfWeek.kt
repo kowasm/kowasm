@@ -5,8 +5,6 @@
 
 package kotlinx.datetime
 
-import kotlin.native.concurrent.*
-
 /**
  * The enumeration class representing the days of the week.
  */
@@ -25,7 +23,6 @@ public expect enum class DayOfWeek {
  */
 public val DayOfWeek.isoDayNumber: Int get() = ordinal + 1
 
-@SharedImmutable
 private val allDaysOfWeek = DayOfWeek.values().asList()
 
 /**

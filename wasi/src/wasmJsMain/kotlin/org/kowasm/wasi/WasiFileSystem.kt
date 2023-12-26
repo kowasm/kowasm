@@ -10,6 +10,7 @@ import org.kowasm.wasi.internal.OFlag
 import org.kowasm.wasi.internal.Right
 import org.kowasm.wasi.internal.pathCreateDirectory
 import org.kowasm.wasi.internal.pathOpen
+import kotlin.experimental.or
 
 /**
  * File size or length of a region within a file.
@@ -485,7 +486,7 @@ object DefaultWasiFilesystem: WasiFileSystem {
 
     private fun DescriptorFlags.toFdflags(): Fdflags {
         var flags: Fdflags = 0
-        if (this.dataIntegritySync) flags = flags or FdFlag.DSYNC
+        if (this.dataIntegritySync) flags = flags or  FdFlag.DSYNC
         if (this.fileIntegritySync) flags = flags or FdFlag.SYNC
         if (this.requestedWriteSync) flags = flags or FdFlag.RSYNC
         if (this.nonBlocking) flags = flags or FdFlag.NONBLOCK

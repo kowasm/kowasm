@@ -1,6 +1,6 @@
 package dev.scottpierce.html.writer
 
-import kotlin.jvm.Volatile
+import kotlin.concurrent.Volatile
 
 /**
  * Creates a [HtmlWriter], and handles it's lifecycle.

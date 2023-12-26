@@ -7,12 +7,12 @@ group = "io.konform"
 version = "0.5.0-SNAPSHOT"
 
 kotlin {
-    wasm {
+    wasmJs {
         browser()
         nodejs()
     }
     sourceSets {
         val commonMain by getting
-        val wasmMain by getting
+        val wasmJsMain by getting
     }
 }

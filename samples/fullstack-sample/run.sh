@@ -4,7 +4,7 @@ set -e
 cd $( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 export NODE_NO_WARNINGS=1
 
-../../gradlew :samples:fullstack-sample:client:wasmBrowserDistribution :samples:fullstack-sample:server:compileProductionExecutableKotlinWasm
+../../gradlew :samples:fullstack-sample:client:wasmJsBrowserDistribution :samples:fullstack-sample:server:compileProductionExecutableKotlinWasmJs
 echo ""
 echo "Running fullstack server"
 echo ""

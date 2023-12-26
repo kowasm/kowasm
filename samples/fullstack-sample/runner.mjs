@@ -1,7 +1,8 @@
-import { instantiate } from "./server/build/compileSync/wasm/main/productionExecutable/kotlin/kowasm-server-wasm.uninstantiated.mjs";
+import { instantiate } from "./server/build/compileSync/wasmJs/main/productionExecutable/kotlin/kowasm-samples-fullstack-sample-server-wasm-js.uninstantiated.mjs";
 import { WASI } from "wasi";
 
 export const wasi = new WASI({
+    version: 'preview1',
     preopens: {
         '/sandbox': process.cwd() + '/client/build'
     }
@@ -9,5 +10,3 @@ export const wasi = new WASI({
 
 const { exports, instance } = await instantiate({ wasi_snapshot_preview1 : wasi.wasiImport }, false);
 wasi.initialize(instance);
-
-exports.__init()

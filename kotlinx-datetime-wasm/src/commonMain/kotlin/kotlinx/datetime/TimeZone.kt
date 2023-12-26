@@ -3,9 +3,6 @@
  * Use of this source code is governed by the Apache 2.0 License that can be found in the LICENSE.txt file.
  */
 
-@file:kotlin.jvm.JvmMultifileClass
-@file:kotlin.jvm.JvmName("TimeZoneKt")
-
 package kotlinx.datetime
 
 import kotlinx.datetime.internal.SECONDS_PER_DAY

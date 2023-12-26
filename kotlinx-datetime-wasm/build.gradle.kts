@@ -6,16 +6,17 @@ plugins {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         nodejs()
     }
     sourceSets {
-        val wasmMain by getting {
+        val commonMain by getting
+        val wasmJsMain by getting {
             dependencies {
                 implementation(project(":wasi"))
             }
         }
-        val wasmTest by getting {
+        val wasmJsTest by getting {
             dependencies {
                 implementation(kotlin("test"))
             }
@@ -25,11 +26,12 @@ kotlin {
     tasks.withType<KotlinCompile<*>> {
         kotlinOptions {
             freeCompilerArgs += "-opt-in=kotlin.wasm.unsafe.UnsafeWasmMemoryApi"
+            freeCompilerArgs += "-Xexpect-actual-classes"
         }
     }
 
     // Disabled for now since require custom WASI module configuration, run wasi/test.sh instead.
-    tasks.named("wasmNodeTest") {
+    tasks.named("wasmJsNodeTest") {
         enabled = false
     }
 

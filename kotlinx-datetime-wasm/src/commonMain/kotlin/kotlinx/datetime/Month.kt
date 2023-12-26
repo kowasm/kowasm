@@ -5,8 +5,6 @@
 
 package kotlinx.datetime
 
-import kotlin.native.concurrent.*
-
 /**
  * The enumeration class representing the 12 months of the year.
  */
@@ -53,9 +51,8 @@ public expect enum class Month {
 /**
  * The number of the [Month]. January is 1, December is 12.
  */
-public val Month.number: Int get() = ordinal + 1
+val Month.number: Int get() = ordinal + 1
 
-@SharedImmutable
 private val allMonths = Month.values().asList()
 
 /**
