@@ -12,7 +12,7 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation(project(":wasi"))
-                implementation(project(":kotlinx-datetime-wasm"))
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
             }
         }
     }
