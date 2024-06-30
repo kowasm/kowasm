@@ -25,10 +25,6 @@ rootProject.plugins.withType<NodeJsRootPlugin> {
     }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask>().configureEach {
-    args.add("--ignore-engines")
-}
-
 subprojects {
     tasks.withType<DokkaTaskPartial>().configureEach {
         dokkaSourceSets.configureEach {
