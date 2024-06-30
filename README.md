@@ -19,7 +19,7 @@ This project is developed on Sébastien Deleuze's spare time in collaboration wi
 
 ### Node
 
-The latest Node 22 build should be able to run (see related [Node WASI documentation](https://nodejs.org/api/wasi.html)) to run the project. You can install it using [nvm](https://github.com/nvm-sh/nvm):
+Node 22+ should be able to run the project. You can install it using [nvm](https://github.com/nvm-sh/nvm):
 
 ```bash
 nvm use 22.3.0
