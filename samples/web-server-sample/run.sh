@@ -8,4 +8,4 @@ export NODE_NO_WARNINGS=1
 echo ""
 echo "Running web-server-sample"
 echo ""
-node --experimental-wasi-unstable-preview1 --experimental-wasm-gc runner.mjs
+node --experimental-wasi-unstable-preview1 runner.mjs
