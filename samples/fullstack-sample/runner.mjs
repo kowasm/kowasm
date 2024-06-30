@@ -8,5 +8,7 @@ export const wasi = new WASI({
     }
 });
 
-const { exports, instance } = await instantiate({ wasi_snapshot_preview1 : wasi.wasiImport }, false);
+import * as net from "net";
+import * as http from "http";
+const { exports, instance } = await instantiate({ wasi_snapshot_preview1 : wasi.wasiImport, net, http }, false);
 wasi.initialize(instance);
