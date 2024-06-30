@@ -25,7 +25,7 @@ class NodeHttpTests {
     @Test
     fun testMethods() {
         assertEquals("GET", METHODS.at(6))
-        assertEquals(34, METHODS.length)
+        assertEquals(35, METHODS.length)
     }
 
     @Test
