@@ -19,11 +19,10 @@ This project is developed on Sébastien Deleuze's spare time in collaboration wi
 
 ### Node
 
-A specific Node 21 canary build should be used (see related [Node WASI documentation](https://nodejs.org/api/wasi.html)) to run the project due to constraints related to [Wasm GC](https://github.com/WebAssembly/gc). You can install it using [nvm](https://github.com/nvm-sh/nvm):
+The latest Node 22 build should be able to run (see related [Node WASI documentation](https://nodejs.org/api/wasi.html)) to run the project. You can install it using [nvm](https://github.com/nvm-sh/nvm):
 
 ```bash
-NVM_NODEJS_ORG_MIRROR=https://nodejs.org/download/v8-canary nvm install v21.0.0-v8-canary202309143a48826a08
-nvm use v21.0.0-v8-canary202309143a48826a08
+nvm use 22.3.0
 npm install --global mocha
 ```
 
