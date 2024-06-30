@@ -21,7 +21,7 @@ allprojects {
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
     rootProject.the<NodeJsRootExtension>().apply {
-        nodeVersion = "22.3.0"
+        version = "22.3.0"
     }
 }
 
