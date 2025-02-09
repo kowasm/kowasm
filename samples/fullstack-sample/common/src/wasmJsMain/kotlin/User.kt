@@ -1,13 +1,13 @@
 /*
- * Copyright 2023 the original author or authors.
+ * Copyright 2023-2025 the original author or authors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
  */
 
 import io.konform.validation.Validation
-import io.konform.validation.jsonschema.maxLength
-import io.konform.validation.jsonschema.maximum
-import io.konform.validation.jsonschema.minLength
-import io.konform.validation.jsonschema.minimum
+import io.konform.validation.constraints.maxLength
+import io.konform.validation.constraints.maximum
+import io.konform.validation.constraints.minLength
+import io.konform.validation.constraints.minimum
 
 data class User(val name: String, val age: Int) {
 
@@ -17,7 +17,7 @@ data class User(val name: String, val age: Int) {
                 minLength(2)
                 maxLength(100)
             }
-            User::age ifPresent {
+            User::age {
                 minimum(0)
                 maximum(150)
             }

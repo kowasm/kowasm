@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+@file:OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
 
 plugins {
     kotlin("multiplatform")
@@ -18,11 +18,8 @@ kotlin {
             }
         }
     }
-
-    tasks.withType<KotlinCompile<*>> {
-        kotlinOptions {
-            freeCompilerArgs += "-opt-in=kotlin.wasm.unsafe.UnsafeWasmMemoryApi"
-        }
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=kotlin.wasm.unsafe.UnsafeWasmMemoryApi")
     }
 
     // Disabled for now since require custom WASI module configuration, run wasi/test.sh instead.

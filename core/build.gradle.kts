@@ -1,3 +1,5 @@
+@file:OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
@@ -5,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    wasm {
+    wasmJs {
         nodejs()
     }
     sourceSets {

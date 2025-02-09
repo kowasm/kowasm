@@ -32,7 +32,7 @@ fun BodyContext.random() {
 }
 
 fun BodyContext.filesystem() {
-    val descriptor = Wasi.openAt("processedResources/wasm/main/test.txt")
+    val descriptor = Wasi.openAt("processedResources/wasmJs/main/test.txt")
     val fileContent = Wasi.read(descriptor, 1024u).data.decodeToString()
     p {
         h2 { +"Content of the file" }

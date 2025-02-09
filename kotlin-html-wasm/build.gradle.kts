@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+@file:OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
 
 plugins {
     kotlin("multiplatform")
@@ -20,9 +20,7 @@ kotlin {
         val commonMain by getting
         val wasmJsMain by getting
     }
-    tasks.withType<KotlinCompile<*>> {
-        kotlinOptions {
-            freeCompilerArgs += "-Xexpect-actual-classes"
-        }
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }

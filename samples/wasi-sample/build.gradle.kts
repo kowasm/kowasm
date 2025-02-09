@@ -1,3 +1,5 @@
+@file:OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+
 plugins {
     kotlin("multiplatform")
 }
@@ -11,7 +13,7 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation(project(":wasi"))
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
             }
         }
     }

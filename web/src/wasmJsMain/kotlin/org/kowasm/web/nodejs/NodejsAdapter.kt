@@ -1,12 +1,11 @@
 /*
- * Copyright 2023 the original author or authors.
+ * Copyright 2023-2025 the original author or authors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
  */
 
 package org.kowasm.web.nodejs
 
-import org.khronos.webgl.Uint8Array
-import org.khronos.webgl.set
+import org.khronos.webgl.toUint8Array
 import org.kowasm.web.WebServerDsl
 import org.kowasm.web.http.*
 import org.kowasm.web.http.server.ServerRequest
@@ -14,11 +13,19 @@ import org.kowasm.web.http.server.ServerResponse
 import org.nodejs.RequestListener
 import org.nodejs.http.IncomingMessage
 import org.nodejs.http.createServer
+import kotlin.collections.MutableList
+import kotlin.collections.iterator
+import kotlin.collections.mutableListOf
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
+import kotlin.collections.toMap
+import kotlin.collections.toUByteArray
 import kotlin.reflect.KClass
 
 /**
  * Starts a Nodejs server listening on the specified host and port.
  */
+@ExperimentalUnsignedTypes
 fun WebServerDsl.startNodejs() {
     val requestListener: RequestListener = { req, res ->
         val request = NodejsServerRequest(req)
@@ -35,7 +42,7 @@ fun WebServerDsl.startNodejs() {
                 res.end(response.body as String)
             }
             else if (response.body is ByteArray) {
-                res.end(copyToUint8Array(response.body as ByteArray))
+                res.end((response.body as ByteArray).asUByteArray().toUint8Array())
             }
             else {
                 throw UnsupportedOperationException("Only String body is supported")
@@ -50,14 +57,6 @@ fun WebServerDsl.startNodejs() {
     server.listen(port, host) {
         println("Nodejs server is running on port $port")
     }
-}
-
-private fun copyToUint8Array(array: ByteArray): Uint8Array {
-    val result = Uint8Array(array.size)
-    for (i in array.indices) {
-        result[i] = array[i]
-    }
-    return result
 }
 
 private class NodejsServerRequest(private val incomingMessage: IncomingMessage): ServerRequest {

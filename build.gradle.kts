@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
 plugins {
-    kotlin("multiplatform") version "2.0.0" apply false
-    id("org.jetbrains.dokka") version "1.9.20"
+    kotlin("multiplatform") version "2.1.10" apply false
+    id("org.jetbrains.dokka") version "2.0.0"
 }
 
 description = "Fullstack application development with Kotlin and WebAssembly"
@@ -21,7 +21,7 @@ allprojects {
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
     rootProject.the<NodeJsRootExtension>().apply {
-        version = "22.3.0"
+        version = "22.13.1"
     }
 }
 

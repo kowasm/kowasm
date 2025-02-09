@@ -4,25 +4,17 @@
 
 KoWasm explores fullstack development with [Kotlin](https://kotlinlang.org/) and [WebAssembly](https://webassembly.org/). It leverages Kotlin/Wasm, [WASI](https://wasi.dev/) and [WebAssembly Component Model](https://github.com/WebAssembly/component-model).
 
-This project is developed on Sébastien Deleuze's spare time in collaboration with the Kotlin/Wasm team, taking inspiration from [Slava Kuzmich initial prototype](https://github.com/skuzmich/kotlin-wasi-bindings-experiments) with the goal that, at some point, WASI and WebAssembly Component model support would be provided out of the box by Kotlin/Wasm, see [KT-36172](https://youtrack.jetbrains.com/issue/KT-36172) and [KT-56605](https://youtrack.jetbrains.com/issue/KT-56605) related issues.
-
-**This project and Kotlin/Wasm in general are in very early stage of development:**
- - It leverages Kotlin 1.9 APIs and [Node experimental WASI API](https://nodejs.org/api/wasi.html).
- - Artifacts are not published to any repository yet.
- - Pure WASI runtimes like [Wasmtime](https://github.com/bytecodealliance/wasmtime) or [WasmEdge](https://wasmedge.org/) do not support [Wasm garbage collection](https://github.com/WebAssembly/gc) yet, so it is required to use V8-based WASI runtime like Node.  
+This project is developed on Sébastien Deleuze's spare time and highly experimental.
+It is taking inspiration from [Slava Kuzmich initial prototype](https://github.com/skuzmich/kotlin-wasi-bindings-experiments) with the goal that, at some point, WASI and WebAssembly Component model support would be provided out of the box by Kotlin/Wasm, see [KT-36172](https://youtrack.jetbrains.com/issue/KT-36172) and [KT-56605](https://youtrack.jetbrains.com/issue/KT-56605) related issues.
 
 ## Requirements
-
-### IDEA
-
-[IntelliJ IDEA 2023.1+](https://www.jetbrains.com/idea/) should be used to get Kotlin/Wasm autocompletion.
 
 ### Node
 
 Node 22+ should be able to run the project. You can install it using [nvm](https://github.com/nvm-sh/nvm):
 
 ```bash
-nvm use 22.3.0
+nvm install 22.13.1
 npm install --global mocha
 ```
 

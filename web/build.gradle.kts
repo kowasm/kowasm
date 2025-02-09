@@ -1,3 +1,5 @@
+@file:OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
@@ -21,6 +23,7 @@ kotlin {
         }
         val wasmJsMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-browser:0.3")
                 implementation(project(":kotlinx-nodejs-wasm"))
             }
         }

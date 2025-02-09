@@ -1,3 +1,5 @@
+@file:OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+
 plugins {
     kotlin("multiplatform")
 }
@@ -5,11 +7,16 @@ plugins {
 kotlin {
     wasmJs {
         binaries.executable()
-        browser()
+        browser {
+            compilerOptions {
+                verbose = true
+            }
+        }
     }
     sourceSets {
         commonMain {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-browser:0.3")
                 implementation(project(":samples:fullstack-sample:common"))
                 implementation(project(":effekt-wasm"))
             }
