@@ -6,7 +6,6 @@ kotlin {
     wasmJs {
         binaries.executable()
         browser()
-        applyBinaryen()
     }
     sourceSets {
         commonMain {

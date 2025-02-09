@@ -6,7 +6,6 @@ kotlin {
     wasmJs {
         binaries.executable()
         nodejs()
-        applyBinaryen()
     }
     sourceSets {
         val wasmJsMain by getting {
