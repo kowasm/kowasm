@@ -1,10 +1,9 @@
 
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 
 plugins {
-    kotlin("multiplatform") version "2.1.10" apply false
+    kotlin("multiplatform") version "2.1.20-Beta2" apply false
     id("org.jetbrains.dokka") version "2.0.0"
 }
 
@@ -19,10 +18,8 @@ allprojects {
     }
 }
 
-rootProject.plugins.withType<NodeJsRootPlugin> {
-    rootProject.the<NodeJsRootExtension>().apply {
-        version = "22.13.1"
-    }
+tasks.withType<NodeJsExec> {
+    version = "22.13.1"
 }
 
 subprojects {
